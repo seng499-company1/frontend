@@ -1,8 +1,7 @@
 @author:Aleah
-@owner:Riley
+@owner:Aleah
 Feature: Schedule Conflict Page
-    @minutae
-    @motivating
+
 
 
     	@motivating
@@ -10,3 +9,18 @@ Feature: Schedule Conflict Page
     	Given a user has generated a schedule with conflicts
     	When a user clicks on the schedule conflict alert
     	Then the user should be able to view the schedule conflicts
+
+Feature: Schedule Conflict Page
+
+    Page to display a list of schedule conflicts detected
+
+    Background:
+        Given a schedule has been generated
+        And there are schedule conflicts
+        And they have clicked the schedule conflicts alert
+
+    @motivating
+    Scenario: The schedule conflicts page displays a list of schedule conflicts
+        Given there are conflicts in the generated systen
+        Then a list of those conflicts should be displayed
+
