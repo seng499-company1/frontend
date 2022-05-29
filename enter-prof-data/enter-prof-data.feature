@@ -18,11 +18,11 @@ Feature: Edit Professor Data
 	Then the user should be able to select if they are qualified or unqualified to teach a course
 
    	@motivating
-   	Scenario Outline: Professor can view the next page in the form
+   	Scenario Outline: Professor can view the page to select willingness to teach
 	Given a user is on the enter professor data form
 	And the user has entered which classes they are qualified or unqualified to teach
 	When a user hits the next button
-	Then the user should be able to view the next page
+	Then the user should be able to view the page that lists courses they are willing or not willing to teach
 
     	@motivating
     	Scenario Outline: Professor views a summary of their entries
