@@ -10,3 +10,34 @@ Feature: Generate Schedule Main Page
     	Given a user is logged in as an admin
     	When the user is on the generate schedule page
     	Then the user should be able to see the generated schedule
+        
+        @motivating
+    	Scenario Outline: View Schedule Conflicts
+    	Given the user is on the generated schedule page
+    	When the generated schedule has conflicts
+    	Then an alert should display showing conflicts exist
+
+        @motivating
+    	Scenario Outline: No schedule Conflicts
+    	Given the user is on the generated schedule page
+    	When the generated schedule has zero conflicts
+    	Then no alert should be shown
+        
+        @motivating
+    	Scenario Outline: No Professor Data
+    	Given the user is on the generate schedule page
+    	When there is no professor data
+    	Then no schedule should be displayed
+        
+        @motivating
+    	Scenario Outline: No filters applied
+    	Given a user is on the generate schedule page
+    	When there are no filters selected
+    	Then the user should see a list of all scheduled courses
+        
+        @motivating
+    	Scenario Outline: Filters applied
+    	Given a user is on the generate schedule page
+    	When there are filters selected
+    	Then the user should see a list of selected scheduled courses based on the search filters
+        
