@@ -23,5 +23,17 @@ Feature: Edit Professor Data
 	When an admin clicks on the edit professor tab
 	And the admin clicks on the add button
 	Then the admin should be able to enter the name of an instructor they would like to add
+	
+	
+	Scenario Outline: View and individual professors data
+	
+	Scenario Outline: Update the courses a professor is willing to teach
+	
+	Scenario Outline: Update the day and time that a professor is able to teach
+	
+	
+
+
+
     
     
