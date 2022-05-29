@@ -1,0 +1,12 @@
+@author:Aleah
+@owner:Riley
+Feature: Generate Schedule Main Page
+    @minutae
+    @motivating
+
+
+    	@motivating
+    	Scenario Outline: View Generated Schedule
+    	Given a user is logged in as an admin
+    	When the user is on the generate schedule page
+    	Then the user should be able to see the generated schedule
