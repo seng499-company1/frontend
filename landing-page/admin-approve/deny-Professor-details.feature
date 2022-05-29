@@ -1,7 +1,7 @@
 @author:Riley
 @owner:Riley
 
-Feature: Approve/deny Leave
+Feature: Approve/deny Professor details
 
   Background:
     Given Admin account is logged in
