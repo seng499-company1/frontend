@@ -1,0 +1,12 @@
+@author:Aleah
+@owner:Riley
+Feature: Schedule Conflict Page
+    @minutae
+    @motivating
+
+
+    	@motivating
+    	Scenario Outline: View schedule conflicts
+    	Given a user has generated a schedule with conflicts
+    	When a user clicks on the schedule conflict alert
+    	Then the user should be able to view the schedule conflicts
