@@ -1,0 +1,53 @@
+@author:Aleah
+@owner:Aleah
+
+Feature: Generate Schedule Main Page
+    
+    Page for displaying generated schedule, and alert if conflicts exist
+    
+    Background:
+        Given the user is an admin
+        And they are signed in
+        And they have navigated to the "Generate Courses" tab
+        
+    @minutae
+        Scenario: The schedule displays an empty state when there is no professor data in the system
+
+        @motivating
+        Scenario: The schedule displays a list of all scheduled courses
+        Given professor(s) data exists in the system
+        And there are no filters applied
+        Then all scheduled courses scheduled are displayed in a list alphebetically
+        
+        @motivating
+    	Scenario Outline: The generated schedule has class conflicts
+    	Given professor(s) data exists in the system
+    	When the generated schedule has conflicts
+    	Then an alert should display showing conflicts exist
+
+        @motivating
+    	Scenario Outline: The generated schedule has no class conflicts
+    	Given professor(s) data exists in the system
+    	When the generated schedule has zero conflicts
+    	Then no alert should be displayed to the user
+        
+        @motivating
+    	Scenario Outline: The user has selected search filters
+    	Given a non-empty schedule has been generated
+    	When there are filters selected
+    	Then the user should see a list of selected scheduled courses based on the search filters
+        
+        @motivating
+    	Scenario Outline: The user has used the string search
+    	Given a non-empty schedule has been generated
+    	When the user has typed in a string in the search box
+        And has pressed the 'Enter' key
+    	Then only list of courses in the schedule containing the entered string should be listed 
+        
+        @motivating
+    	Scenario Outline: The user clicks on the schedule conflict alert
+    	Given the generated schedule contains conflicts
+        And the schedule conflict alert is displayed
+    	When the user clicks on the alert
+    	Then the schedule conflicts page should be shown
+        
