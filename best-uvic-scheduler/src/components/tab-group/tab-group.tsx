@@ -38,23 +38,26 @@ export function TabGroupView(props: TabGroupViewProps) {
 const TabDiv = styled.div`
   border: 2px solid #000;
   padding: 8px 16px 0px;
+  width: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const TabLabelP = styled.p<{ active: boolean }>`
   font-size: 20px;
   font-family: sans-serif;
   margin-bottom: 2px;
-  padding-bottom: 6px
-    ${(props) => props.active && "boarder-bottom: 2px solid black"};
+  padding: 0px 32px 6px;
+  width: max-content;
+  ${(props) =>
+    props.active ? "border-bottom: 2px solid black" : "margin-bottom: 4px"};
 `;
 
-export function TabView(
-  props: TabViewProps,
-  children: React.ReactNode | "string"
-) {
+export function TabView(props: TabViewProps) {
   return (
     <TabDiv>
-      <TabLabelP active={props.active}>{children}</TabLabelP>
+      <TabLabelP active={props.active}>{props.children}</TabLabelP>
     </TabDiv>
   );
 }
