@@ -5,12 +5,28 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #fff;
+  color: var(--font-color);
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+p {
+  font-size: var(--font-size-normal);
+}
+
+h3 {
+  font-size: var(--font-size-h3);
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+}
+
+h1 {
+  font-size: var(--font-size-h1);
 }
 
 :root {
@@ -65,8 +81,8 @@ code {
   --primary: var(--primary-500);
   --danger: var(--danger-700);
 
-  --text-color: var(--grey-900);
-  --text-color-light: var(--grey-700);
+  --font-color: var(--grey-900);
+  --font-color-light: var(--grey-700);
 
   --space-3x-small: 2px;
   --space-2x-small: 4px;
