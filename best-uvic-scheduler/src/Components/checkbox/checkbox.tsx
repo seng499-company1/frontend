@@ -37,34 +37,17 @@ export function CheckboxGroupView(props: CheckboxGroupViewProps) {
   return <div></div>;
 }
 
-const CheckboxDiv = styled.div`
+const CheckboxDiv = styled.p<{ checked: boolean }>`
   border: 2px solid #000;
-  padding: 2px 2px 2px;
-  width: 60px;
-  legth: 60px
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const CheckboxLabelP = styled.p<{ checked: boolean }>`
-  font-size: 36px;
-  font-family: sans-serif;
-  margin-bottom: 2px;
-  margin-top: 2px;
-  padding: 8px 8px 8px;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  ${(props) => (props.checked ? "color: black" : "color: white")};
+  padding: 10px 10px 10px;
+  width: 10px;
+  legth: 10px;
+  ${(props) =>
+    props.checked ? "background-color: grey" : "background-color: white"};
 `;
 
 export function CheckboxView(props: CheckboxViewProps) {
-  return (
-    <CheckboxDiv>
-      <CheckboxLabelP checked={props.checked}>{props.children}</CheckboxLabelP>
-    </CheckboxDiv>
-  );
+  return <CheckboxDiv checked={props.checked}></CheckboxDiv>;
 }
 
 const CheckboxGroup = (props: CheckboxGroupProps) => {
