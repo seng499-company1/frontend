@@ -42,6 +42,7 @@ const CustomButton = styled.button`
   `}
 `;
 
+
 CustomButton.defaultProps = {
   Theme: "Primary",
   Disabled: false
@@ -49,8 +50,6 @@ CustomButton.defaultProps = {
 
 export function CustomButtonView(props: CustomButtonProps) {
   return (
-    <div>
       <CustomButton Theme={props.Theme} Disabled={props.Disabled}>{props.children}</CustomButton>
-    </div>
   );
 }
