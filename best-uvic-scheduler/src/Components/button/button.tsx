@@ -5,7 +5,7 @@ import '../../index.css';
 const ButtonTheme = {
   Primary: {
     default: "#005791",
-    hover: "#0077B1",
+    hover: "#003771",
     textcolor: "#FEFEFE"
   },
   Secondary: {
