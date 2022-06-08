@@ -1,7 +1,7 @@
 import { number } from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import { RowView } from "./Row";
+import { Body, Header } from "./Row";
 import "../../index.css";
 // The table subcomponent is responsible for:
 
@@ -11,7 +11,7 @@ import "../../index.css";
 
 const TableThemes = {
   Header: {
-    fontSize: 10,
+    fontSize: 16,
   },
   Body: {
     fontSize: 10,
@@ -21,7 +21,8 @@ const TableThemes = {
 export interface TableProps {
   theme: TableThemes;
   num_rows: number;
-  // children: React.ReactNode;
+  label: Array<string>;
+  children: React.ReactNode;
 }
 
 const TableDiv = styled.table`
@@ -30,15 +31,11 @@ const TableDiv = styled.table`
   width: 100%;
 `;
 
-// TableDiv.defaultProps = {
-//   theme: "Header",
-//   num_rows: 3,
-// };
-
 export function TableView(props: TableProps) {
   return (
-    <TableDiv theme={props.theme} num_rows={props.num_rows}>
-      {props.children}
+    <TableDiv theme={props.theme}>
+      <Header label={props.label}></Header>
+      <Body label={props.label}></Body>
     </TableDiv>
   );
 }

@@ -7,5 +7,15 @@ export default {
 };
 
 export const ActiveTable = () => {
-  return <TableView {...{ theme: "Header", num_rows: 3 }}>Test</TableView>;
+  return (
+    <TableView
+      {...{
+        theme: "Header",
+        num_rows: 3,
+        label: ["test", "test", "test", "test"],
+      }}
+    >
+      Test
+    </TableView>
+  );
 };
