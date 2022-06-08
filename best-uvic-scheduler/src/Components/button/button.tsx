@@ -4,18 +4,18 @@ import '../../index.css';
 
 const ButtonTheme = {
   Primary: {
-    default: "#005791",
-    hover: "#003771",
+    default: "var(--primary)",
+    hover: "var(--primary-700)",
     textcolor: "#FEFEFE"
   },
   Secondary: {
-    default: "#EEEEEE",
-    hover: "#DEDEDE",
+    default: "var(--grey-100)",
+    hover: "var(--grey-200)",
     textcolor: "#005791"
   },
   Cancel: {
-    default: "#F95353",
-    hover: "#F73333",
+    default: "var(--danger-700)",
+    hover: "var(--danger-900)",
     textcolor: "#FEFEFE"
   }
 };
