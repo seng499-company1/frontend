@@ -25,7 +25,7 @@ const SearchBarDiv = styled.div`
   display: flex;
   align-items: center;
   justifyContent: start;
-  background-color: #D9D9D9;
+  background-color: var(--primary-100);
   border: 2px solid #000000;
   border-top-width: ${(props) => props.InList ? "0" : "2px"};
   border-left-width: ${(props) => props.InList ? "0" : "2px"};
@@ -37,10 +37,10 @@ const SearchBarInput = styled.input`
   padding: 0.5em;
   margin: 0 0.2em 0 0.2em;
   width: 50%;
-  background-color: #D9D9D9;
+  background-color: var(--primary-100);
   color: #000000;
   font-weight: bold;
-  border: 2px solid #C9C9C9;
+  border: 2px solid var(--primary-200);
   border-top-width: 0;
   border-bottom-width: 0;
   border-radius: 4px;
