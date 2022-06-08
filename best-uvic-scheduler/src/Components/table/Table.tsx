@@ -19,16 +19,15 @@ const TableThemes = {
 };
 
 export interface TableProps {
-  theme: typeof TableThemes;
+  theme: TableThemes;
   num_rows: number;
-  children: React.ReactNode;
+  // children: React.ReactNode;
 }
 
-const TableDiv = styled.div`
+const TableDiv = styled.table`
   border: 2px solid #000;
-  padding: 10px 10px 10px;
-  width: 10px;
-  legth: 10px;
+  border-collapse: collapse;
+  width: 100%;
 `;
 
 // TableDiv.defaultProps = {
@@ -38,10 +37,8 @@ const TableDiv = styled.div`
 
 export function TableView(props: TableProps) {
   return (
-    // <TableDiv
-    //   theme={props.theme}
-    //   num_rows={props.num_rows}
-    // ></TableDiv>
-    <div></div>
+    <TableDiv theme={props.theme} num_rows={props.num_rows}>
+      {props.children}
+    </TableDiv>
   );
 }
