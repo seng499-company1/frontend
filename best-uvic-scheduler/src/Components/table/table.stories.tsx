@@ -1,12 +1,10 @@
-import { tableStyleView } from "./tableStyle";
+import { TableView } from "./Table";
 
 export default {
-  title: "Components/Checkbox Group",
-  component: tableStyleView,
+  title: "Components/Table Group",
+  component: TableView,
 };
 
-export const ActivetableStyle = () => {
-  return (
-    <tableStyleView {...{ theme: "Header", num_rows: 3 }}>X</tableStyleView>
-  );
+export const ActiveTable = () => {
+  return <TableView {...{ theme: "Header", num_rows: 3 }}></TableView>;
 };
