@@ -1,38 +1,47 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 
-export interface TabGroupProps {
-  active: string;
-  children: React.ReactNode;
-}
-
 export interface TabGroupViewProps {
+  activeTab: string;
+  setActiveTab: React.Dispatch<React.SetStateAction<string>>;
   children: React.ReactNode;
 }
 
 export interface TabProps {
-  value: string;
+  tabId: string;
   children: React.ReactNode;
 }
 
 export interface TabViewProps {
   active: boolean;
   children: React.ReactNode;
+  setCurrentTab: () => void;
 }
+
+export interface TabGroupProps {
+  initialTabId?: string;
+  children: React.ReactNode;
+}
+
+const TabContext = React.createContext({
+  activeTab: "",
+  setActiveTab: (_tabId: string) => {},
+});
 
 function useTabGroup(
   props: TabGroupProps
 ): Omit<TabGroupViewProps, "children"> {
-  return {};
+  const [activeTab, setActiveTab] = useState(props.initialTabId);
+  return { activeTab, setActiveTab };
 }
 
 function useTab(props: TabProps): Omit<TabViewProps, "children"> {
-  const active = props.value == "test" ? true : false; // TODO grab active tab from context
-  return { active };
-}
+  const { activeTab, setActiveTab } = useContext(TabContext);
+  const active = props.tabId == activeTab ? true : false;
 
-export function TabGroupView(props: TabGroupViewProps) {
-  return <div></div>;
+  const setCurrentTab = () => setActiveTab(props.tabId);
+
+  return { active, setCurrentTab };
 }
 
 const TabDiv = styled.div`
@@ -54,9 +63,17 @@ const TabLabelP = styled.p<{ active: boolean }>`
     props.active ? "border-bottom: 2px solid black" : "margin-bottom: 4px"};
 `;
 
+const GroupContainerDiv = styled.div`
+  display: flex;
+`;
+
+export function TabGroupView(props: TabGroupProps) {
+  return <div>{props.children}</div>;
+}
+
 export function TabView(props: TabViewProps) {
   return (
-    <TabDiv>
+    <TabDiv onClick={() => props.setCurrentTab()}>
       <TabLabelP active={props.active}>{props.children}</TabLabelP>
     </TabDiv>
   );
@@ -64,7 +81,16 @@ export function TabView(props: TabViewProps) {
 
 const TabGroup = (props: TabGroupProps) => {
   const viewProps = useTabGroup(props);
-  return <TabGroupView {...viewProps}>{props.children}</TabGroupView>;
+  return (
+    <TabContext.Provider
+      value={{
+        activeTab: viewProps.activeTab,
+        setActiveTab: viewProps.setActiveTab,
+      }}
+    >
+      <TabGroupView>{props.children}</TabGroupView>
+    </TabContext.Provider>
+  );
 };
 
 const Tab = (props: TabProps) => {
