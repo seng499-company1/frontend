@@ -55,6 +55,8 @@ const TabDiv = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 `;
 
 const TabLabelP = styled.p<{ active: boolean }>`
@@ -62,13 +64,21 @@ const TabLabelP = styled.p<{ active: boolean }>`
   font-family: sans-serif;
   margin-bottom: 2px;
   padding: 0px 32px 6px;
-  width: max-content;
+  width: 100%;
   ${(props) =>
     props.active ? "border-bottom: 2px solid black" : "margin-bottom: 4px"};
 `;
 
 const GroupContainerDiv = styled.div`
   display: flex;
+`;
+
+const TabEndDiv = styled.div<{ side: "left" | "right" }>`
+  border-bottom: 1px solid var(--border);
+  width: 100vw;
+  height: 0px;
+  transform: ${(props) =>
+    props.side == "right" ? "rotate(45deg)" : "rotate(-45deg)"};
 `;
 
 export function TabGroupView(props: TabGroupViewProps) {
@@ -78,7 +88,9 @@ export function TabGroupView(props: TabGroupViewProps) {
 export function TabView(props: TabViewProps) {
   return (
     <TabDiv onClick={() => props.setCurrentTab()}>
+      <TabEndDiv side={"left"} />
       <TabLabelP active={props.active}>{props.children}</TabLabelP>
+      <TabEndDiv side={"right"} />
     </TabDiv>
   );
 }
