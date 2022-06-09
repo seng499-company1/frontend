@@ -17,9 +17,17 @@ type TableData = {
   body: Array<Array<string>>;
 };
 
+export interface CellProps {
+  firstName: string;
+  lastName: string;
+  faculty: string;
+  availible: Array<string>;
+}
+
 export interface TableProps {
   data: TableData;
   num_rows: number;
+  cell_props: CellProps;
   children: React.ReactNode;
 }
 
@@ -33,7 +41,12 @@ export function TableView(props: TableProps) {
   return (
     <TableDiv>
       <Header label={props.data.header}></Header>
-      <Cell></Cell>
+      <Cell
+        firstName={props.cell_props.firstName}
+        lastName={props.cell_props.lastName}
+        faculty={props.cell_props.faculty}
+        availible={props.cell_props.availible}
+      ></Cell>
       {props.data.body.map((item, idx) => (
         <Body body={item}></Body>
       ))}

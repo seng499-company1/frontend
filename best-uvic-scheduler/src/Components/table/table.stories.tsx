@@ -1,4 +1,4 @@
-import { TableView } from "./Table";
+import { CellProps, TableView } from "./Table";
 import React from "react";
 
 export default {
@@ -10,6 +10,13 @@ type TableData = {
   header: Array<string>;
   body: Array<Array<string>>;
 };
+
+export interface CellProps {
+  firstName: string;
+  lastName: string;
+  faculty: string;
+  availible: Array<string>;
+}
 
 const data: TableData = {
   header: ["First Name", "Last Name", "Faculty", "Terms Availible"],

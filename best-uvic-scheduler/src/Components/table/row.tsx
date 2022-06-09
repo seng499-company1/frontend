@@ -5,22 +5,12 @@ import styled from "styled-components";
 // We will need to map through the children passed to the row subcomponent to accomplish this.
 // Organizing the cells within a row
 
-export interface Row {
-  children: React.ReactNode;
-}
-
 export interface RowPropsHeader {
   label: Array<string>;
-  children: React.ReactNode;
 }
 
 export interface RowPropsBody {
   body: Array<string>;
-  children: React.ReactNode;
-}
-
-export interface Header {
-  children: React.ReactNode;
 }
 
 const HeaderDiv = styled.thead`

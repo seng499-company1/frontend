@@ -7,7 +7,6 @@ export interface CellProps {
   lastName: string;
   faculty: string;
   availible: Array<string>;
-  children: React.ReactNode;
 }
 
 const EditDiv = styled.td`
