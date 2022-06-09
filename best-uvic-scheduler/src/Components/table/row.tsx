@@ -30,6 +30,7 @@ const HeaderDiv = styled.thead`
 
 const BodyDiv = styled.tbody`
   border: 2px solid #000;
+  text-align: center;
   width: 100%;
 `;
 

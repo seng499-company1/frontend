@@ -12,10 +12,10 @@ type TableData = {
 };
 
 const data: TableData = {
-  header: ["title", "title2", "title3", "title4"],
+  header: ["First Name", "Last Name", "Faculty", "Terms Availible"],
   body: [
     ["bill", "bird", "data", "hello"],
-    ["one", "two", "three", "four"],
+    ["Rich", "Little", "Seng", "Fall"],
   ],
 };
 

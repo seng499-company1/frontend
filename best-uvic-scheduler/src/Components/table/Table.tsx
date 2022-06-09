@@ -2,6 +2,7 @@ import { number } from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Body, Header } from "./Row";
+import { Cell } from "./Cell";
 import "../../index.css";
 import { scryRenderedComponentsWithType } from "react-dom/test-utils";
 // The table subcomponent is responsible for:
@@ -32,6 +33,7 @@ export function TableView(props: TableProps) {
   return (
     <TableDiv>
       <Header label={props.data.header}></Header>
+      <Cell></Cell>
       {props.data.body.map((item, idx) => (
         <Body body={item}></Body>
       ))}
