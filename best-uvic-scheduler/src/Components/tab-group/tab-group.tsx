@@ -2,8 +2,6 @@ import React, { useContext, useState } from "react";
 import styled from "styled-components";
 
 export interface TabGroupViewProps {
-  activeTab: string;
-  setActiveTab: React.Dispatch<React.SetStateAction<string>>;
   children: React.ReactNode;
 }
 
@@ -23,6 +21,11 @@ export interface TabGroupProps {
   children: React.ReactNode;
 }
 
+export interface ContextProps {
+  activeTab: string;
+  setActiveTab: React.Dispatch<React.SetStateAction<string>>;
+}
+
 const TabContext = React.createContext({
   activeTab: "",
   setActiveTab: (_tabId: string) => {},
@@ -30,7 +33,7 @@ const TabContext = React.createContext({
 
 function useTabGroup(
   props: TabGroupProps
-): Omit<TabGroupViewProps, "children"> {
+): Omit<TabGroupViewProps, "children"> & ContextProps {
   const [activeTab, setActiveTab] = useState(props.initialTabId);
   return { activeTab, setActiveTab };
 }
@@ -51,6 +54,7 @@ const TabDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 `;
 
 const TabLabelP = styled.p<{ active: boolean }>`
@@ -67,8 +71,8 @@ const GroupContainerDiv = styled.div`
   display: flex;
 `;
 
-export function TabGroupView(props: TabGroupProps) {
-  return <div>{props.children}</div>;
+export function TabGroupView(props: TabGroupViewProps) {
+  return <GroupContainerDiv>{props.children}</GroupContainerDiv>;
 }
 
 export function TabView(props: TabViewProps) {
