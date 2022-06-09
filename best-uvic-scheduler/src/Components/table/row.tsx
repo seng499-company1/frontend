@@ -9,8 +9,13 @@ export interface Row {
   children: React.ReactNode;
 }
 
-export interface RowProps {
+export interface RowPropsHeader {
   label: Array<string>;
+  children: React.ReactNode;
+}
+
+export interface RowPropsBody {
+  body: Array<Array<string>>;
   children: React.ReactNode;
 }
 
@@ -28,7 +33,7 @@ const BodyDiv = styled.tbody`
   width: 100%;
 `;
 
-export function Header(props: RowProps) {
+export function Header(props: RowPropsHeader) {
   return (
     <HeaderDiv>
       <tr>
@@ -41,14 +46,14 @@ export function Header(props: RowProps) {
   );
 }
 
-export function Body(props: RowProps) {
+export function Body(props: RowPropsBody) {
   return (
     <BodyDiv>
       <tr>
-        <td scope="col">{props.label[0]}</td>
-        <td scope="col">{props.label[1]}</td>
-        <td scope="col">{props.label[2]}</td>
-        <td scope="col">{props.label[3]}</td>
+        <td scope="col">{props.body[0][0]}</td>
+        <td scope="col">{props.body[0][1]}</td>
+        <td scope="col">{props.body[0][2]}</td>
+        <td scope="col">{props.body[0][3]}</td>
       </tr>
     </BodyDiv>
   );

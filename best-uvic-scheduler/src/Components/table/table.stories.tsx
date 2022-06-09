@@ -6,11 +6,21 @@ export default {
   component: TableView,
 };
 
+type TableData = {
+  header: Array<string>;
+  body: Array<Array<string>>;
+};
+
+const data: TableData = {
+  header: ["title", "title2", "title3", "title4"],
+  body: [["bill", "bird", "data", "hello"]],
+};
+
 export const ActiveTable = () => {
   return (
     <TableView
       {...{
-        theme: "Header",
+        data: data,
         num_rows: 3,
         label: ["test", "test", "test", "test"],
       }}
