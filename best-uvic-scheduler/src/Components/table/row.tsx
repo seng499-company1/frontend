@@ -15,7 +15,7 @@ export interface RowPropsHeader {
 }
 
 export interface RowPropsBody {
-  body: Array<Array<string>>;
+  body: Array<string>;
   children: React.ReactNode;
 }
 
@@ -50,10 +50,10 @@ export function Body(props: RowPropsBody) {
   return (
     <BodyDiv>
       <tr>
-        <td scope="col">{props.body[0][0]}</td>
-        <td scope="col">{props.body[0][1]}</td>
-        <td scope="col">{props.body[0][2]}</td>
-        <td scope="col">{props.body[0][3]}</td>
+        <td scope="col">{props.body[0]}</td>
+        <td scope="col">{props.body[1]}</td>
+        <td scope="col">{props.body[2]}</td>
+        <td scope="col">{props.body[3]}</td>
       </tr>
     </BodyDiv>
   );

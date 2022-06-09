@@ -13,7 +13,10 @@ type TableData = {
 
 const data: TableData = {
   header: ["title", "title2", "title3", "title4"],
-  body: [["bill", "bird", "data", "hello"]],
+  body: [
+    ["bill", "bird", "data", "hello"],
+    ["one", "two", "three", "four"],
+  ],
 };
 
 export const ActiveTable = () => {
@@ -22,7 +25,6 @@ export const ActiveTable = () => {
       {...{
         data: data,
         num_rows: 3,
-        label: ["test", "test", "test", "test"],
       }}
     >
       Test
