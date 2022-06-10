@@ -3,11 +3,13 @@ import styled from "styled-components";
 import '../../index.css';
 
 export interface ProfessorListElementProps {
+  customClickEvent: any;
   Selected: boolean;
   children: React.ReactNode;
 }
 
 export interface ProfessorListElementDivProps {
+  customClickEvent: any;
   Selected: boolean;
   children: React.ReactNode;
 }
@@ -39,10 +41,12 @@ ProfessorListElementDiv.defaultProps = {
 
 export function ProfessorListElementView(props: ProfessorListElementProps) {
   return (
-    <ProfessorListElementDiv Selected={props.Selected}>
+    <ProfessorListElementDiv Selected={props.Selected} onClick={props.customClickEvent}>
       <ProfessorListElementText>
         {props.children}
       </ProfessorListElementText>
     </ProfessorListElementDiv>
   );
 }
+
+export default ProfessorListElementView;

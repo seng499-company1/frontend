@@ -70,3 +70,5 @@ export function SearchBarView(props: SearchBarProps) {
     </SearchBarDivView>
   );
 }
+
+export default SearchBarView;
