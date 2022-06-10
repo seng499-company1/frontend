@@ -23,19 +23,23 @@ const data: TableData = {
   body: [
     {
       time: "8:30",
-      monday: false,
-      tuesday: false,
-      wednesday: false,
-      thursday: false,
-      friday: false,
+      day: {
+        monday: false,
+        tuesday: false,
+        wednesday: true,
+        thursday: false,
+        friday: false,
+      },
     },
     {
       time: "9:00",
-      monday: false,
-      tuesday: false,
-      wednesday: false,
-      thursday: false,
-      friday: false,
+      day: {
+        monday: false,
+        tuesday: false,
+        wednesday: true,
+        thursday: false,
+        friday: false,
+      },
     },
   ],
 };
