@@ -11,7 +11,7 @@ const ProfessorListDiv = styled.div`
   padding: 0;
   height: 250px;
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   justifyContent: start;
   background-color: #FFFFFF;
   border: 2px solid #000000;
@@ -23,3 +23,5 @@ export function ProfessorListDivView(props: ProfessorListDivProps) {
     <ProfessorListDiv >{props.children}</ProfessorListDiv>
   );
 }
+
+export default ProfessorListDivView;

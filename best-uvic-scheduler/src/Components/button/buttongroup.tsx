@@ -36,3 +36,5 @@ export function CustomButtonGroupView(props: CustomButtonGroupProps) {
     <CustomButtonGroup Amount={props.Amount} >{props.children}</CustomButtonGroup>
   );
 }
+
+export default CustomButtonGroupView;
