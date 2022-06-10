@@ -8,7 +8,7 @@ export default {
 
 type TableData = {
   header: Array<string>;
-  body: Array<Array<string>>;
+  body: Array<object>;
 };
 
 export interface CellProps {
@@ -21,8 +21,22 @@ export interface CellProps {
 const data: TableData = {
   header: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
   body: [
-    ["bill", "bird", "data", "hello"],
-    ["Rich", "Little", "Seng", "Fall"],
+    {
+      time: "8:30",
+      monday: false,
+      tuesday: false,
+      wednesday: false,
+      thursday: false,
+      friday: false,
+    },
+    {
+      time: "9:00",
+      monday: false,
+      tuesday: false,
+      wednesday: false,
+      thursday: false,
+      friday: false,
+    },
   ],
 };
 
@@ -30,11 +44,9 @@ export const ActiveTable = () => {
   return (
     <TableView
       {...{
-        data: data,
-        num_rows: 3,
+        availible: data.body,
+        header: data.header,
       }}
-    >
-      Test
-    </TableView>
+    ></TableView>
   );
 };

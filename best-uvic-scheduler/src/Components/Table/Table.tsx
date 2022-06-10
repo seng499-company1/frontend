@@ -1,5 +1,6 @@
 import { number } from "prop-types";
 import React, { useState } from "react";
+import { Row } from "./Row";
 import styled from "styled-components";
 
 import "../../index.css";
@@ -9,18 +10,31 @@ import "../../index.css";
 // Border of the table styling
 // Row layout
 
-//NOTE: THIS MAY NOT BE THE BEST WAY TO PASS IN THE DATA?
-type TableData = {
-  header: Array<string>;
-  
-  body: Array<Array<string>>;
-};
-
-
+// //NOTE: THIS MAY NOT BE THE BEST WAY TO PASS IN THE DATA?
+// type TableData = {
+//   header: Array<string>;
+//   availible: Array<{
+//     time: string
+//     monday: boolean
+//     tuesday: boolean
+//     wednesday: boolean
+//     thursday: boolean
+//     friday: boolean
+//   }>;
+// };
 
 export interface TableProps {
-  data: TableData;
-  
+  header: Array<string>;
+  availible: [
+    {
+      time: string;
+      monday: boolean;
+      tuesday: boolean;
+      wednesday: boolean;
+      thursday: boolean;
+      friday: boolean;
+    }
+  ];
 }
 
 const TableDiv = styled.table`
@@ -34,16 +48,20 @@ export function TableView(props: TableProps) {
     <TableDiv>
       <thead>
         <tr>
-        <th scope="col"> </th>
+          <th scope="col"> </th>
 
-        <th scope="col">{props.data.header[0]}</th>
-        <th scope="col">{props.data.header[1]}</th>
-        <th scope="col">{props.data.header[2]}</th>
-        <th scope="col">{props.data.header[3]}</th>
+          <th scope="col">{props.header[0]}</th>
+          <th scope="col">{props.header[1]}</th>
+          <th scope="col">{props.header[2]}</th>
+          <th scope="col">{props.header[3]}</th>
         </tr>
-        <tr></tr>
-      </thead>
 
+        <tr>
+          {props.availible.map((item, idx) => (
+            <Row availible={props.availible[idx]}></Row>
+          ))}
+        </tr>
+      </thead>
     </TableDiv>
   );
 }
