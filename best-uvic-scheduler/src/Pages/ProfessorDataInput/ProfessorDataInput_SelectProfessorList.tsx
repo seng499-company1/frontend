@@ -7,6 +7,21 @@ import SearchBarView from "../../Components/SearchBar/Searchbar.tsx";
 import ProfessorListElementView from "../../Components/ProfessorSearch/ProfessorListElement.tsx";
 import * as ProfessorListHelper from "../../Util/ProfessorListHelper.tsx";
 
+const InsideDivStyle = styled.div`
+  width: 55%;
+  padding: 36px;
+  border-radius: 8px;
+  background-color: #FEFEFE;
+`;
+
+const OutsideDivStyle = styled.div`
+  display: flex;
+  justify-content: center;
+  background-color: var(--primary-50);
+  height: 100vh;
+`;
+
+
 export function PDISelectProfessorList() {
 
   const [isSelected, setSelected] = useState(0);
@@ -14,20 +29,6 @@ export function PDISelectProfessorList() {
   //get data
   const ProfessorData = ProfessorListHelper.GetProfessorList();
   const Professors = ProfessorData.Professors;
-
-  const InsideDivStyle = styled.div`
-    width: 55%;
-    padding: 36px;
-    border-radius: 8px;
-    background-color: #FEFEFE;
-  `;
-
-  const OutsideDivStyle = styled.div`
-    display: flex;
-    justify-content: center;
-    background-color: var(--primary-50);
-    height: 100vh;
-  `;
 
   return (
     <OutsideDivStyle>
