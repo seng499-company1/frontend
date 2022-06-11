@@ -1,10 +1,25 @@
 import React, { useState } from 'react';
+import styled from "styled-components";
 import CustomButtonView from "../../Components/button/button.tsx"
 import CustomButtonGroupView from "../../Components/button/buttongroup.tsx"
 import ProfessorListDivView from "../../Components/ProfessorSearch/ProfessorList.tsx";
 import SearchBarView from "../../Components/SearchBar/Searchbar.tsx";
 import ProfessorListElementView from "../../Components/ProfessorSearch/ProfessorListElement.tsx";
 import * as ProfessorListHelper from "../../Util/ProfessorListHelper.tsx";
+
+const InsideDivStyle = styled.div`
+  width: 55%;
+  padding: 36px;
+  border-radius: 8px;
+  background-color: #FEFEFE;
+`;
+
+const OutsideDivStyle = styled.div`
+  display: flex;
+  justify-content: center;
+  background-color: var(--primary-50);
+  height: 100vh;
+`;
 
 export function PDISelectProfessorList() {
 
@@ -14,22 +29,11 @@ export function PDISelectProfessorList() {
   const ProfessorData = ProfessorListHelper.GetProfessorList();
   const Professors = ProfessorData.Professors;
 
-  const InsideDivStyle = {
-    width: "55%",
-    padding: "36px",
-    borderRadius: "8px",
-    backgroundColor: "#FEFEFE"
-  };
-  const OutsideDivStyle = {
-    display: "flex",
-    justifyContent: "center",
-    backgroundColor: "var(--primary-50)",
-    height: "100vh"
-  };
+  console.log("Now i'm in the list")
 
   return (
-    <div style={OutsideDivStyle}>
-      <div style={InsideDivStyle}>
+    <OutsideDivStyle>
+      <InsideDivStyle>
       <ProfessorListDivView>
         <SearchBarView {...{ InList: true }}/>
         {
@@ -54,8 +58,8 @@ export function PDISelectProfessorList() {
           }
         }}> Confirm </CustomButtonView>
       </CustomButtonGroupView>
-    </div>
-  </div>
+    </InsideDivStyle>
+  </OutsideDivStyle>
   );
 }
 
