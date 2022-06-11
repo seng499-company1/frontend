@@ -21,6 +21,7 @@ const ButtonTheme = {
 };
 
 export interface CustomButtonProps {
+  customClickEvent: any;
   Theme: ButtonTheme;
   Disabled? : boolean;
   children: React.ReactNode;
@@ -53,6 +54,8 @@ CustomButton.defaultProps = {
 
 export function CustomButtonView(props: CustomButtonProps) {
   return (
-      <CustomButton Theme={props.Theme} Disabled={props.Disabled}>{props.children}</CustomButton>
+      <CustomButton Theme={props.Theme} Disabled={props.Disabled} onClick={props.customClickEvent}>{props.children}</CustomButton>
   );
 }
+
+export default CustomButtonView;
