@@ -113,8 +113,6 @@ function updateTimeslots(
   state: Array<Array<boolean>>,
   action: { dayIdx: number; slotIdx: number }
 ) {
-  console.log(action);
-
   const newState = state.map((slot: Array<boolean>, slotIdx: number) => {
     if (slotIdx !== action.slotIdx) {
       return slot;
