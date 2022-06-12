@@ -6,7 +6,6 @@ import {
 import PDISelectProfessorList from "./ProfessorDataInput_SelectProfessorList.tsx";
 import PDISelectProfessorQualifications from "./ProfessorQualifications.tsx";
 
-
 export function ProfessorDataInputIndex() {
 
   return (
