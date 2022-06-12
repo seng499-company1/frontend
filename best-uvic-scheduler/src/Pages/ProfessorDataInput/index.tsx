@@ -4,14 +4,14 @@ import {
   Route,
 } from "react-router-dom";
 import PDISelectProfessorList from "./ProfessorDataInput_SelectProfessorList.tsx";
-
-  console.log("I'm in the index")
+import PDISelectProfessorQualifications from "./ProfessorQualifications.tsx";
 
 export function ProfessorDataInputIndex() {
 
   return (
     <Routes>
       <Route path="" element={<PDISelectProfessorList />} />
+      <Route path="Qualifications" element={<PDISelectProfessorQualifications />} />
     </Routes>
   );
 
