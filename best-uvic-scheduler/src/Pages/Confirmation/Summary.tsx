@@ -8,11 +8,15 @@ const InsideDivStyle = styled.div`
   width: 55%;
   padding: 36px;
   border-radius: 8px;
+  height: 100vh;
+  min-height: 100vh;
   background-color: #fefefe;
 `;
 
 const OutsideDivStyle = styled.div`
   display: flex;
+  height: 100vh;
+  min-height: 100vh;
   justify-content: center;
   background-color: var(--primary-50);
   height: 100vh;
@@ -31,15 +35,22 @@ export function Summary() {
         <h4>Spring</h4>
 
         <CustomButtonGroupView {...{ Amount: "Double" }}>
-          <div align="right">
-            <CustomButtonView
-              {...{ Theme: "Primary" }}
-              customClickEvent={() => {}}
-            >
-              {" "}
-              SUBMIT{" "}
-            </CustomButtonView>
-          </div>
+          <CustomButtonView
+            {...{ Theme: "Secondary" }}
+            customClickEvent={() => {
+              //navigate(`/SelectProfessor`);
+            }}
+          >
+            {" "}
+            Back{" "}
+          </CustomButtonView>
+          <CustomButtonView
+            {...{ Theme: "Primary" }}
+            customClickEvent={() => {}}
+          >
+            {" "}
+            SUBMIT{" "}
+          </CustomButtonView>
         </CustomButtonGroupView>
       </InsideDivStyle>
     </OutsideDivStyle>
