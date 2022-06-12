@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 export interface CheckboxGroupProps {
-  checked: string;
+  checked: boolean;
   children: React.ReactNode;
 }
 
@@ -11,13 +11,14 @@ export interface CheckboxGroupViewProps {
 }
 
 export interface CheckboxProps {
-  value: string;
-  children: React.ReactNode;
+  onClick?: () => void;
+  checked: boolean;
 }
 
 export interface CheckboxViewProps {
+  onClick?: () => void;
   checked: boolean;
-  children: React.ReactNode;
+  setChecked: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function useCheckboxGroup(
@@ -29,8 +30,8 @@ function useCheckboxGroup(
 function useCheckbox(
   props: CheckboxProps
 ): Omit<CheckboxViewProps, "children"> {
-  const checked = props.value == "test" ? true : false;
-  return { checked };
+  const [checked, setChecked] = useState(props.checked);
+  return { onClick: props.onClick, setChecked, checked };
 }
 
 export function CheckboxGroupView(props: CheckboxGroupViewProps) {
@@ -47,7 +48,15 @@ const CheckboxDiv = styled.p<{ checked: boolean }>`
 `;
 
 export function CheckboxView(props: CheckboxViewProps) {
-  return <CheckboxDiv checked={props.checked}></CheckboxDiv>;
+  return (
+    <CheckboxDiv
+      onClick={() => {
+        props.setChecked(!props.checked);
+        props?.onClick();
+      }}
+      checked={props.checked}
+    ></CheckboxDiv>
+  );
 }
 
 const CheckboxGroup = (props: CheckboxGroupProps) => {
@@ -57,7 +66,7 @@ const CheckboxGroup = (props: CheckboxGroupProps) => {
 
 const Checkbox = (props: CheckboxProps) => {
   const viewProps = useCheckbox(props);
-  return <CheckboxView {...viewProps}>{props.children}</CheckboxView>;
+  return <CheckboxView {...viewProps}></CheckboxView>;
 };
 
 CheckboxGroup.Checkbox = Checkbox;

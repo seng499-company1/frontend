@@ -6,9 +6,21 @@ export default {
 };
 
 export const ActiveCheckbox = () => {
-  return <CheckboxView {...{ checked: true }}>X</CheckboxView>;
+  return (
+    <CheckboxView
+      {...{ checked: true, setChecked: () => console.log("clicked") }}
+    >
+      X
+    </CheckboxView>
+  );
 };
 
 export const InactiveCheckbox = () => {
-  return <CheckboxView {...{ checked: false }}>X</CheckboxView>;
+  return (
+    <CheckboxView
+      {...{ checked: false, setChecked: () => console.log("clicked") }}
+    >
+      X
+    </CheckboxView>
+  );
 };
