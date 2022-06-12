@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import CustomButtonView from "../../Components/button/button.tsx"
-import CustomButtonGroupView from "../../Components/button/buttongroup.tsx"
+import CustomButtonView from "../../Components/button/button.tsx";
+import CustomButtonGroupView from "../../Components/button/buttongroup.tsx";
 import ProfessorListDivView from "../../Components/ProfessorSearch/ProfessorList.tsx";
 import SearchBarView from "../../Components/SearchBar/Searchbar.tsx";
 import ProfessorListElementView from "../../Components/ProfessorSearch/ProfessorListElement.tsx";
@@ -24,13 +25,11 @@ const OutsideDivStyle = styled.div`
 export function PDISelectProfessorList() {
 
   const [isSelected, setSelected] = useState(0);
+  const navigate = useNavigate();
 
   //get data
   const ProfessorData = ProfessorListHelper.GetProfessorList();
   const Professors = ProfessorData.Professors;
-
-
-  console.log("Now i'm in the list")
 
   return (
     <OutsideDivStyle>
@@ -53,9 +52,10 @@ export function PDISelectProfessorList() {
         Disabled={isSelected === 0}
         customClickEvent={() => {
           if(isSelected === 0){
-            console.log("Please Select A Name")
+            console.log("Please Select A Name");
           }else{
-            console.log(isSelected.uuid)
+            console.log(isSelected.uuid);
+            navigate(`/SelectProfessor/Qualifications`);
           }
         }}> Confirm </CustomButtonView>
       </CustomButtonGroupView>
