@@ -61,7 +61,7 @@ function useProfessorTimetable(
 
   const initString = {};
   semesters.forEach((sem: string) => {
-    initCheckbox[sem] = "";
+    initString[sem] = "";
   });
 
   const semestersItems = semesters.map((sem: string) => {
@@ -69,6 +69,8 @@ function useProfessorTimetable(
   });
 
   const [aways, onAway] = useReducer(updateCheckbox, initCheckbox);
+
+  console.log("aways", aways);
 
   const [requestOffs, onRequestOff] = useReducer(updateCheckbox, initCheckbox);
 
@@ -82,8 +84,6 @@ function useProfessorTimetable(
     updateString,
     initString
   );
-
-  console.log(aways);
 
   return {
     profName,
@@ -165,7 +165,6 @@ const AbsenceTextarea = styled.textarea`
 `;
 
 export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
-  console.log(props);
   const {
     profName,
     semesters,
@@ -180,6 +179,8 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
     onRequestOff,
     onAbsenceReason,
   } = props;
+
+  console.log("in view", away);
   return (
     <OutsideDivStyle>
       <InsideDivStyle>

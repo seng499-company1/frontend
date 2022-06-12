@@ -30,7 +30,7 @@ function useCheckboxGroup(
 function useCheckbox(
   props: CheckboxProps
 ): Omit<CheckboxViewProps, "children"> {
-  const [checked, setChecked] = useState(props.checked);
+  const [checked, setChecked] = useState(props.checked ? true : false);
   return { onClick: props.onClick, setChecked, checked };
 }
 
@@ -42,7 +42,6 @@ const CheckboxDiv = styled.p<{ checked: boolean }>`
   border: 2px solid #000;
   padding: 10px 10px 10px;
   width: 10px;
-  length: 10px;
   ${(props) =>
     props.checked ? "background-color: grey" : "background-color: white"};
 `;
