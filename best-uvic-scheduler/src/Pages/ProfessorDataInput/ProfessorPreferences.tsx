@@ -32,7 +32,7 @@ const DropdownDivStyle = styled.div`
   flex-direction: column;
 `;
 
-export function PDISelectProfessorQualifications() {
+export function PDISelectProfessorPreferences() {
 
   //get data
   const CourseData = CourseListHelper.GetCourseList();
@@ -40,12 +40,13 @@ export function PDISelectProfessorQualifications() {
   const AmountOfCourses = Courses.length;
 
   //hooks
-  const [qualifications, setQualifications] = useState({});
+  const [preferences, setPreferences] = useState({});
   const navigate = useNavigate();
 
-  const QualificationItems = [
-    { value: "Not Qualified", label: "Not Qualified" },
-    { value: "Qualified", label: "Qualified" },
+  const PreferenceItems = [
+    { value: "Not Willing", label: "Not Willing" },
+    { value: "Willing", label: "Willing" },
+    { value: "Very Willing", label: "Very Willing" },
   ];
 
   return (
@@ -58,13 +59,12 @@ export function PDISelectProfessorQualifications() {
             <div>
               <h2> { Course.course_code } </h2>
               <p> <b>course description:</b> { Course.course_desceiption } </p>
-              <p> <b>qualifications needed:</b> { Course.course_qualifications }<b>{ Course.peng_req ? ", PENG is Reqiured" : "" }</b> </p>
             </div>
             <DropdownDivStyle>
               <Dropdown
-                dropdownItems= {QualificationItems}
+                dropdownItems= {PreferenceItems}
                 handleChange={(event) => {
-                  setQualifications( {...qualifications, [Course.course_code]: event.value } );
+                  setPreferences( {...preferences, [Course.course_code]: event.value } );
                 }}>Select</Dropdown>
             </DropdownDivStyle>
           </SelectDivStyle>
@@ -76,17 +76,16 @@ export function PDISelectProfessorQualifications() {
         {...{ Theme: "Secondary" }}
         customClickEvent={() => {
           console.log("Hello")
-          navigate(`/SelectProfessor`);
+          navigate(`/SelectProfessor/Qualifications`);
         }}> Back </CustomButtonView>
         <CustomButtonView
         {...{ Theme: "Primary" }}
-        Disabled={Object.keys(qualifications).length !== AmountOfCourses}
+        Disabled={Object.keys(preferences).length !== AmountOfCourses}
         customClickEvent={() => {
-          if(Object.keys(qualifications).length !== AmountOfCourses){
-            console.log(qualifications);
+          if(Object.keys(preferences).length !== AmountOfCourses){
+            console.log(preferences);
           }else{
-            console.log(qualifications);
-            navigate(`/SelectProfessor/Preferences`);
+            console.log(preferences);
           }
         }}> Confirm </CustomButtonView>
       </CustomButtonGroupView>
@@ -95,4 +94,4 @@ export function PDISelectProfessorQualifications() {
     );
 }
 
-export default PDISelectProfessorQualifications;
+export default PDISelectProfessorPreferences;
