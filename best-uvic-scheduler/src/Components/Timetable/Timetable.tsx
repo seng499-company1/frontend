@@ -75,7 +75,7 @@ export interface TimetableProps {}
 const TableDiv = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: 150px repeat(5, 1fr);
+  grid-template-columns: 150px repeat(5, minmax(0, 1fr));
   border-bottom: 1px solid var(--border);
 `;
 
@@ -93,6 +93,9 @@ const DayHeaderP = styled.p`
   padding: var(--space-2x-small) var(--space-med);
   box-sizing: border-box;
   text-align: center;
+  position: sticky;
+  top: 0;
+  background-color: #fff;
 `;
 
 const CheckboxLabelP = styled.p`
@@ -154,7 +157,7 @@ export function TimetableView(props: TimetableViewProps) {
 
   return (
     <TableDiv>
-      <div> </div>
+      <div style={{ position: "sticky", top: "0px" }}> </div>
       {weekdays.map((day: string) => {
         return <DayHeaderP>{day}</DayHeaderP>;
       })}

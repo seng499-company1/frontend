@@ -1,4 +1,4 @@
-import { useReducer, useState } from "react";
+import { ChangeEvent, ChangeEventHandler, useReducer, useState } from "react";
 import styled from "styled-components";
 import CheckboxGroup, {
   CheckboxGroupView,
@@ -20,7 +20,12 @@ export interface ProfessorTimetableViewProps {
   onMaxCoursesThisYear: React.Dispatch<React.SetStateAction<string>>;
   semesters: Array<{ value: string; label: string }>;
   selectedSemester: string;
-  onSelectedSemester: React.Dispatch<React.SetStateAction<string>>;
+  onSelectedSemester: React.Dispatch<
+    React.SetStateAction<{
+      value: string;
+      label: string;
+    }>
+  >;
   away: boolean;
   onAway: React.Dispatch<string>;
   requestOff: boolean;
@@ -59,11 +64,17 @@ function useProfessorTimetable(
     initCheckbox[sem] = "";
   });
 
+  const semestersItems = semesters.map((sem: string) => {
+    return { value: sem, label: sem };
+  });
+
   const [aways, onAway] = useReducer(updateCheckbox, initCheckbox);
 
   const [requestOffs, onRequestOff] = useReducer(updateCheckbox, initCheckbox);
 
-  const [selectedSemester, onSelectedSemester] = useState(semesters[0] || "");
+  const [selectedSemester, onSelectedSemester] = useState(
+    semestersItems[0] || { label: "", value: "" }
+  );
 
   const [maxCoursesThisYear, onMaxCoursesThisYear] = useState("");
 
@@ -72,17 +83,15 @@ function useProfessorTimetable(
     initString
   );
 
-  const semestersItems = semesters.map((sem: string) => {
-    return { value: sem, label: sem };
-  });
+  console.log(aways);
 
   return {
     profName,
     semesters: semestersItems,
-    selectedSemester,
-    away: aways[selectedSemester],
-    requestOff: requestOffs[selectedSemester],
-    absenceReason: absenceReasons[selectedSemester],
+    selectedSemester: selectedSemester.label,
+    away: aways[selectedSemester.label],
+    requestOff: requestOffs[selectedSemester.label],
+    absenceReason: absenceReasons[selectedSemester.label],
     maxCoursesThisYear,
     onSelectedSemester,
     onMaxCoursesThisYear,
@@ -94,19 +103,69 @@ function useProfessorTimetable(
 
 const MaxCoursesDiv = styled.div`
   display: flex;
+  gap: var(--space-large);
+  justify-content: center;
 `;
 
 const AbsenceDiv = styled.div`
   display: flex;
+  gap: var(--space-large);
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const AbsenceItemDiv = styled.div`
   display: flex;
+  gap: var(--space-large);
+  align-items: center;
 `;
 
-const FreeformDiv = styled.div``;
+const FreeformDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-med);
+`;
+
+const LayoutDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2x-large);
+`;
+
+const PageTitleH1 = styled.h1`
+  margin: 0;
+  text-align: center;
+`;
+
+const MaxCoursesH3 = styled.h3`
+  font-weight: 400;
+  margin: 0;
+`;
+
+const AbsenceLabelP = styled.p`
+  margin: 0;
+`;
+
+const MaxCoursesInput = styled.input`
+  font-size: var(--font-size-h3);
+  border: 1px solid var(--border);
+  max-width: 40px;
+  border-radius: 4px;
+  text-align: center;
+  padding: var(--space-3x-small);
+
+  &:focus-visible {
+    outline-color: var(--primary);
+  }
+`;
+
+const AbsenceTextarea = styled.textarea`
+  border: 1px solid var(--border);
+  border-radius: 4px;
+`;
 
 export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
+  console.log(props);
   const {
     profName,
     semesters,
@@ -124,35 +183,55 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
   return (
     <OutsideDivStyle>
       <InsideDivStyle>
-        <h1>Please Enter Availibility For {profName}</h1>
-        <MaxCoursesDiv>
-          <h3>Max number of courses you are willing to teach This year </h3>
-          <input type="text"></input>
-        </MaxCoursesDiv>
-        <Dropdown
-          {...{ dropdownItems: semesters, handleChange: onSelectedSemester }}
-        />
-        <Timetable />
-        <AbsenceDiv>
-          <AbsenceItemDiv>
-            <h3>I am away for this semester </h3>
-            <CheckboxGroup.Checkbox
-              checked={away}
-              onClick={() => onAway(selectedSemester)}
+        <LayoutDiv>
+          <PageTitleH1>Please Enter Availibility For {profName}</PageTitleH1>
+          <MaxCoursesDiv>
+            <MaxCoursesH3>
+              Max number of courses you are willing to teach this year{" "}
+            </MaxCoursesH3>
+            <MaxCoursesInput
+              type="number"
+              value={maxCoursesThisYear}
+              onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                onMaxCoursesThisYear(event.target.value)
+              }
             />
-          </AbsenceItemDiv>
-          <AbsenceItemDiv>
-            <h3>I would like away this semester off </h3>
-            <CheckboxGroup.Checkbox
-              checked={requestOff}
-              onClick={() => onRequestOff(selectedSemester)}
+          </MaxCoursesDiv>
+          <Dropdown
+            {...{ dropdownItems: semesters, handleChange: onSelectedSemester }}
+          />
+          <Timetable />
+          <AbsenceDiv>
+            <AbsenceItemDiv>
+              <AbsenceLabelP>I am away for this semester </AbsenceLabelP>
+              <CheckboxGroup.Checkbox
+                checked={away}
+                onClick={() => onAway(selectedSemester)}
+              />
+            </AbsenceItemDiv>
+            <AbsenceItemDiv>
+              <AbsenceLabelP>
+                I would like away this semester off{" "}
+              </AbsenceLabelP>
+              <CheckboxGroup.Checkbox
+                checked={requestOff}
+                onClick={() => onRequestOff(selectedSemester)}
+              />
+            </AbsenceItemDiv>
+          </AbsenceDiv>
+          <FreeformDiv>
+            <AbsenceLabelP>Reason for absence:</AbsenceLabelP>
+            <AbsenceTextarea
+              value={absenceReason}
+              onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+                onAbsenceReason({
+                  semester: selectedSemester,
+                  text: event.target.value,
+                })
+              }
             />
-          </AbsenceItemDiv>
-        </AbsenceDiv>
-        <FreeformDiv>
-          <h3>Reason for absence:</h3>
-          <textarea />
-        </FreeformDiv>
+          </FreeformDiv>
+        </LayoutDiv>
       </InsideDivStyle>
     </OutsideDivStyle>
   );

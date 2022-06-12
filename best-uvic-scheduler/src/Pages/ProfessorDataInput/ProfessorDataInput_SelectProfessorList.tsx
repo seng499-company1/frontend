@@ -18,7 +18,8 @@ export const OutsideDivStyle = styled.div`
   display: flex;
   justify-content: center;
   background-color: var(--primary-50);
-  height: 100vh;
+  min-height: 100vh;
+  padding: var(--space-2x-large) 0;
 `;
 
 export function PDISelectProfessorList() {

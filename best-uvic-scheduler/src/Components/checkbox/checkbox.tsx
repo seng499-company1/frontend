@@ -42,7 +42,7 @@ const CheckboxDiv = styled.p<{ checked: boolean }>`
   border: 2px solid #000;
   padding: 10px 10px 10px;
   width: 10px;
-  legth: 10px;
+  length: 10px;
   ${(props) =>
     props.checked ? "background-color: grey" : "background-color: white"};
 `;

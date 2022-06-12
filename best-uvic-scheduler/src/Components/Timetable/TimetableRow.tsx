@@ -26,10 +26,9 @@ const CellDiv = styled.div<{ highlighted: boolean }>`
   width: 100%;
   border: 1px solid var(--border);
   border-bottom: none;
-
   min-width: 20px;
-
   background-color: white;
+  cursor: pointer;
 
   &:hover {
     background-color: var(--primary-100);
