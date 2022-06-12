@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { QualificationsContext } from "./index.tsx";
 import CustomButtonView from "../../Components/button/button.tsx";
 import CustomButtonGroupView from "../../Components/button/buttongroup.tsx";
 import * as CourseListHelper from "../../Util/CourseListHelper.tsx";
@@ -40,7 +41,7 @@ export function PDISelectProfessorQualifications() {
   const AmountOfCourses = Courses.length;
 
   //hooks
-  const [qualifications, setQualifications] = useState({});
+  const { qualifications, setQualifications } = useContext(QualificationsContext);
   const navigate = useNavigate();
 
   const QualificationItems = [
@@ -53,6 +54,7 @@ export function PDISelectProfessorQualifications() {
       <InsideDivStyle>
       {
       Courses.map(function(Course, index) {
+        let name = Course.course_code
         return (
           <SelectDivStyle key={index}>
             <div>
@@ -62,7 +64,8 @@ export function PDISelectProfessorQualifications() {
             </div>
             <DropdownDivStyle>
               <Dropdown
-                dropdownItems= {QualificationItems}
+                startingValue={qualifications.hasOwnProperty(name) ? { value: qualifications[name], label: qualifications[name] } : null }
+                dropdownItems={QualificationItems}
                 handleChange={(event) => {
                   setQualifications( {...qualifications, [Course.course_code]: event.value } );
                 }}>Select</Dropdown>
@@ -75,7 +78,6 @@ export function PDISelectProfessorQualifications() {
         <CustomButtonView
         {...{ Theme: "Secondary" }}
         customClickEvent={() => {
-          console.log("Hello")
           navigate(`/SelectProfessor`);
         }}> Back </CustomButtonView>
         <CustomButtonView

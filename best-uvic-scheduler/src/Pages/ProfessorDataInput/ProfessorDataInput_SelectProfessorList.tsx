@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { ProfessorContext } from "./index.tsx";
 import CustomButtonView from "../../Components/button/button.tsx";
 import CustomButtonGroupView from "../../Components/button/buttongroup.tsx";
 import ProfessorListDivView from "../../Components/ProfessorSearch/ProfessorList.tsx";
@@ -24,7 +25,7 @@ const OutsideDivStyle = styled.div`
 
 export function PDISelectProfessorList() {
 
-  const [isSelected, setSelected] = useState(0);
+  const { selectedProfessor, setProfessor } = useContext(ProfessorContext);
   const navigate = useNavigate();
 
   //get data
@@ -40,21 +41,21 @@ export function PDISelectProfessorList() {
           Professors.map(function(Professor) {
             return <ProfessorListElementView
                   key={Professor.uuid}
-                  Selected={isSelected === Professor}
+                  Selected={selectedProfessor === Professor}
                   customClickEvent={() => {
-                    setSelected(Professor)
+                    setProfessor(Professor)
                   }}> {Professor.first_name} {Professor.last_name} </ProfessorListElementView>
         })}
       </ProfessorListDivView>
       <CustomButtonGroupView {...{ Amount: "Progession" }}>
         <CustomButtonView
         {...{ Theme: "Primary" }}
-        Disabled={isSelected === 0}
+        Disabled={selectedProfessor === 0}
         customClickEvent={() => {
-          if(isSelected === 0){
+          if(selectedProfessor === 0){
             console.log("Please Select A Name");
           }else{
-            console.log(isSelected.uuid);
+            console.log(selectedProfessor.uuid);
             navigate(`/SelectProfessor/Qualifications`);
           }
         }}> Confirm </CustomButtonView>

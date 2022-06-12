@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { PreferencesContext } from "./index.tsx";
 import CustomButtonView from "../../Components/button/button.tsx";
 import CustomButtonGroupView from "../../Components/button/buttongroup.tsx";
 import * as CourseListHelper from "../../Util/CourseListHelper.tsx";
@@ -40,7 +41,7 @@ export function PDISelectProfessorPreferences() {
   const AmountOfCourses = Courses.length;
 
   //hooks
-  const [preferences, setPreferences] = useState({});
+  const { preferences, setPreferences } = useContext(PreferencesContext);
   const navigate = useNavigate();
 
   const PreferenceItems = [
@@ -54,6 +55,7 @@ export function PDISelectProfessorPreferences() {
       <InsideDivStyle>
       {
       Courses.map(function(Course, index) {
+        let name = Course.course_code
         return (
           <SelectDivStyle key={index}>
             <div>
@@ -62,6 +64,7 @@ export function PDISelectProfessorPreferences() {
             </div>
             <DropdownDivStyle>
               <Dropdown
+                startingValue={preferences.hasOwnProperty(name) ? { value: preferences[name], label: preferences[name] } : null }
                 dropdownItems= {PreferenceItems}
                 handleChange={(event) => {
                   setPreferences( {...preferences, [Course.course_code]: event.value } );
