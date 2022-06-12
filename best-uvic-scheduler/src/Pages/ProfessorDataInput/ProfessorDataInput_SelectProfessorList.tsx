@@ -31,6 +31,9 @@ export function PDISelectProfessorList() {
   const ProfessorData = ProfessorListHelper.GetProfessorList();
   const Professors = ProfessorData.Professors;
 
+
+  console.log("Now i'm in the list")
+        
   return (
     <OutsideDivStyle>
       <InsideDivStyle>
