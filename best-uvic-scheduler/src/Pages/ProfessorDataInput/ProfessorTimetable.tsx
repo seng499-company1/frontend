@@ -1,21 +1,20 @@
-import React from "react";
-import { ChangeEvent, ChangeEventHandler, useReducer, useState } from "react";
+import React, { useContext } from "react";
+import { ChangeEvent, useReducer, useState } from "react";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import CustomButtonView from "../../Components/button/button";
-import CustomButtonGroupView from "../../Components/button/buttongroup";
-import CheckboxGroup, {
-  CheckboxGroupView,
-} from "../../Components/checkbox/checkbox";
-import Dropdown from "../../Components/dropdown/dropdown";
-import { Timetable } from "../../Components/Timetable/Timetable";
+import CustomButtonView from "../../Components/button/button.tsx";
+import CustomButtonGroupView from "../../Components/button/buttongroup.tsx";
+import CheckboxGroup from "../../Components/checkbox/checkbox.tsx";
+import Dropdown from "../../Components/dropdown/dropdown.tsx";
+import { Timetable } from "../../Components/Timetable/Timetable.tsx";
+import { ProfessorContext } from "../ProfessorDataInput/index.tsx";
 import {
   OutsideDivStyle,
   InsideDivStyle,
-} from "../ProfessorDataInput/ProfessorDataInput_SelectProfessorList";
+} from "../ProfessorDataInput/ProfessorDataInput_SelectProfessorList.tsx";
 
 export interface ProfessorTimetableProps {
   semesters: Array<string>;
-  profName: string;
 }
 
 export interface ProfessorTimetableViewProps {
@@ -38,7 +37,8 @@ export interface ProfessorTimetableViewProps {
     semester: string;
     text: string;
   }>;
-  profName: string;
+  navigate: NavigateFunction;
+  selectedProfessor: any;
 }
 
 function updateCheckbox(state: Object, semester: string) {
@@ -72,7 +72,7 @@ function initString(semesters: string[]) {
 }
 
 function useProfessorTimetable(props: ProfessorTimetableProps) {
-  const { semesters, profName } = props;
+  const { semesters } = props;
 
   const semestersItems = semesters.map((sem: string) => {
     return { value: sem, label: sem };
@@ -103,8 +103,11 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
 
   const [prefDays, setPrefDays] = useState({});
 
+  const navigate = useNavigate();
+
+  const { selectedProfessor } = useContext(ProfessorContext);
+
   return {
-    profName,
     semesters: semestersItems,
     selectedSemester: selectedSemester.label,
     away: aways[selectedSemester.label],
@@ -120,6 +123,8 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
     setTimetables,
     prefDays,
     setPrefDays,
+    navigate,
+    selectedProfessor,
   };
 }
 
@@ -189,7 +194,7 @@ const AbsenceTextarea = styled.textarea`
 
 export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
   const {
-    profName,
+    selectedProfessor,
     semesters,
     selectedSemester,
     away,
@@ -201,13 +206,17 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
     onAway,
     onRequestOff,
     onAbsenceReason,
+    navigate,
   } = props;
 
   return (
     <OutsideDivStyle>
       <InsideDivStyle>
         <LayoutDiv>
-          <PageTitleH1>Please Enter Availibility For {profName}</PageTitleH1>
+          <PageTitleH1>
+            Please Enter Availibility For {selectedProfessor.first_name}{" "}
+            {selectedProfessor.last_name}
+          </PageTitleH1>
           <MaxCoursesDiv>
             <MaxCoursesH3>
               Max number of courses you are willing to teach this year{" "}
@@ -269,13 +278,19 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
         >
           <CustomButtonView
             {...{ Theme: "Secondary" }}
-            customClickEvent={() => console.log("back")}
+            customClickEvent={() => {
+              console.log("back");
+              navigate(`/SelectProfessor/Preferences`);
+            }}
           >
             Back
           </CustomButtonView>
           <CustomButtonView
             {...{ Theme: "Primary" }}
-            customClickEvent={() => console.log("next")}
+            customClickEvent={() => {
+              console.log("next");
+              navigate(`/SelectProfessor/Summary`);
+            }}
           >
             Next
           </CustomButtonView>

@@ -34,14 +34,14 @@ const DropdownDivStyle = styled.div`
 `;
 
 const Header = styled.h1`
-    text-align: center;
-  `;
-  const Header2 = styled.h4`
-    text-align: center;
-    font-style: italic;
-    padding-left: 100px;
-    padding-right: 100px;
-  `;
+  text-align: center;
+`;
+const Header2 = styled.h4`
+  text-align: center;
+  font-style: italic;
+  padding-left: 100px;
+  padding-right: 100px;
+`;
 
 export function PDISelectProfessorPreferences() {
   //get data
@@ -62,11 +62,11 @@ export function PDISelectProfessorPreferences() {
   return (
     <OutsideDivStyle>
       <InsideDivStyle>
-      <Header>Please Enter Class Preferences</Header>
-      <Header2>
-        *Be aware that classes that you have expressed you are not qualified
-        to teach have been removed from the list
-      </Header2>
+        <Header>Please Enter Class Preferences</Header>
+        <Header2>
+          *Be aware that classes that you have expressed you are not qualified
+          to teach have been removed from the list
+        </Header2>
         {Courses.map(function (Course, index) {
           let name = Course.course_code;
           return (
@@ -118,7 +118,7 @@ export function PDISelectProfessorPreferences() {
                 console.log(preferences);
               } else {
                 console.log(preferences);
-                navigate(`/SelectProfessor/Summary`);
+                navigate(`/SelectProfessor/TimeAvail`);
               }
             }}
           >
