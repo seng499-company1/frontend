@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import CustomButtonView from "../../Components/button/button.tsx"
-import CustomButtonGroupView from "../../Components/button/buttongroup.tsx"
+import { ProfessorContext } from "./index.tsx";
+import CustomButtonView from "../../Components/button/button.tsx";
+import CustomButtonGroupView from "../../Components/button/buttongroup.tsx";
 import ProfessorListDivView from "../../Components/ProfessorSearch/ProfessorList.tsx";
 import SearchBarView from "../../Components/SearchBar/Searchbar.tsx";
 import ProfessorListElementView from "../../Components/ProfessorSearch/ProfessorListElement.tsx";
@@ -21,15 +23,18 @@ const OutsideDivStyle = styled.div`
   height: 100vh;
 `;
 
-
 export function PDISelectProfessorList() {
 
-  const [isSelected, setSelected] = useState(0);
+  const { selectedProfessor, setProfessor } = useContext(ProfessorContext);
+  const navigate = useNavigate();
 
   //get data
   const ProfessorData = ProfessorListHelper.GetProfessorList();
   const Professors = ProfessorData.Professors;
 
+
+  console.log("Now i'm in the list")
+        
   return (
     <OutsideDivStyle>
       <InsideDivStyle>
@@ -39,21 +44,22 @@ export function PDISelectProfessorList() {
           Professors.map(function(Professor) {
             return <ProfessorListElementView
                   key={Professor.uuid}
-                  Selected={isSelected === Professor}
+                  Selected={selectedProfessor === Professor}
                   customClickEvent={() => {
-                    setSelected(Professor)
+                    setProfessor(Professor)
                   }}> {Professor.first_name} {Professor.last_name} </ProfessorListElementView>
         })}
       </ProfessorListDivView>
       <CustomButtonGroupView {...{ Amount: "Progession" }}>
         <CustomButtonView
         {...{ Theme: "Primary" }}
-        Disabled={isSelected === 0}
+        Disabled={selectedProfessor === 0}
         customClickEvent={() => {
-          if(isSelected === 0){
-            console.log("Please Select A Name")
+          if(selectedProfessor === 0){
+            console.log("Please Select A Name");
           }else{
-            console.log(isSelected.uuid)
+            console.log(selectedProfessor.uuid);
+            navigate(`/SelectProfessor/Qualifications`);
           }
         }}> Confirm </CustomButtonView>
       </CustomButtonGroupView>
