@@ -1,6 +1,8 @@
 import React from "react";
 import { ChangeEvent, ChangeEventHandler, useReducer, useState } from "react";
 import styled from "styled-components";
+import CustomButtonView from "../../Components/button/button";
+import CustomButtonGroupView from "../../Components/button/buttongroup";
 import CheckboxGroup, {
   CheckboxGroupView,
 } from "../../Components/checkbox/checkbox";
@@ -150,6 +152,7 @@ const LayoutDiv = styled.div`
   display: flex;
   flex-direction: column;
   gap: var(--space-2x-large);
+  padding: 0 var(--space-2x-large) var(--space-2x-large);
 `;
 
 const PageTitleH1 = styled.h1`
@@ -260,6 +263,23 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
             />
           </FreeformDiv>
         </LayoutDiv>
+        <CustomButtonGroupView
+          style={{ padding: "var(--space-small) 0" }}
+          {...{ Amount: "Double" }}
+        >
+          <CustomButtonView
+            {...{ Theme: "Secondary" }}
+            customClickEvent={() => console.log("back")}
+          >
+            Back
+          </CustomButtonView>
+          <CustomButtonView
+            {...{ Theme: "Primary" }}
+            customClickEvent={() => console.log("next")}
+          >
+            Next
+          </CustomButtonView>
+        </CustomButtonGroupView>
       </InsideDivStyle>
     </OutsideDivStyle>
   );
