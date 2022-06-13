@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 export interface CheckboxGroupProps {
@@ -31,6 +31,11 @@ function useCheckbox(
   props: CheckboxProps
 ): Omit<CheckboxViewProps, "children"> {
   const [checked, setChecked] = useState(props.checked ? true : false);
+
+  useEffect(() => {
+    setChecked(props.checked);
+  }, [props.checked]);
+
   return { onClick: props.onClick, setChecked, checked };
 }
 
@@ -64,8 +69,7 @@ const CheckboxGroup = (props: CheckboxGroupProps) => {
 };
 
 const Checkbox = (props: CheckboxProps) => {
-  const viewProps = useCheckbox(props);
-  return <CheckboxView {...viewProps}></CheckboxView>;
+  return <CheckboxView {...useCheckbox(props)}></CheckboxView>;
 };
 
 CheckboxGroup.Checkbox = Checkbox;
