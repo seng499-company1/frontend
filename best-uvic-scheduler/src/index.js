@@ -5,13 +5,14 @@ import "./index.css";
 import App from "./App";
 import ProfessorDataInputIndex from "./Pages/ProfessorDataInput/index.tsx";
 import reportWebVitals from "./reportWebVitals";
+import LoginPage from "./Pages/LoginPage.tsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   //<React.StrictMode> <--- commented out due to bug with double render
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<App />} />
+      <Route path="/" element={<LoginPage />} />
       <Route path="/SelectProfessor/*" element={<ProfessorDataInputIndex />} />
     </Routes>
   </BrowserRouter>
