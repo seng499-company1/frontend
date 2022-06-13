@@ -22,11 +22,13 @@ type dropdownItem = {
 export interface DropdownProps {
   dropdownItems: dropdownItem[];
   handleChange: any;
+  startingValue: string;
 }
 
 function Dropdown(props: DropdownProps) {
   return (
     <Select
+      defaultValue={props.startingValue}
       options={props.dropdownItems}
       onChange={props.handleChange}
       styles={colourStyles}

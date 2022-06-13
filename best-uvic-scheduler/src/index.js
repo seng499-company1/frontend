@@ -7,19 +7,19 @@ import {
 } from "react-router-dom";
 import './index.css';
 import App from './App';
-import PDISelectProfessorList from "./Pages/ProfessorDataInput/ProfessorDataInput_SelectProfessorList.tsx"
+import ProfessorDataInputIndex from "./Pages/ProfessorDataInput/index.tsx";
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  //<React.StrictMode> <--- commented out due to bug with double render
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<App />} />
-      <Route path="/SelectProfessor" element={<PDISelectProfessorList />} />
+      <Route path="/SelectProfessor/*" element={<ProfessorDataInputIndex />} />
     </Routes>
   </BrowserRouter>
-  </React.StrictMode>
+  //</React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
