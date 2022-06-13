@@ -171,9 +171,11 @@ function useTimetable(props: TimetableProps): TimetableViewProps {
 
   useEffect(() => {
     setTimetables({ ...(timetables || {}), [semester]: timeslots });
-    setPrefDays({ ...(prefDays || {}), [semester]: fullDays });
-    console.log("use effect timetables", timetables);
   }, [timeslots]);
+
+  useEffect(() => {
+    setPrefDays({ ...(prefDays || {}), [semester]: fullDays });
+  }, [fullDays]);
 
   useEffect(() => {
     if (timetables[semester] !== undefined) {
