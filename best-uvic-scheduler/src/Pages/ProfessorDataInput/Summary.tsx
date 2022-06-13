@@ -33,13 +33,24 @@ const OutsideDivStyle = styled.div`
 const SelectDivStyle = styled.div`
   display: flex;
   justify-content: space-between;
-  padding-bottom: 25px;
+  padding-bottom: 0px;
+  padding-right: 100px;
 `;
 
-const DropdownDivStyle = styled.div`
+const ResponseDiv = styled.div`
+  text-indent: -40px;
   display: flex;
   justify-content: center;
   flex-direction: column;
+`;
+
+const Header = styled.h1`
+  text-align: center;
+`;
+
+const Header4 = styled.h4`
+  text-align: left;
+  text-indent: 40px;
 `;
 
 export function Summary() {
@@ -59,32 +70,31 @@ export function Summary() {
   return (
     <OutsideDivStyle>
       <InsideDivStyle>
-        <h1 text-align="center">Summary</h1>
+        <Header>Summary</Header>
 
         <h2>Classes</h2>
         {Courses.map(function (Course, index) {
           let name = Course.course_code;
           return (
             <SelectDivStyle key={index}>
-              <div>
-                <h4 text-indent="50px">
-                  {" "}
-                  {console.log(Course.course_code)}
-                  {Course.course_code}{" "}
-                </h4>
-                <p> </p>
-              </div>
+              <Header4>
+                {console.log(Course.course_code)}
+                {Course.course_code}{" "}
+              </Header4>
 
-              <DropdownDivStyle>{preferences[name]}</DropdownDivStyle>
-              <DropdownDivStyle>{qualifications[name]}</DropdownDivStyle>
+              <ResponseDiv>
+                {qualifications[name]}
+                &emsp;&emsp;
+                {preferences[name]}
+              </ResponseDiv>
             </SelectDivStyle>
           );
         })}
 
         <h2>Availibility</h2>
-        <h4>Summer</h4>
-        <h4>Fall</h4>
-        <h4>Spring</h4>
+        <Header4>Summer</Header4>
+        <Header4>Fall</Header4>
+        <Header4>Spring</Header4>
 
         <CustomButtonGroupView {...{ Amount: "Double" }}>
           <CustomButtonView
