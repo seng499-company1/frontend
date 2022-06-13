@@ -24,6 +24,10 @@ export const OutsideDivStyle = styled.div`
   padding: var(--space-2x-large) 0;
 `;
 
+const Header = styled.h1`
+  text-align: center;
+`;
+
 export function PDISelectProfessorList() {
   const { selectedProfessor, setProfessor } = useContext(ProfessorContext);
   const navigate = useNavigate();
@@ -34,45 +38,39 @@ export function PDISelectProfessorList() {
 
   console.log("Now i'm in the list");
 
+  console.log("Now i'm in the list")
+
   return (
     <OutsideDivStyle>
       <InsideDivStyle>
-        <ProfessorListDivView>
-          <SearchBarView {...{ InList: true }} />
-          {Professors.map(function (Professor) {
-            return (
-              <ProfessorListElementView
-                key={Professor.uuid}
-                Selected={selectedProfessor === Professor}
-                customClickEvent={() => {
-                  setProfessor(Professor);
-                }}
-              >
-                {" "}
-                {Professor.first_name} {Professor.last_name}{" "}
-              </ProfessorListElementView>
-            );
-          })}
-        </ProfessorListDivView>
-        <CustomButtonGroupView {...{ Amount: "Progession" }}>
-          <CustomButtonView
-            {...{ Theme: "Primary" }}
-            Disabled={selectedProfessor === 0}
-            customClickEvent={() => {
-              if (selectedProfessor === 0) {
-                console.log("Please Select A Name");
-              } else {
-                console.log(selectedProfessor.uuid);
-                navigate(`/SelectProfessor/Qualifications`);
-              }
-            }}
-          >
-            {" "}
-            Confirm{" "}
-          </CustomButtonView>
-        </CustomButtonGroupView>
-      </InsideDivStyle>
-    </OutsideDivStyle>
+      <Header>Please Select your Name From The List Below</Header>
+      <ProfessorListDivView>
+        <SearchBarView {...{ InList: true }}/>
+        {
+          Professors.map(function(Professor) {
+            return <ProfessorListElementView
+                  key={Professor.uuid}
+                  Selected={selectedProfessor === Professor}
+                  customClickEvent={() => {
+                    setProfessor(Professor)
+                  }}> {Professor.first_name} {Professor.last_name} </ProfessorListElementView>
+        })}
+      </ProfessorListDivView>
+      <CustomButtonGroupView {...{ Amount: "Progession" }}>
+        <CustomButtonView
+        {...{ Theme: "Primary" }}
+        Disabled={selectedProfessor === 0}
+        customClickEvent={() => {
+          if(selectedProfessor === 0){
+            console.log("Please Select A Name");
+          }else{
+            console.log(selectedProfessor.uuid);
+            navigate(`/SelectProfessor/Qualifications`);
+          }
+        }}> Confirm </CustomButtonView>
+      </CustomButtonGroupView>
+    </InsideDivStyle>
+  </OutsideDivStyle>
   );
 }
 
