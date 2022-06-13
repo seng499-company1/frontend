@@ -23,6 +23,10 @@ const OutsideDivStyle = styled.div`
   height: 100vh;
 `;
 
+const Header = styled.h1`
+  text-align: center;
+`;
+
 export function PDISelectProfessorList() {
 
   const { selectedProfessor, setProfessor } = useContext(ProfessorContext);
@@ -34,10 +38,11 @@ export function PDISelectProfessorList() {
 
 
   console.log("Now i'm in the list")
-        
+
   return (
     <OutsideDivStyle>
       <InsideDivStyle>
+      <Header>Please Select your Name From The List Below</Header>
       <ProfessorListDivView>
         <SearchBarView {...{ InList: true }}/>
         {
