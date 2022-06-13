@@ -1,5 +1,5 @@
 import { number } from "prop-types";
-import React, { useReducer, useState } from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import { TimetableRow } from "./TimetableRow";
 import CheckboxGroup, { CheckboxView } from "../checkbox/checkbox";
 import styled from "styled-components";
@@ -31,14 +31,11 @@ export interface TimetableViewProps {
   weekdays: Array<string>;
   slotTimes: Array<string>;
   fullDays: Array<boolean>;
-  timeslots: Array<Array<boolean>>;
+  timeSlotState: Array<Array<boolean>>;
   onFullDays: React.Dispatch<{
     dayIdx: number;
   }>;
-  onTimeslots: React.Dispatch<{
-    dayIdx: number;
-    slotIdx: number;
-  }>;
+  onTimeslots: React.Dispatch<updateTimeslotsAction>;
 }
 
 const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
@@ -70,7 +67,17 @@ const slotTimes = [
   "8:00",
 ];
 
-export interface TimetableProps {}
+export interface TimetableProps {
+  semester: string;
+  timetableContext: React.Context<{
+    timetables: {};
+    setTimetables: (_timetables: {}) => void;
+  }>;
+  prefDayContext: React.Context<{
+    prefDays: {};
+    setPrefDays: (_prefDays: {}) => void;
+  }>;
+}
 
 const TableDiv = styled.div`
   width: 100%;
@@ -105,55 +112,101 @@ const CheckboxLabelP = styled.p`
   margin: auto;
 `;
 
-function updateFullDays(state: Array<boolean>, action: { dayIdx: number }) {
-  const newState = state.map((day: boolean, idx: number) => {
-    return idx === action.dayIdx ? !day : day;
-  });
-  return newState;
+const initTimeslots = Array(24)
+  .fill(false)
+  .map(() => new Array(5).fill(false));
+
+const initFullDays = Array(5).fill(false);
+
+export type updateFullDaysAction =
+  | { dayIdx: number; fullState?: never }
+  | { dayIdx?: never; fullState: Array<boolean> };
+
+function updateFullDays(state: Array<boolean>, action: updateFullDaysAction) {
+  if (action.fullState) {
+    return action.fullState;
+  } else {
+    const newState = state.map((day: boolean, idx: number) => {
+      return idx === action.dayIdx ? !day : day;
+    });
+    return newState;
+  }
 }
+
+export type updateTimeslotsAction =
+  | { dayIdx: number; slotIdx: number; fullState?: never }
+  | { dayIdx?: never; slotIdx?: never; fullState: Array<Array<boolean>> };
 
 function updateTimeslots(
   state: Array<Array<boolean>>,
-  action: { dayIdx: number; slotIdx: number }
+  action: updateTimeslotsAction
 ) {
-  const newState = state.map((slot: Array<boolean>, slotIdx: number) => {
-    if (slotIdx !== action.slotIdx) {
-      return slot;
-    } else {
-      const newSlotState = slot.map((day: boolean, idx: number) => {
-        return idx === action.dayIdx ? !day : day;
-      });
-      return newSlotState;
-    }
-  });
+  if (action.fullState) {
+    return action.fullState;
+  } else {
+    const newState = state.map((slot: Array<boolean>, slotIdx: number) => {
+      if (slotIdx !== action.slotIdx) {
+        return slot;
+      } else {
+        const newSlotState = slot.map((day: boolean, idx: number) => {
+          return idx === action.dayIdx ? !day : day;
+        });
+        return newSlotState;
+      }
+    });
 
-  return newState;
+    return newState;
+  }
 }
 
 function useTimetable(props: TimetableProps): TimetableViewProps {
-  const initTimeslots = Array(24)
-    .fill(false)
-    .map(() => new Array(5).fill(false));
-
-  const initFullDays = Array(5).fill(false);
+  const { semester, timetableContext, prefDayContext } = props;
 
   const [fullDays, onFullDays] = useReducer(updateFullDays, initFullDays);
 
   const [timeslots, onTimeslots] = useReducer(updateTimeslots, initTimeslots);
+
+  const { timetables, setTimetables } = useContext(timetableContext);
+  const { prefDays, setPrefDays } = useContext(prefDayContext);
+
+  useEffect(() => {
+    setTimetables({ ...(timetables || {}), [semester]: timeslots });
+    setPrefDays({ ...(prefDays || {}), [semester]: fullDays });
+    console.log("use effect timetables", timetables);
+  }, [timeslots]);
+
+  useEffect(() => {
+    if (timetables[semester] !== undefined) {
+      onTimeslots({ fullState: timetables[semester] });
+    } else {
+      onTimeslots({ fullState: initTimeslots });
+    }
+    if (prefDays[semester] !== undefined) {
+      onFullDays({ fullState: prefDays[semester] });
+    } else {
+      onFullDays({ fullState: initFullDays });
+    }
+  }, [semester]);
 
   return {
     slotTimes,
     weekdays,
     onFullDays,
     fullDays,
-    timeslots,
+    timeSlotState: timeslots,
     onTimeslots,
   };
 }
 
 export function TimetableView(props: TimetableViewProps) {
-  const { slotTimes, weekdays, onFullDays, fullDays, timeslots, onTimeslots } =
-    props;
+  const {
+    slotTimes,
+    weekdays,
+    onFullDays,
+    fullDays,
+    timeSlotState: timeslots,
+    onTimeslots,
+  } = props;
 
   return (
     <TableDiv>

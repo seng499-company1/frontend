@@ -1,3 +1,4 @@
+import React from "react";
 import { ChangeEvent, ChangeEventHandler, useReducer, useState } from "react";
 import styled from "styled-components";
 import CheckboxGroup, {
@@ -39,6 +40,7 @@ export interface ProfessorTimetableViewProps {
 }
 
 function updateCheckbox(state: Object, semester: string) {
+  console.log("in update checkbox");
   return { ...state, [semester]: !state[semester] };
 }
 
@@ -49,41 +51,55 @@ function updateString(
   return { ...state, [action.semester]: action.text };
 }
 
-function useProfessorTimetable(
-  props: ProfessorTimetableProps
-): ProfessorTimetableViewProps {
+const TimetableContext = React.createContext({
+  timetables: {},
+  setTimetables: (_timetables: {}) => {},
+});
+
+const PrefDayContext = React.createContext({
+  prefDays: {},
+  setPrefDays: (_prefDays: {}) => {},
+});
+
+function initCheckbox(semesters: string[]) {
+  return Object.assign({}, ...semesters.map((sem) => ({ [sem]: false })));
+}
+
+function initString(semesters: string[]) {
+  return Object.assign({}, ...semesters.map((sem) => ({ [sem]: "" })));
+}
+
+function useProfessorTimetable(props: ProfessorTimetableProps) {
   const { semesters, profName } = props;
-
-  const initCheckbox = {};
-  semesters.forEach((sem: string) => {
-    initCheckbox[sem] = false;
-  });
-
-  const initString = {};
-  semesters.forEach((sem: string) => {
-    initString[sem] = "";
-  });
 
   const semestersItems = semesters.map((sem: string) => {
     return { value: sem, label: sem };
   });
 
-  const [aways, onAway] = useReducer(updateCheckbox, initCheckbox);
+  const [aways, onAway] = useReducer(updateCheckbox, semesters, initCheckbox);
 
-  console.log("aways", aways);
-
-  const [requestOffs, onRequestOff] = useReducer(updateCheckbox, initCheckbox);
-
-  const [selectedSemester, onSelectedSemester] = useState(
-    semestersItems[0] || { label: "", value: "" }
+  const [requestOffs, onRequestOff] = useReducer(
+    updateCheckbox,
+    semesters,
+    initCheckbox
   );
+
+  const [selectedSemester, onSelectedSemester] = useState({
+    value: semesters[0] || "",
+    label: semesters[0] || "",
+  });
 
   const [maxCoursesThisYear, onMaxCoursesThisYear] = useState("");
 
   const [absenceReasons, onAbsenceReason] = useReducer(
     updateString,
+    semesters,
     initString
   );
+
+  const [timetables, setTimetables] = useState({});
+
+  const [prefDays, setPrefDays] = useState({});
 
   return {
     profName,
@@ -98,6 +114,10 @@ function useProfessorTimetable(
     onAway,
     onRequestOff,
     onAbsenceReason,
+    timetables,
+    setTimetables,
+    prefDays,
+    setPrefDays,
   };
 }
 
@@ -180,7 +200,6 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
     onAbsenceReason,
   } = props;
 
-  console.log("in view", away);
   return (
     <OutsideDivStyle>
       <InsideDivStyle>
@@ -199,9 +218,17 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
             />
           </MaxCoursesDiv>
           <Dropdown
-            {...{ dropdownItems: semesters, handleChange: onSelectedSemester }}
+            {...{
+              dropdownItems: semesters,
+              handleChange: onSelectedSemester,
+              startingValue: semesters[0].value,
+            }}
           />
-          <Timetable />
+          <Timetable
+            semester={selectedSemester}
+            timetableContext={TimetableContext}
+            prefDayContext={PrefDayContext}
+          />
           <AbsenceDiv>
             <AbsenceItemDiv>
               <AbsenceLabelP>I am away for this semester </AbsenceLabelP>
@@ -239,10 +266,15 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
 }
 
 const ProfessorTimetable = (props: ProfessorTimetableProps) => {
+  const { timetables, setTimetables, prefDays, setPrefDays, ...rest } =
+    useProfessorTimetable(props);
+
   return (
-    <ProfessorTimetableView
-      {...useProfessorTimetable(props)}
-    ></ProfessorTimetableView>
+    <TimetableContext.Provider value={{ timetables, setTimetables }}>
+      <PrefDayContext.Provider value={{ prefDays, setPrefDays }}>
+        <ProfessorTimetableView {...rest} />
+      </PrefDayContext.Provider>
+    </TimetableContext.Provider>
   );
 };
 
