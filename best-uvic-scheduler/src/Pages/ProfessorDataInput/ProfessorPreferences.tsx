@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { PreferencesContext } from "./index.tsx";
@@ -11,7 +11,7 @@ const InsideDivStyle = styled.div`
   width: 55%;
   padding: 36px;
   border-radius: 8px;
-  background-color: #FEFEFE;
+  background-color: #fefefe;
 `;
 
 const OutsideDivStyle = styled.div`
@@ -34,7 +34,6 @@ const DropdownDivStyle = styled.div`
 `;
 
 export function PDISelectProfessorPreferences() {
-
   //get data
   const CourseData = CourseListHelper.GetCourseList();
   const Courses = CourseData.Courses;
@@ -50,51 +49,87 @@ export function PDISelectProfessorPreferences() {
     { value: "Very Willing", label: "Very Willing" },
   ];
 
+  const Header = styled.h1`
+    text-align: center;
+  `;
+  const Header2 = styled.h4`
+    text-align: center;
+    font-style: italic;
+    padding-left: 100px;
+    padding-right: 100px;
+  `;
+
   return (
     <OutsideDivStyle>
       <InsideDivStyle>
-      {
-      Courses.map(function(Course, index) {
-        let name = Course.course_code
-        return (
-          <SelectDivStyle key={index}>
-            <div>
-              <h2> { Course.course_code } </h2>
-              <p> <b>course description:</b> { Course.course_desceiption } </p>
-            </div>
-            <DropdownDivStyle>
-              <Dropdown
-                startingValue={preferences.hasOwnProperty(name) ? { value: preferences[name], label: preferences[name] } : null }
-                dropdownItems= {PreferenceItems}
-                handleChange={(event) => {
-                  setPreferences( {...preferences, [Course.course_code]: event.value } );
-                }}>Select</Dropdown>
-            </DropdownDivStyle>
-          </SelectDivStyle>
-        );
-      })
-      }
-      <CustomButtonGroupView {...{ Amount: "Double" }}>
-        <CustomButtonView
-        {...{ Theme: "Secondary" }}
-        customClickEvent={() => {
-          console.log("Hello")
-          navigate(`/SelectProfessor/Qualifications`);
-        }}> Back </CustomButtonView>
-        <CustomButtonView
-        {...{ Theme: "Primary" }}
-        Disabled={Object.keys(preferences).length !== AmountOfCourses}
-        customClickEvent={() => {
-          if(Object.keys(preferences).length !== AmountOfCourses){
-            console.log(preferences);
-          }else{
-            console.log(preferences);
-          }
-        }}> Confirm </CustomButtonView>
-      </CustomButtonGroupView>
+        <Header>Please Enter Class Preferences</Header>
+        <Header2>
+          *Be aware that classes that you have expressed you are not qualified
+          to teach have been removed from the list
+        </Header2>
+        <div>
+          {Courses.map(function (Course, index) {
+            let name = Course.course_code;
+            return (
+              <SelectDivStyle key={index}>
+                <div>
+                  <h2> {Course.course_code} </h2>
+                  <p>
+                    {" "}
+                    <b>course description:</b> {Course.course_desceiption}{" "}
+                  </p>
+                </div>
+                <DropdownDivStyle>
+                  <Dropdown
+                    startingValue={
+                      preferences.hasOwnProperty(name)
+                        ? { value: preferences[name], label: preferences[name] }
+                        : null
+                    }
+                    dropdownItems={PreferenceItems}
+                    handleChange={(event) => {
+                      setPreferences({
+                        ...preferences,
+                        [Course.course_code]: event.value,
+                      });
+                    }}
+                  >
+                    Select
+                  </Dropdown>
+                </DropdownDivStyle>
+              </SelectDivStyle>
+            );
+          })}
+        </div>
+        <CustomButtonGroupView {...{ Amount: "Double" }}>
+          <CustomButtonView
+            {...{ Theme: "Secondary" }}
+            customClickEvent={() => {
+              console.log("Hello");
+              navigate(`/SelectProfessor/Qualifications`);
+            }}
+          >
+            {" "}
+            Back{" "}
+          </CustomButtonView>
+          <CustomButtonView
+            {...{ Theme: "Primary" }}
+            Disabled={Object.keys(preferences).length !== AmountOfCourses}
+            customClickEvent={() => {
+              if (Object.keys(preferences).length !== AmountOfCourses) {
+                console.log(preferences);
+              } else {
+                console.log(preferences);
+              }
+            }}
+          >
+            {" "}
+            Confirm{" "}
+          </CustomButtonView>
+        </CustomButtonGroupView>
       </InsideDivStyle>
     </OutsideDivStyle>
-    );
+  );
 }
 
 export default PDISelectProfessorPreferences;
