@@ -64,13 +64,13 @@ export function Summary() {
     QualificationsContext
   );
   const { preferences, setPreferences } = useContext(PreferencesContext);
-  const { Professor, setProfessor } = useContext(ProfessorContext);
+  const { selectedProfessor, setProfessor } = useContext(ProfessorContext);
   const navigate = useNavigate();
 
   return (
     <OutsideDivStyle>
       <InsideDivStyle>
-        <Header>Summary</Header>
+        <Header>Summary For {selectedProfessor.first_name} {selectedProfessor.last_name}</Header>
 
         <h2>Classes</h2>
         {Courses.map(function (Course, index) {
