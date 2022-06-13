@@ -12,9 +12,8 @@ root.render(
   //<React.StrictMode> <--- commented out due to bug with double render
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<App />} />
+      <Route path="/" element={<LoginPage />} />
       <Route path="/SelectProfessor/*" element={<ProfessorDataInputIndex />} />
-      <Route path="/LoginPage" element={<LoginPage />} />
     </Routes>
   </BrowserRouter>
   //</React.StrictMode>
