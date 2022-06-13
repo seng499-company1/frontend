@@ -1,24 +1,19 @@
 import { number } from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
+import { updateTimeslotsAction } from "./Timetable";
 
 export interface TimetableRowProps {
   slotTimes: Array<string>;
   timeslot: Array<boolean>;
-  onTimeslots: React.Dispatch<{
-    dayIdx: number;
-    slotIdx: number;
-  }>;
+  onTimeslots: React.Dispatch<updateTimeslotsAction>;
   timeslotIdx: number;
 }
 
 export interface TimetableRowViewProps {
   timeslot: Array<boolean>;
   slotTime: string;
-  onTimeslots: React.Dispatch<{
-    dayIdx: number;
-    slotIdx: number;
-  }>;
+  onTimeslots: React.Dispatch<updateTimeslotsAction>;
   timeslotIdx: number;
 }
 
@@ -26,10 +21,9 @@ const CellDiv = styled.div<{ highlighted: boolean }>`
   width: 100%;
   border: 1px solid var(--border);
   border-bottom: none;
-
   min-width: 20px;
-
   background-color: white;
+  cursor: pointer;
 
   &:hover {
     background-color: var(--primary-100);

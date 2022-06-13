@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ProfessorContext } from "./index.tsx";
@@ -9,18 +9,19 @@ import SearchBarView from "../../Components/SearchBar/Searchbar.tsx";
 import ProfessorListElementView from "../../Components/ProfessorSearch/ProfessorListElement.tsx";
 import * as ProfessorListHelper from "../../Util/ProfessorListHelper.tsx";
 
-const InsideDivStyle = styled.div`
+export const InsideDivStyle = styled.div`
   width: 55%;
   padding: 36px;
   border-radius: 8px;
-  background-color: #FEFEFE;
+  background-color: #fefefe;
 `;
 
-const OutsideDivStyle = styled.div`
+export const OutsideDivStyle = styled.div`
   display: flex;
   justify-content: center;
   background-color: var(--primary-50);
-  height: 100vh;
+  min-height: 100vh;
+  padding: var(--space-2x-large) 0;
 `;
 
 const Header = styled.h1`
@@ -28,7 +29,6 @@ const Header = styled.h1`
 `;
 
 export function PDISelectProfessorList() {
-
   const { selectedProfessor, setProfessor } = useContext(ProfessorContext);
   const navigate = useNavigate();
 
@@ -36,6 +36,7 @@ export function PDISelectProfessorList() {
   const ProfessorData = ProfessorListHelper.GetProfessorList();
   const Professors = ProfessorData.Professors;
 
+  console.log("Now i'm in the list");
 
   console.log("Now i'm in the list")
 
