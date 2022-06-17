@@ -6,5 +6,9 @@ export default {
 };
 
 export const BackgroundActive = () => {
-  return <Background></Background>;
+  return (
+    <Background>
+      <p>hello world</p>
+    </Background>
+  );
 };

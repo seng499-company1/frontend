@@ -8,21 +8,7 @@ import ProfessorListDivView from "../../Components/ProfessorSearch/ProfessorList
 import SearchBarView from "../../Components/SearchBar/Searchbar.tsx";
 import ProfessorListElementView from "../../Components/ProfessorSearch/ProfessorListElement.tsx";
 import * as ProfessorListHelper from "../../Util/ProfessorListHelper.tsx";
-
-export const InsideDivStyle = styled.div`
-  width: 55%;
-  padding: 36px;
-  border-radius: 8px;
-  background-color: #fefefe;
-`;
-
-export const OutsideDivStyle = styled.div`
-  display: flex;
-  justify-content: center;
-  background-color: var(--primary-50);
-  min-height: 100vh;
-  padding: var(--space-2x-large) 0;
-`;
+import { Background } from "../../Components/background/background.tsx";
 
 const Header = styled.h1`
   text-align: center;
@@ -38,39 +24,46 @@ export function PDISelectProfessorList() {
 
   console.log("Now i'm in the list");
 
-  console.log("Now i'm in the list")
+  console.log("Now i'm in the list");
 
   return (
-    <OutsideDivStyle>
-      <InsideDivStyle>
+    <Background>
       <Header>Please Select your Name From The List Below</Header>
       <ProfessorListDivView>
-        <SearchBarView {...{ InList: true }}/>
-        {
-          Professors.map(function(Professor) {
-            return <ProfessorListElementView
-                  key={Professor.uuid}
-                  Selected={selectedProfessor === Professor}
-                  customClickEvent={() => {
-                    setProfessor(Professor)
-                  }}> {Professor.first_name} {Professor.last_name} </ProfessorListElementView>
+        <SearchBarView {...{ InList: true }} />
+        {Professors.map(function (Professor) {
+          return (
+            <ProfessorListElementView
+              key={Professor.uuid}
+              Selected={selectedProfessor === Professor}
+              customClickEvent={() => {
+                setProfessor(Professor);
+              }}
+            >
+              {" "}
+              {Professor.first_name} {Professor.last_name}{" "}
+            </ProfessorListElementView>
+          );
         })}
       </ProfessorListDivView>
       <CustomButtonGroupView {...{ Amount: "Progession" }}>
         <CustomButtonView
-        {...{ Theme: "Primary" }}
-        Disabled={selectedProfessor === 0}
-        customClickEvent={() => {
-          if(selectedProfessor === 0){
-            console.log("Please Select A Name");
-          }else{
-            console.log(selectedProfessor.uuid);
-            navigate(`/SelectProfessor/Qualifications`);
-          }
-        }}> Confirm </CustomButtonView>
+          {...{ Theme: "Primary" }}
+          Disabled={selectedProfessor === 0}
+          customClickEvent={() => {
+            if (selectedProfessor === 0) {
+              console.log("Please Select A Name");
+            } else {
+              console.log(selectedProfessor.uuid);
+              navigate(`/SelectProfessor/Qualifications`);
+            }
+          }}
+        >
+          {" "}
+          Confirm{" "}
+        </CustomButtonView>
       </CustomButtonGroupView>
-    </InsideDivStyle>
-  </OutsideDivStyle>
+    </Background>
   );
 }
 

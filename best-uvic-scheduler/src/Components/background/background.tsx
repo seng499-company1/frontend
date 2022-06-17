@@ -9,7 +9,6 @@ const InsideDivStyle = styled.div`
   background-color: #fefefe;
   height: 100vh;
   position: relative;
-  z-index: -10;
 `;
 
 const OutsideDivStyle = styled.div`
@@ -18,13 +17,12 @@ const OutsideDivStyle = styled.div`
   background-color: var(--primary-50);
   height: 100vh;
   position: relative;
-  z-index: -10;
 `;
 
-export function Background() {
+export function Background({ children }) {
   return (
     <OutsideDivStyle>
-      <InsideDivStyle></InsideDivStyle>
+      <InsideDivStyle>{children}</InsideDivStyle>
     </OutsideDivStyle>
   );
 }
