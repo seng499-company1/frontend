@@ -165,6 +165,15 @@ const PageTitleH1 = styled.h1`
   text-align: center;
 `;
 
+const WarningText = styled.h4`
+  padding-top: 0px;
+  padding-bottom: 20px;
+  margin: 0;
+  text-align: center;
+  color: #ff0000;
+  font-style: italic;
+`;
+
 const MaxCoursesH3 = styled.h3`
   font-weight: 400;
   margin: 0;
@@ -272,6 +281,10 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
             />
           </FreeformDiv>
         </LayoutDiv>
+        <WarningText>
+          *Please be aware that you still could be scheduled outside your
+          prefered time
+        </WarningText>
         <CustomButtonGroupView
           style={{ padding: "var(--space-small) 0" }}
           {...{ Amount: "Double" }}
