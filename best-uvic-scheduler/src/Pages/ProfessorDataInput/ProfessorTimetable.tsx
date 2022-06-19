@@ -6,6 +6,7 @@ import CustomButtonView from "../../Components/button/button.tsx";
 import CustomButtonGroupView from "../../Components/button/buttongroup.tsx";
 import CheckboxGroup from "../../Components/checkbox/checkbox.tsx";
 import Dropdown from "../../Components/dropdown/dropdown.tsx";
+import TabGroup from "../../Components/tab-group/tab-group.tsx";
 import { Timetable } from "../../Components/Timetable/Timetable.tsx";
 import { ProfessorContext } from "../ProfessorDataInput/index.tsx";
 import {
@@ -42,7 +43,6 @@ export interface ProfessorTimetableViewProps {
 }
 
 function updateCheckbox(state: Object, semester: string) {
-  console.log("in update checkbox");
   return { ...state, [semester]: !state[semester] };
 }
 
@@ -229,13 +229,23 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
               }
             />
           </MaxCoursesDiv>
-          <Dropdown
-            {...{
-              dropdownItems: semesters,
-              handleChange: onSelectedSemester,
-              startingValue: semesters[0].value,
-            }}
-          />
+          <TabGroup initialTabId="0">
+            {semesters.map(
+              (sem: { label: string; value: string }, i: number) => {
+                return (
+                  <TabGroup.Tab
+                    tabId={`${i}`}
+                    onClick={() => {
+                      onSelectedSemester(sem);
+                    }}
+                    size="small"
+                  >
+                    {sem.label}
+                  </TabGroup.Tab>
+                );
+              }
+            )}
+          </TabGroup>
           <Timetable
             semester={selectedSemester}
             timetableContext={TimetableContext}
@@ -259,18 +269,20 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
               />
             </AbsenceItemDiv>
           </AbsenceDiv>
-          <FreeformDiv>
-            <AbsenceLabelP>Reason for absence:</AbsenceLabelP>
-            <AbsenceTextarea
-              value={absenceReason}
-              onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
-                onAbsenceReason({
-                  semester: selectedSemester,
-                  text: event.target.value,
-                })
-              }
-            />
-          </FreeformDiv>
+          {(requestOff || away) && (
+            <FreeformDiv>
+              <AbsenceLabelP>Reason for absence:</AbsenceLabelP>
+              <AbsenceTextarea
+                value={absenceReason}
+                onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+                  onAbsenceReason({
+                    semester: selectedSemester,
+                    text: event.target.value,
+                  })
+                }
+              />
+            </FreeformDiv>
+          )}
         </LayoutDiv>
         <CustomButtonGroupView
           style={{ padding: "var(--space-small) 0" }}
@@ -279,7 +291,6 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
           <CustomButtonView
             {...{ Theme: "Secondary" }}
             customClickEvent={() => {
-              console.log("back");
               navigate(`/SelectProfessor/Preferences`);
             }}
           >
@@ -288,7 +299,6 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
           <CustomButtonView
             {...{ Theme: "Primary" }}
             customClickEvent={() => {
-              console.log("next");
               navigate(`/SelectProfessor/Summary`);
             }}
           >

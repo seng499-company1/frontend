@@ -60,7 +60,9 @@ export function TimetableRowView(props: TimetableRowViewProps) {
         return (
           <CellDiv
             key={`${idx}-${slot}`}
-            onClick={() => onTimeslots({ dayIdx: idx, slotIdx: timeslotIdx })}
+            onMouseDown={() =>
+              onTimeslots({ dayIdx: idx, slotIdx: timeslotIdx })
+            }
             highlighted={slot}
           >
             {" "}
