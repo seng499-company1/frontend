@@ -1,7 +1,6 @@
-import { number } from "prop-types";
-import React, { useContext, useEffect, useReducer, useState } from "react";
+import React, { useContext, useEffect, useReducer } from "react";
 import { TimetableRow } from "./TimetableRow.tsx";
-import CheckboxGroup, { CheckboxView } from "../checkbox/checkbox.tsx";
+import CheckboxGroup from "../checkbox/checkbox.tsx";
 import styled from "styled-components";
 
 import "../../index.css";

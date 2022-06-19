@@ -9,10 +9,13 @@ import Dropdown from "../../Components/dropdown/dropdown.tsx";
 import TabGroup from "../../Components/tab-group/tab-group.tsx";
 import { Timetable } from "../../Components/Timetable/Timetable.tsx";
 import { ProfessorContext } from "../ProfessorDataInput/index.tsx";
+import * as CourseListHelper from "../../Util/CourseListHelper.tsx";
 import {
-  OutsideDivStyle,
-  InsideDivStyle,
-} from "../ProfessorDataInput/ProfessorDataInput_SelectProfessorList.tsx";
+  PreferencesContext,
+  QualificationsContext,
+  PrefDayContext,
+  TimetableContext,
+} from "./index.tsx";
 
 export interface ProfessorTimetableProps {
   semesters: Array<string>;
@@ -40,6 +43,20 @@ export interface ProfessorTimetableViewProps {
   }>;
   navigate: NavigateFunction;
   selectedProfessor: any;
+  Courses: any;
+  AmountOfCourses: any;
+  preferences: any;
+  setPreferences: any;
+  PreferenceItems: {
+    value: string;
+    label: string;
+  }[];
+  qualifications: any;
+  setQualifications: any;
+  QualificationItems: {
+    value: string;
+    label: string;
+  }[];
 }
 
 function updateCheckbox(state: Object, semester: string) {
@@ -52,16 +69,6 @@ function updateString(
 ) {
   return { ...state, [action.semester]: action.text };
 }
-
-const TimetableContext = React.createContext({
-  timetables: {},
-  setTimetables: (_timetables: {}) => {},
-});
-
-const PrefDayContext = React.createContext({
-  prefDays: {},
-  setPrefDays: (_prefDays: {}) => {},
-});
 
 function initCheckbox(semesters: string[]) {
   return Object.assign({}, ...semesters.map((sem) => ({ [sem]: false })));
@@ -107,7 +114,39 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
 
   const { selectedProfessor } = useContext(ProfessorContext);
 
+  //get data
+  const CourseData = CourseListHelper.GetCourseList();
+  const Courses = CourseData.Courses;
+  const AmountOfCourses = Courses.length;
+
+  //hooks
+  const { preferences, setPreferences } = useContext(PreferencesContext);
+
+  const PreferenceItems = [
+    { value: "Not Willing", label: "Not Willing" },
+    { value: "Willing", label: "Willing" },
+    { value: "Very Willing", label: "Very Willing" },
+  ];
+
+  //hooks
+  const { qualifications, setQualifications } = useContext(
+    QualificationsContext
+  );
+
+  const QualificationItems = [
+    { value: "Not Qualified", label: "Not Qualified" },
+    { value: "Qualified", label: "Qualified" },
+  ];
+
   return {
+    Courses,
+    AmountOfCourses,
+    preferences,
+    setPreferences,
+    PreferenceItems,
+    qualifications,
+    setQualifications,
+    QualificationItems,
     semesters: semestersItems,
     selectedSemester: selectedSemester.label,
     away: aways[selectedSemester.label],
@@ -160,11 +199,6 @@ const LayoutDiv = styled.div`
   padding: 0 var(--space-2x-large) var(--space-2x-large);
 `;
 
-const PageTitleH1 = styled.h1`
-  margin: 0;
-  text-align: center;
-`;
-
 const MaxCoursesH3 = styled.h3`
   font-weight: 400;
   margin: 0;
@@ -192,6 +226,38 @@ const AbsenceTextarea = styled.textarea`
   border-radius: 4px;
 `;
 
+const InsideDivStyle = styled.div`
+  width: 55%;
+  padding: 36px;
+  border-radius: 8px;
+  background-color: #fefefe;
+`;
+
+const OutsideDivStyle = styled.div`
+  display: flex;
+  justify-content: center;
+  background-color: var(--primary-50);
+  padding: var(--space-x-large);
+  min-height: 100vh;
+`;
+
+const CourseInfoDiv = styled.div`
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: auto auto;
+  grid-gap: var(--space-x-large);
+`;
+
+const DropdownDivStyle = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+const Header = styled.h1`
+  text-align: center;
+`;
+
 export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
   const {
     selectedProfessor,
@@ -207,16 +273,76 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
     onRequestOff,
     onAbsenceReason,
     navigate,
+    Courses,
+    AmountOfCourses,
+    preferences,
+    setPreferences,
+    PreferenceItems,
+    qualifications,
+    setQualifications,
+    QualificationItems,
   } = props;
 
   return (
     <OutsideDivStyle>
       <InsideDivStyle>
         <LayoutDiv>
-          <PageTitleH1>
-            Please Enter Availibility For {selectedProfessor.first_name}{" "}
-            {selectedProfessor.last_name}
-          </PageTitleH1>
+          <Header>Please Enter Class Scheduling Preferences</Header>
+          {Courses.map(function (Course, index) {
+            let name = Course.course_code;
+            return (
+              <div>
+                <h2> {Course.course_code} </h2>
+                <CourseInfoDiv key={index}>
+                  <p>
+                    <b>Course description:</b> {Course.course_desceiption}
+                  </p>
+                  <Dropdown
+                    startingValue={
+                      preferences.hasOwnProperty(name)
+                        ? {
+                            value: preferences[name],
+                            label: preferences[name],
+                          }
+                        : null
+                    }
+                    dropdownItems={PreferenceItems}
+                    handleChange={(event) => {
+                      setPreferences({
+                        ...preferences,
+                        [Course.course_code]: event.value,
+                      });
+                    }}
+                  >
+                    Select
+                  </Dropdown>
+                  <p>
+                    <b>Qualifications needed:</b> {Course.course_qualifications}
+                    <b>{Course.peng_req ? ", PENG is Reqiured" : ""}</b>
+                  </p>
+                  <Dropdown
+                    startingValue={
+                      qualifications.hasOwnProperty(name)
+                        ? {
+                            value: qualifications[name],
+                            label: qualifications[name],
+                          }
+                        : null
+                    }
+                    dropdownItems={QualificationItems}
+                    handleChange={(event) => {
+                      setQualifications({
+                        ...qualifications,
+                        [Course.course_code]: event.value,
+                      });
+                    }}
+                  >
+                    Select
+                  </Dropdown>
+                </CourseInfoDiv>
+              </div>
+            );
+          })}
           <MaxCoursesDiv>
             <MaxCoursesH3>
               Max number of courses you are willing to teach this year{" "}
@@ -284,25 +410,30 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
             </FreeformDiv>
           )}
         </LayoutDiv>
-        <CustomButtonGroupView
-          style={{ padding: "var(--space-small) 0" }}
-          {...{ Amount: "Double" }}
-        >
+        <CustomButtonGroupView {...{ Amount: "Double" }}>
           <CustomButtonView
             {...{ Theme: "Secondary" }}
             customClickEvent={() => {
-              navigate(`/SelectProfessor/Preferences`);
+              navigate(`/SelectProfessor`);
             }}
           >
-            Back
+            {" "}
+            Back{" "}
           </CustomButtonView>
           <CustomButtonView
             {...{ Theme: "Primary" }}
+            Disabled={Object.keys(qualifications).length !== AmountOfCourses}
             customClickEvent={() => {
-              navigate(`/SelectProfessor/Summary`);
+              if (Object.keys(qualifications).length !== AmountOfCourses) {
+                console.log(qualifications);
+              } else {
+                console.log(qualifications);
+                navigate(`/SelectProfessor/Summary`);
+              }
             }}
           >
-            Next
+            {" "}
+            Confirm{" "}
           </CustomButtonView>
         </CustomButtonGroupView>
       </InsideDivStyle>
