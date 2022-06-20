@@ -7,9 +7,7 @@ export default {
 
 export const SingleTab = () => {
   return (
-    <TabView
-      {...{setCurrentTab: () => console.log("curren tab") }}
-    >
+    <TabView {...{ setCurrentTab: () => console.log("curren tab") }}>
       My Tab
     </TabView>
   );
@@ -18,7 +16,12 @@ export const SingleTab = () => {
 export const FunctionalWithInitialId = () => {
   return (
     <TabGroup initialTabId="1">
-      <TabGroup.Tab tabId="1">Tab1</TabGroup.Tab>
+      <TabGroup.Tab
+        {...{ setCurrentTab: () => console.log("curren tab") }}
+        tabId="1"
+      >
+        Tab1
+      </TabGroup.Tab>
       <TabGroup.Tab tabId="2">Tab2</TabGroup.Tab>
     </TabGroup>
   );
