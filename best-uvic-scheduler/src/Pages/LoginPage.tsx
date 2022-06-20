@@ -2,6 +2,7 @@ import { CustomButtonView } from "../Components/button/button.tsx";
 import { Background } from "../Components/background/background.tsx";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 function Box({ children, ...props }) {
   return <div {...props}>{children}</div>;
@@ -46,6 +47,11 @@ const Center = styled.div`
 `;
 
 export function LoginPage() {
+  function onSubmit() {
+    console.log("username: " + username + " password: " + password);
+  }
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
   return (
     <Background>
@@ -67,17 +73,23 @@ export function LoginPage() {
             <form>
               <LineDiv>
                 <p>Username:</p>
-                <input type="text" />
+                <input
+                  onChange={(event) => setUsername(event.target.value)}
+                  type="text"
+                />
               </LineDiv>
               <LineDiv2>
                 <p>Password:</p>
-                <input type="password" />
+                <input
+                  onChange={(event) => setPassword(event.target.value)}
+                  type="password"
+                />
               </LineDiv2>
               <RightDiv>
                 <CustomButtonView
                   {...{ Theme: "Primary" }}
                   customClickEvent={() => {
-                    console.log("Submit Login Info");
+                    onSubmit();
                   }}
                 >
                   Submit
