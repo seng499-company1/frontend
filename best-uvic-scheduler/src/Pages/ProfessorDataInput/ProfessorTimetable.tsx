@@ -175,9 +175,8 @@ const MaxCoursesDiv = styled.div`
 
 const AbsenceDiv = styled.div`
   display: flex;
-  gap: var(--space-large);
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: var(--space-med);
 `;
 
 const AbsenceItemDiv = styled.div`
@@ -245,7 +244,8 @@ const CourseInfoDiv = styled.div`
   display: grid;
   grid-template-columns: 2fr 1fr;
   grid-template-rows: auto auto;
-  grid-gap: var(--space-x-large);
+  grid-gap: var(--space-large) var(--space-3x-large);
+  align-items: center;
 `;
 
 const DropdownDivStyle = styled.div`
@@ -372,30 +372,25 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
               }
             )}
           </TabGroup>
-          <Timetable
-            semester={selectedSemester}
-            timetableContext={TimetableContext}
-            prefDayContext={PrefDayContext}
-          />
           <AbsenceDiv>
             <AbsenceItemDiv>
-              <AbsenceLabelP>I am away for this semester </AbsenceLabelP>
               <CheckboxGroup.Checkbox
                 checked={away}
                 onClick={() => onAway(selectedSemester)}
               />
+              <AbsenceLabelP>I am away for this semester </AbsenceLabelP>
             </AbsenceItemDiv>
             <AbsenceItemDiv>
-              <AbsenceLabelP>
-                I would like away this semester off{" "}
-              </AbsenceLabelP>
               <CheckboxGroup.Checkbox
                 checked={requestOff}
                 onClick={() => onRequestOff(selectedSemester)}
               />
+              <AbsenceLabelP>
+                I would like away this semester off{" "}
+              </AbsenceLabelP>
             </AbsenceItemDiv>
           </AbsenceDiv>
-          {(requestOff || away) && (
+          {requestOff || away ? (
             <FreeformDiv>
               <AbsenceLabelP>Reason for absence:</AbsenceLabelP>
               <AbsenceTextarea
@@ -408,6 +403,12 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                 }
               />
             </FreeformDiv>
+          ) : (
+            <Timetable
+              semester={selectedSemester}
+              timetableContext={TimetableContext}
+              prefDayContext={PrefDayContext}
+            />
           )}
         </LayoutDiv>
         <CustomButtonGroupView {...{ Amount: "Double" }}>
