@@ -8,13 +8,11 @@ import CheckboxGroup from "../../Components/checkbox/checkbox.tsx";
 import Dropdown from "../../Components/dropdown/dropdown.tsx";
 import TabGroup from "../../Components/tab-group/tab-group.tsx";
 import { Timetable } from "../../Components/Timetable/Timetable.tsx";
-import { ProfessorContext } from "../ProfessorDataInput/index.tsx";
 import * as CourseListHelper from "../../Util/CourseListHelper.tsx";
 import {
   PreferencesContext,
   QualificationsContext,
   PrefDayContext,
-  TimetableContext,
 } from "./index.tsx";
 
 export interface ProfessorTimetableProps {
@@ -42,11 +40,12 @@ export interface ProfessorTimetableViewProps {
     text: string;
   }>;
   navigate: NavigateFunction;
-  selectedProfessor: any;
   Courses: any;
   AmountOfCourses: any;
   preferences: any;
   setPreferences: any;
+  prefDays: any;
+  setPrefDays: any;
   PreferenceItems: {
     value: string;
     label: string;
@@ -106,13 +105,7 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
     initString
   );
 
-  const [timetables, setTimetables] = useState({});
-
-  const [prefDays, setPrefDays] = useState({});
-
   const navigate = useNavigate();
-
-  const { selectedProfessor } = useContext(ProfessorContext);
 
   //get data
   const CourseData = CourseListHelper.GetCourseList();
@@ -138,6 +131,8 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
     { value: "Qualified", label: "Qualified" },
   ];
 
+  const { prefDays, setPrefDays } = useContext(PrefDayContext);
+
   return {
     Courses,
     AmountOfCourses,
@@ -158,12 +153,9 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
     onAway,
     onRequestOff,
     onAbsenceReason,
-    timetables,
-    setTimetables,
     prefDays,
     setPrefDays,
     navigate,
-    selectedProfessor,
   };
 }
 
@@ -248,19 +240,27 @@ const CourseInfoDiv = styled.div`
   align-items: center;
 `;
 
-const DropdownDivStyle = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-`;
-
 const Header = styled.h1`
   text-align: center;
 `;
 
+const CheckboxLabelP = styled.p`
+  padding: var(--space-2x-small) var(--space-med);
+  box-sizing: border-box;
+  color: var(--font-color);
+  margin: auto;
+`;
+
+const AvDiv = styled.div`
+  width: 100%;
+  margin: auto;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+`;
+
 export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
   const {
-    selectedProfessor,
     semesters,
     selectedSemester,
     away,
@@ -281,6 +281,8 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
     qualifications,
     setQualifications,
     QualificationItems,
+    prefDays,
+    setPrefDays,
   } = props;
 
   return (
@@ -404,11 +406,22 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
               />
             </FreeformDiv>
           ) : (
-            <Timetable
-              semester={selectedSemester}
-              timetableContext={TimetableContext}
-              prefDayContext={PrefDayContext}
-            />
+            <>
+              <CheckboxLabelP>Preferred Day</CheckboxLabelP>
+              {prefDays[selectedSemester].map((day: boolean, idx: number) => {
+                return (
+                  <AvDiv>
+                    <CheckboxGroup.Checkbox
+                      onClick={() =>
+                        setPrefDays({ semester: selectedSemester, dayIdx: idx })
+                      }
+                      checked={day}
+                    />
+                  </AvDiv>
+                );
+              })}
+              <Timetable semester={selectedSemester} />
+            </>
           )}
         </LayoutDiv>
         <CustomButtonGroupView {...{ Amount: "Double" }}>
@@ -443,16 +456,7 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
 }
 
 const ProfessorTimetable = (props: ProfessorTimetableProps) => {
-  const { timetables, setTimetables, prefDays, setPrefDays, ...rest } =
-    useProfessorTimetable(props);
-
-  return (
-    <TimetableContext.Provider value={{ timetables, setTimetables }}>
-      <PrefDayContext.Provider value={{ prefDays, setPrefDays }}>
-        <ProfessorTimetableView {...rest} />
-      </PrefDayContext.Provider>
-    </TimetableContext.Provider>
-  );
+  return <ProfessorTimetableView {...useProfessorTimetable(props)} />;
 };
 
 export default ProfessorTimetable;

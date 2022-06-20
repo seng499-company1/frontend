@@ -7,6 +7,7 @@ export interface TimetableRowProps {
   timeslot: Array<boolean>;
   onTimeslots: React.Dispatch<updateTimeslotsAction>;
   timeslotIdx: number;
+  semester: string;
 }
 
 export interface TimetableRowViewProps {
@@ -14,6 +15,7 @@ export interface TimetableRowViewProps {
   slotTime: string;
   onTimeslots: React.Dispatch<updateTimeslotsAction>;
   timeslotIdx: number;
+  semester: string;
 }
 
 const CellDiv = styled.div<{ highlighted: boolean }>`
@@ -46,11 +48,12 @@ function useTimetableRow(props: TimetableRowProps): TimetableRowViewProps {
     timeslot: props.timeslot,
     onTimeslots: props.onTimeslots,
     timeslotIdx: props.timeslotIdx,
+    semester: props.semester,
   };
 }
 
 export function TimetableRowView(props: TimetableRowViewProps) {
-  const { slotTime, timeslot, onTimeslots, timeslotIdx } = props;
+  const { semester, slotTime, timeslot, onTimeslots, timeslotIdx } = props;
 
   return (
     <>
@@ -60,7 +63,11 @@ export function TimetableRowView(props: TimetableRowViewProps) {
           <CellDiv
             key={`${idx}-${slot}`}
             onMouseDown={() =>
-              onTimeslots({ dayIdx: idx, slotIdx: timeslotIdx })
+              onTimeslots({
+                dayIdx: idx,
+                slotIdx: timeslotIdx,
+                semester: semester,
+              })
             }
             highlighted={slot}
           >
