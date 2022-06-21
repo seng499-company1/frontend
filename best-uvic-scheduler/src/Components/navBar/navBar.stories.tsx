@@ -1,3 +1,4 @@
+import { BrowserRouter } from "react-router-dom";
 import NavBar from "./navBar";
 
 export default {
@@ -6,5 +7,9 @@ export default {
 };
 
 export const navBarActive = () => {
-  return <NavBar></NavBar>;
+  return (
+    <BrowserRouter>
+      <NavBar></NavBar>
+    </BrowserRouter>
+  );
 };

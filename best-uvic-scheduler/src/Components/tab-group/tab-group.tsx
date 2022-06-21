@@ -2,18 +2,23 @@ import React, { useContext, useState } from "react";
 import styled from "styled-components";
 
 export interface TabGroupViewProps {
-  offset: number;
   children: React.ReactNode;
 }
 
+type SizeType = "small" | "medium" | "large";
 export interface TabProps {
   tabId: string;
   children: React.ReactNode;
+  size: SizeType;
+  onClick?: (arg?: any) => void;
 }
 
 export interface TabViewProps {
   children: React.ReactNode;
   setCurrentTab: () => void;
+  onClick?: (arg?: any) => void;
+  active: boolean;
+  size: SizeType;
 }
 
 export interface TabGroupProps {
@@ -36,41 +41,59 @@ function useTabGroup(
 ): Omit<TabGroupViewProps, "children"> & ContextProps {
   const [activeTab, setActiveTab] = useState(props.initialTabId);
 
-  const offset =
-    React.Children.toArray(props.children).findIndex((child: any) => {
-      return child?.props?.tabId == activeTab;
-    }) || 0;
+  // const offset =
+  //   React.Children.toArray(props.children).findIndex((child: any) => {
+  //     return child?.props?.tabId == activeTab;
+  //   }) || 0;
 
-  return { offset, activeTab, setActiveTab };
+  return { activeTab, setActiveTab };
 }
 
 function useTab(props: TabProps): Omit<TabViewProps, "children"> {
-  const { setActiveTab } = useContext(TabContext);
+  const { activeTab, setActiveTab } = useContext(TabContext);
 
   const setCurrentTab = () => setActiveTab(props.tabId);
 
-  return { setCurrentTab };
+  const active = props.tabId === activeTab;
+
+  return { active, setCurrentTab, onClick: props.onClick, size: props.size };
 }
 
-const tabWidth = 300;
+const paddingSize = {
+  small: "var(--space-2x-small) var(--space-small)",
+  medium: "var(--space-x-small) var(--space-med)",
+  large: "var(--space-med) var(--space-3x-large)",
+};
 
-const TabDiv = styled.div`
-  padding: 16px 32px;
-  min-width: ${tabWidth}px;
+const TabDiv = styled.div<{ active: boolean; size: SizeType }>`
+  padding: ${(props) => paddingSize[props.size]};
+  min-width: min-content;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   transition: border-color 0.5s linear;
+  flex: 1 1 0px;
+
+  ${(props) =>
+    props.active
+      ? "border-bottom: 2px solid var(--primary);"
+      : "margin-bottom: 2px;"}
 
   &:hover {
     background-color: var(--primary-50);
   }
 `;
 
-const TabLabelP = styled.p`
-  font-size: 20px;
+const fontSize = {
+  small: "var(--font-size-normal)",
+  medium: "var(--font-size-h3)",
+  large: "var(--font-size-h2)",
+};
+
+const TabLabelP = styled.p<{ size: SizeType }>`
+  font-size: ${(props) => fontSize[props.size]};
   font-family: sans-serif;
   margin-bottom: 2px;
   width: 100%;
@@ -83,28 +106,35 @@ const GroupContainerDiv = styled.div`
   display: flex;
 `;
 
-const IndicatorContainerDiv = styled.div``;
+// const IndicatorContainerDiv = styled.div``;
 
-const IndicatorDiv = styled.div<{ offset: number }>`
-  width: ${tabWidth}px;
-  border-bottom: 2px solid var(--primary-500);
-  transition: 0.2s ease-in-out;
-  margin-left: ${(props) => props.offset * tabWidth}px;
-`;
+// const IndicatorDiv = styled.div<{ offset: number }>`
+//   width: ${tabWidth}px;
+//   border-bottom: 2px solid var(--primary-500);
+//   transition: 0.2s ease-in-out;
+//   margin-left: ${(props) => props.offset * tabWidth}px;
+// `;
 
 export function TabGroupView(props: TabGroupViewProps) {
   return (
-    <IndicatorContainerDiv>
-      <GroupContainerDiv>{props.children}</GroupContainerDiv>
-      <IndicatorDiv offset={props.offset} />
-    </IndicatorContainerDiv>
+    // <IndicatorContainerDiv>
+    <GroupContainerDiv>{props.children}</GroupContainerDiv>
+    //<IndicatorDiv offset={props.offset} />
+    //</IndicatorContainerDiv>
   );
 }
 
 export function TabView(props: TabViewProps) {
   return (
-    <TabDiv onClick={() => props.setCurrentTab()}>
-      <TabLabelP>{props.children}</TabLabelP>
+    <TabDiv
+      active={props.active}
+      size={props.size}
+      onClick={() => {
+        props.setCurrentTab();
+        props.onClick && props.onClick();
+      }}
+    >
+      <TabLabelP size={props.size}>{props.children}</TabLabelP>
     </TabDiv>
   );
 }
@@ -118,7 +148,7 @@ const TabGroup = (props: TabGroupProps) => {
         setActiveTab: viewProps.setActiveTab,
       }}
     >
-      <TabGroupView offset={viewProps.offset}>{props.children}</TabGroupView>
+      <TabGroupView>{props.children}</TabGroupView>
     </TabContext.Provider>
   );
 };
