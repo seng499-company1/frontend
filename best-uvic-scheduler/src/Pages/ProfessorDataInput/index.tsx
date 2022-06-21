@@ -17,7 +17,7 @@ export const QualificationsContext = React.createContext({
 });
 
 export const PreferencesContext = React.createContext({
-  selectedPreferences: {},
+  preferences: {},
   setPreferences: (event) => {},
 });
 
@@ -34,7 +34,7 @@ export const PrefDayContext = React.createContext({
 const semesters = ["Fall 2022", "Spring 2023", "Summer 2023"];
 
 const initPrefDays = semesters.reduce(
-  (acc, sem) => ((acc[sem] = Array(5).fill(false)), acc),
+  (arr, sem) => ((arr[sem] = Array(5).fill(false)), arr),
   {}
 );
 
@@ -64,7 +64,7 @@ const initTimeslots = semesters.reduce(
 );
 
 function updateTimeslots(
-  state: Array<Array<boolean>>,
+  state: Object,
   action: { dayIdx: number; slotIdx: number; semester: string }
 ) {
   const newState = {

@@ -58,6 +58,14 @@ export interface ProfessorTimetableViewProps {
   }[];
 }
 
+export const weekdays = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+];
+
 function updateCheckbox(state: Object, semester: string) {
   return { ...state, [semester]: !state[semester] };
 }
@@ -171,7 +179,7 @@ const AbsenceDiv = styled.div`
   gap: var(--space-med);
 `;
 
-const AbsenceItemDiv = styled.div`
+const CheckboxContainerDiv = styled.div`
   display: flex;
   gap: var(--space-large);
   align-items: center;
@@ -251,12 +259,11 @@ const CheckboxLabelP = styled.p`
   margin: auto;
 `;
 
-const AvDiv = styled.div`
+const PreferredDiv = styled.div`
   width: 100%;
-  margin: auto;
-  box-sizing: border-box;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  gap: var(--space-med);
 `;
 
 export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
@@ -375,14 +382,14 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
             )}
           </TabGroup>
           <AbsenceDiv>
-            <AbsenceItemDiv>
+            <CheckboxContainerDiv>
               <CheckboxGroup.Checkbox
                 checked={away}
                 onClick={() => onAway(selectedSemester)}
               />
               <AbsenceLabelP>I am away for this semester </AbsenceLabelP>
-            </AbsenceItemDiv>
-            <AbsenceItemDiv>
+            </CheckboxContainerDiv>
+            <CheckboxContainerDiv>
               <CheckboxGroup.Checkbox
                 checked={requestOff}
                 onClick={() => onRequestOff(selectedSemester)}
@@ -390,7 +397,7 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
               <AbsenceLabelP>
                 I would like away this semester off{" "}
               </AbsenceLabelP>
-            </AbsenceItemDiv>
+            </CheckboxContainerDiv>
           </AbsenceDiv>
           {requestOff || away ? (
             <FreeformDiv>
@@ -407,19 +414,25 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
             </FreeformDiv>
           ) : (
             <>
-              <CheckboxLabelP>Preferred Day</CheckboxLabelP>
-              {prefDays[selectedSemester].map((day: boolean, idx: number) => {
-                return (
-                  <AvDiv>
-                    <CheckboxGroup.Checkbox
-                      onClick={() =>
-                        setPrefDays({ semester: selectedSemester, dayIdx: idx })
-                      }
-                      checked={day}
-                    />
-                  </AvDiv>
-                );
-              })}
+              <PreferredDiv>
+                <CheckboxLabelP>Preferred Day</CheckboxLabelP>
+                {prefDays[selectedSemester].map((day: boolean, idx: number) => {
+                  return (
+                    <CheckboxContainerDiv>
+                      <CheckboxGroup.Checkbox
+                        onClick={() =>
+                          setPrefDays({
+                            semester: selectedSemester,
+                            dayIdx: idx,
+                          })
+                        }
+                        checked={day}
+                      />
+                      {weekdays[idx]}
+                    </CheckboxContainerDiv>
+                  );
+                })}
+              </PreferredDiv>
               <Timetable semester={selectedSemester} />
             </>
           )}

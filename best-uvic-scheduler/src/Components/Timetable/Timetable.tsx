@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import "../../index.css";
 import { TimetableContext } from "../../Pages/ProfessorDataInput/index.tsx";
+import { weekdays } from "../../Pages/ProfessorDataInput/ProfessorTimetable.tsx";
 // The table subcomponent is responsible for:
 
 export interface TimetableViewProps {
@@ -13,8 +14,6 @@ export interface TimetableViewProps {
   setTimetables: any;
   semester: string;
 }
-
-const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
 const slotTimes = [
   "8:30",

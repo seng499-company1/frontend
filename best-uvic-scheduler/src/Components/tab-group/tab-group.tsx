@@ -131,7 +131,7 @@ export function TabView(props: TabViewProps) {
       size={props.size}
       onClick={() => {
         props.setCurrentTab();
-        props?.onClick();
+        props.onClick && props.onClick();
       }}
     >
       <TabLabelP size={props.size}>{props.children}</TabLabelP>
