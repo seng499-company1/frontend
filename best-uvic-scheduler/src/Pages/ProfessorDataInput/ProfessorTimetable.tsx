@@ -195,15 +195,11 @@ const LayoutDiv = styled.div`
   display: flex;
   flex-direction: column;
   gap: var(--space-2x-large);
-  padding: 0 var(--space-2x-large) var(--space-2x-large);
+  padding: 0 10px var(--space-2x-large);
 `;
 
-const MaxCoursesH3 = styled.h3`
+const Subheading = styled.h3`
   font-weight: 400;
-  margin: 0;
-`;
-
-const AbsenceLabelP = styled.p`
   margin: 0;
 `;
 
@@ -256,7 +252,6 @@ const CheckboxLabelP = styled.p`
   padding: var(--space-2x-small) var(--space-med);
   box-sizing: border-box;
   color: var(--font-color);
-  margin: auto;
 `;
 
 const PreferredDiv = styled.div`
@@ -307,6 +302,7 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                     <b>Course description:</b> {Course.course_desceiption}
                   </p>
                   <Dropdown
+                    placeholder={"Desirability"}
                     startingValue={
                       preferences.hasOwnProperty(name)
                         ? {
@@ -330,6 +326,7 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                     <b>{Course.peng_req ? ", PENG is Reqiured" : ""}</b>
                   </p>
                   <Dropdown
+                    placeholder={"Qualification"}
                     startingValue={
                       qualifications.hasOwnProperty(name)
                         ? {
@@ -353,9 +350,9 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
             );
           })}
           <MaxCoursesDiv>
-            <MaxCoursesH3>
+            <Subheading>
               Max number of courses you are willing to teach this year{" "}
-            </MaxCoursesH3>
+            </Subheading>
             <MaxCoursesInput
               type="number"
               value={maxCoursesThisYear}
@@ -373,7 +370,7 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                     onClick={() => {
                       onSelectedSemester(sem);
                     }}
-                    size="small"
+                    size="medium"
                   >
                     {sem.label}
                   </TabGroup.Tab>
@@ -387,21 +384,21 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                 checked={away}
                 onClick={() => onAway(selectedSemester)}
               />
-              <AbsenceLabelP>I am away for this semester </AbsenceLabelP>
+              <CheckboxLabelP>I am away for this semester </CheckboxLabelP>
             </CheckboxContainerDiv>
             <CheckboxContainerDiv>
               <CheckboxGroup.Checkbox
                 checked={requestOff}
                 onClick={() => onRequestOff(selectedSemester)}
               />
-              <AbsenceLabelP>
+              <CheckboxLabelP>
                 I would like away this semester off{" "}
-              </AbsenceLabelP>
+              </CheckboxLabelP>
             </CheckboxContainerDiv>
           </AbsenceDiv>
           {requestOff || away ? (
             <FreeformDiv>
-              <AbsenceLabelP>Reason for absence:</AbsenceLabelP>
+              <CheckboxLabelP>Reason for absence:</CheckboxLabelP>
               <AbsenceTextarea
                 value={absenceReason}
                 onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
@@ -415,7 +412,7 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
           ) : (
             <>
               <PreferredDiv>
-                <CheckboxLabelP>Preferred Day</CheckboxLabelP>
+                <Subheading>Preferred Day</Subheading>
                 {prefDays[selectedSemester].map((day: boolean, idx: number) => {
                   return (
                     <CheckboxContainerDiv>
@@ -428,11 +425,12 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                         }
                         checked={day}
                       />
-                      {weekdays[idx]}
+                      <CheckboxLabelP>{weekdays[idx]}</CheckboxLabelP>
                     </CheckboxContainerDiv>
                   );
                 })}
               </PreferredDiv>
+              <Subheading>Preferred Teaching Times</Subheading>
               <Timetable semester={selectedSemester} />
             </>
           )}
