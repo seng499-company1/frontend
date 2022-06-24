@@ -86,6 +86,7 @@ const TableDiv = styled.div`
   display: grid;
   grid-template-columns: 150px repeat(5, minmax(0, 1fr));
   border-bottom: 1px solid var(--border);
+  background: #fff;
 `;
 
 const AvDiv = styled.div`
@@ -220,8 +221,12 @@ export function TimetableView(props: TimetableViewProps) {
 
   return (
     <TableDiv
+      draggable="false"
       onMouseDown={() => setMouseDown(true)}
-      onMouseUp={() => setMouseDown(false)}
+      onMouseUp={() => {
+        setMouseDown(false);
+      }}
+      onMouseLeave={() => setMouseDown(false)}
     >
       <div style={{ position: "sticky", top: "0px" }}> </div>
       {weekdays.map((day: string) => {
@@ -242,6 +247,7 @@ export function TimetableView(props: TimetableViewProps) {
 
       {timeslots.map((timeslot, idx) => (
         <TimetableRow
+          draggable="false"
           slotTimes={slotTimes}
           timeslot={timeslot}
           onTimeslots={onTimeslots}

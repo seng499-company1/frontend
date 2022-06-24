@@ -32,6 +32,11 @@ const CellDiv = styled.div<{ highlighted: boolean }>`
     ${(props) => props.highlighted && "background-color: var(--primary-500)"}
   }
 
+  &:active {
+    background-color: var(--primary-400);
+    ${(props) => props.highlighted && "background-color: white"}
+  }
+
   ${(props) => props.highlighted && "background-color: var(--primary-400)"}
 `;
 
@@ -63,10 +68,14 @@ export function TimetableRowView(props: TimetableRowViewProps) {
       {timeslot.map((slot: boolean, idx) => {
         return (
           <CellDiv
+            draggable="false"
             key={`${idx}-${slot}`}
-            onClick={() => onTimeslots({ dayIdx: idx, slotIdx: timeslotIdx })}
+            onClick={(e) => {
+              onTimeslots({ dayIdx: idx, slotIdx: timeslotIdx });
+              e.stopPropagation();
+            }}
             highlighted={slot}
-            onMouseEnter={() => {
+            onMouseLeave={() => {
               mouseDown && onTimeslots({ dayIdx: idx, slotIdx: timeslotIdx });
             }}
           >
