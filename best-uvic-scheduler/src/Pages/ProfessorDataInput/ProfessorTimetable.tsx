@@ -8,10 +8,7 @@ import CheckboxGroup from "../../Components/checkbox/checkbox.tsx";
 import Dropdown from "../../Components/dropdown/dropdown.tsx";
 import { Timetable } from "../../Components/Timetable/Timetable.tsx";
 import { ProfessorContext } from "../ProfessorDataInput/index.tsx";
-import {
-  OutsideDivStyle,
-  InsideDivStyle,
-} from "../ProfessorDataInput/ProfessorDataInput_SelectProfessorList.tsx";
+import { Background } from "../../Components/background/background.tsx";
 
 export interface ProfessorTimetableProps {
   semesters: Array<string>;
@@ -166,11 +163,9 @@ const PageTitleH1 = styled.h1`
 `;
 
 const WarningText = styled.h4`
-  padding-top: 0px;
-  padding-bottom: 20px;
   margin: 0;
   text-align: center;
-  color: #ff0000;
+  color: var(--danger-400);
   font-style: italic;
 `;
 
@@ -219,97 +214,93 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
   } = props;
 
   return (
-    <OutsideDivStyle>
-      <InsideDivStyle>
-        <LayoutDiv>
-          <PageTitleH1>
-            Please Enter Availibility For {selectedProfessor.first_name}{" "}
-            {selectedProfessor.last_name}
-          </PageTitleH1>
-          <MaxCoursesDiv>
-            <MaxCoursesH3>
-              Max number of courses you are willing to teach this year{" "}
-            </MaxCoursesH3>
-            <MaxCoursesInput
-              type="number"
-              value={maxCoursesThisYear}
-              onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                onMaxCoursesThisYear(event.target.value)
-              }
-            />
-          </MaxCoursesDiv>
-          <Dropdown
-            {...{
-              dropdownItems: semesters,
-              handleChange: onSelectedSemester,
-              startingValue: semesters[0].value,
-            }}
+    <Background>
+      <LayoutDiv>
+        <PageTitleH1>
+          Please Enter Availibility For {selectedProfessor.first_name}{" "}
+          {selectedProfessor.last_name}
+        </PageTitleH1>
+        <MaxCoursesDiv>
+          <MaxCoursesH3>
+            Max number of courses you are willing to teach this year{" "}
+          </MaxCoursesH3>
+          <MaxCoursesInput
+            type="number"
+            value={maxCoursesThisYear}
+            onChange={(event: ChangeEvent<HTMLInputElement>) =>
+              onMaxCoursesThisYear(event.target.value)
+            }
           />
-          <Timetable
-            semester={selectedSemester}
-            timetableContext={TimetableContext}
-            prefDayContext={PrefDayContext}
-          />
-          <AbsenceDiv>
-            <AbsenceItemDiv>
-              <AbsenceLabelP>I am away for this semester </AbsenceLabelP>
-              <CheckboxGroup.Checkbox
-                checked={away}
-                onClick={() => onAway(selectedSemester)}
-              />
-            </AbsenceItemDiv>
-            <AbsenceItemDiv>
-              <AbsenceLabelP>
-                I would like away this semester off{" "}
-              </AbsenceLabelP>
-              <CheckboxGroup.Checkbox
-                checked={requestOff}
-                onClick={() => onRequestOff(selectedSemester)}
-              />
-            </AbsenceItemDiv>
-          </AbsenceDiv>
-          <FreeformDiv>
-            <AbsenceLabelP>Reason for absence:</AbsenceLabelP>
-            <AbsenceTextarea
-              value={absenceReason}
-              onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
-                onAbsenceReason({
-                  semester: selectedSemester,
-                  text: event.target.value,
-                })
-              }
-            />
-          </FreeformDiv>
-        </LayoutDiv>
+        </MaxCoursesDiv>
+        <Dropdown
+          {...{
+            dropdownItems: semesters,
+            handleChange: onSelectedSemester,
+            startingValue: semesters[0].value,
+          }}
+        />
+        <Timetable
+          semester={selectedSemester}
+          timetableContext={TimetableContext}
+          prefDayContext={PrefDayContext}
+        />
         <WarningText>
           *Please be aware that you still could be scheduled outside your
           prefered time
         </WarningText>
-        <CustomButtonGroupView
-          style={{ padding: "var(--space-small) 0" }}
-          {...{ Amount: "Double" }}
+        <AbsenceDiv>
+          <AbsenceItemDiv>
+            <AbsenceLabelP>I am away for this semester </AbsenceLabelP>
+            <CheckboxGroup.Checkbox
+              checked={away}
+              onClick={() => onAway(selectedSemester)}
+            />
+          </AbsenceItemDiv>
+          <AbsenceItemDiv>
+            <AbsenceLabelP>I would like away this semester off </AbsenceLabelP>
+            <CheckboxGroup.Checkbox
+              checked={requestOff}
+              onClick={() => onRequestOff(selectedSemester)}
+            />
+          </AbsenceItemDiv>
+        </AbsenceDiv>
+        <FreeformDiv>
+          <AbsenceLabelP>Reason for absence:</AbsenceLabelP>
+          <AbsenceTextarea
+            value={absenceReason}
+            onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+              onAbsenceReason({
+                semester: selectedSemester,
+                text: event.target.value,
+              })
+            }
+          />
+        </FreeformDiv>
+      </LayoutDiv>
+      <CustomButtonGroupView
+        style={{ padding: "var(--space-small) 0" }}
+        {...{ Amount: "Double" }}
+      >
+        <CustomButtonView
+          {...{ Theme: "Secondary" }}
+          customClickEvent={() => {
+            console.log("back");
+            navigate(`/SelectProfessor/Preferences`);
+          }}
         >
-          <CustomButtonView
-            {...{ Theme: "Secondary" }}
-            customClickEvent={() => {
-              console.log("back");
-              navigate(`/SelectProfessor/Preferences`);
-            }}
-          >
-            Back
-          </CustomButtonView>
-          <CustomButtonView
-            {...{ Theme: "Primary" }}
-            customClickEvent={() => {
-              console.log("next");
-              navigate(`/SelectProfessor/Summary`);
-            }}
-          >
-            Next
-          </CustomButtonView>
-        </CustomButtonGroupView>
-      </InsideDivStyle>
-    </OutsideDivStyle>
+          Back
+        </CustomButtonView>
+        <CustomButtonView
+          {...{ Theme: "Primary" }}
+          customClickEvent={() => {
+            console.log("next");
+            navigate(`/SelectProfessor/Summary`);
+          }}
+        >
+          Next
+        </CustomButtonView>
+      </CustomButtonGroupView>
+    </Background>
   );
 }
 
