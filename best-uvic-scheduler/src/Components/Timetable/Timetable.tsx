@@ -36,6 +36,8 @@ export interface TimetableViewProps {
     dayIdx: number;
   }>;
   onTimeslots: React.Dispatch<updateTimeslotsAction>;
+  mouseDown: boolean;
+  setMouseDown: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
@@ -169,6 +171,8 @@ function useTimetable(props: TimetableProps): TimetableViewProps {
   const { timetables, setTimetables } = useContext(timetableContext);
   const { prefDays, setPrefDays } = useContext(prefDayContext);
 
+  const [mouseDown, setMouseDown] = useState(false);
+
   useEffect(() => {
     setTimetables({ ...(timetables || {}), [semester]: timeslots });
   }, [timeslots]);
@@ -197,6 +201,8 @@ function useTimetable(props: TimetableProps): TimetableViewProps {
     fullDays,
     timeSlotState: timeslots,
     onTimeslots,
+    mouseDown,
+    setMouseDown,
   };
 }
 
@@ -208,10 +214,15 @@ export function TimetableView(props: TimetableViewProps) {
     fullDays,
     timeSlotState: timeslots,
     onTimeslots,
+    mouseDown,
+    setMouseDown,
   } = props;
 
   return (
-    <TableDiv>
+    <TableDiv
+      onMouseDown={() => setMouseDown(true)}
+      onMouseUp={() => setMouseDown(false)}
+    >
       <div style={{ position: "sticky", top: "0px" }}> </div>
       {weekdays.map((day: string) => {
         return <DayHeaderP>{day}</DayHeaderP>;
@@ -235,6 +246,7 @@ export function TimetableView(props: TimetableViewProps) {
           timeslot={timeslot}
           onTimeslots={onTimeslots}
           timeslotIdx={idx}
+          mouseDown={mouseDown}
         ></TimetableRow>
       ))}
     </TableDiv>
