@@ -7,6 +7,7 @@ import CustomButtonGroupView from "../../Components/button/buttongroup.tsx";
 import * as CourseListHelper from "../../Util/CourseListHelper.tsx";
 import Dropdown from "../../Components/dropdown/dropdown.tsx";
 import Background from "../../Components/background/background.tsx";
+import { ProfessorQualificationsHelper } from "../../helpers/ProfessorQualificationHelper.tsx";
 
 const SelectDivStyle = styled.div`
   display: flex;
@@ -28,6 +29,7 @@ export function PDISelectProfessorQualifications() {
   const CourseData = CourseListHelper.GetCourseList();
   const Courses = CourseData.Courses;
   const AmountOfCourses = Courses.length;
+  const helper = ProfessorQualificationsHelper();
 
   //hooks
   const { qualifications, setQualifications } = useContext(
