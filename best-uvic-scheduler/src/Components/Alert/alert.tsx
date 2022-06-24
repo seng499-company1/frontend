@@ -8,7 +8,7 @@ export interface AlertProps {
 
 const RedBox = styled.div`
   display: grid;
-  padding: 0px 0px 0px 0px;
+  height: 48px;
   background-color: var(--danger-700);
   border-style: solid;
   opacity: 0.75;
@@ -18,6 +18,7 @@ const RedBox = styled.div`
 
 const AlertText = styled.p`
   text-shadow: 0.25px 0.5px black;
+  display: flex;
   opacity: 1;
   font-weight: bold;
   grid-column: 1 / 3;

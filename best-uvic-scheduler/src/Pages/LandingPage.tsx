@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Background } from "../Components/background/background.tsx";
 import Logo from "../Images/Uvic-logo.png";
 import Alert from "../Components/Alert/alert.tsx";
+import NavBar from "../Components/navBar/navBar.tsx";
 
 export function LandingPage() {
   const Header = styled.div`
@@ -28,6 +29,14 @@ export function LandingPage() {
     grid-row: 1;
   `;
 
+  const ProfListDiv = styled.div`
+    background-color: grey;
+    border-style: solid;
+  `;
+  const DataEntryDiv = styled.h4`
+    padding-left: 12px;
+  `;
+
   return (
     <Background>
       <Header>
@@ -36,7 +45,15 @@ export function LandingPage() {
         </LogoDiv>
         <Title>UVIC Course Scheduler</Title>
       </Header>
+
+      <NavBar></NavBar>
+      <br></br>
       <Alert {...{ new_entries: 3 }}></Alert>
+      <br></br>
+      <ProfListDiv>
+        <DataEntryDiv>New Data Entries:</DataEntryDiv>
+        <DataEntryDiv>Excisting Data Entires:</DataEntryDiv>
+      </ProfListDiv>
     </Background>
   );
 }
