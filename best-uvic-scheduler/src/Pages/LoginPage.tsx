@@ -3,6 +3,7 @@ import { Background } from "../Components/background/background.tsx";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { LoginHelper } from "../Util/LoginHelper.tsx";
 
 function Box({ children, ...props }) {
   return <div {...props}>{children}</div>;
@@ -47,12 +48,19 @@ const Center = styled.div`
 `;
 
 export function LoginPage() {
-  function onSubmit() {
-    console.log("username: " + username + " password: " + password);
-  }
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+  function onSubmit() {
+    const resp = LoginHelper(username, password);
+
+    if (resp == "prof") {
+      //professor landing page
+    } else if (resp == "admin") {
+      //admin landing page
+    }
+  }
   return (
     <Background>
       <BoxDiv>

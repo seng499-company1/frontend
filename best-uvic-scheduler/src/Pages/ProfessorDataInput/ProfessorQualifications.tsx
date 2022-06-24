@@ -7,7 +7,7 @@ import CustomButtonGroupView from "../../Components/button/buttongroup.tsx";
 import * as CourseListHelper from "../../Util/CourseListHelper.tsx";
 import Dropdown from "../../Components/dropdown/dropdown.tsx";
 import Background from "../../Components/background/background.tsx";
-import { ProfessorQualificationsHelper } from "../../helpers/ProfessorQualificationHelper.tsx";
+import { ProfessorQualificationsHelper } from "../../Util/ProfessorQualificationHelper.tsx";
 
 const SelectDivStyle = styled.div`
   display: flex;
