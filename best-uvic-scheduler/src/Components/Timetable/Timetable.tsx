@@ -36,6 +36,8 @@ export interface TimetableViewProps {
     dayIdx: number;
   }>;
   onTimeslots: React.Dispatch<updateTimeslotsAction>;
+  mouseDown: boolean;
+  setMouseDown: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
@@ -84,6 +86,7 @@ const TableDiv = styled.div`
   display: grid;
   grid-template-columns: 150px repeat(5, minmax(0, 1fr));
   border-bottom: 1px solid var(--border);
+  background: #fff;
 `;
 
 const AvDiv = styled.div`
@@ -169,6 +172,8 @@ function useTimetable(props: TimetableProps): TimetableViewProps {
   const { timetables, setTimetables } = useContext(timetableContext);
   const { prefDays, setPrefDays } = useContext(prefDayContext);
 
+  const [mouseDown, setMouseDown] = useState(false);
+
   useEffect(() => {
     setTimetables({ ...(timetables || {}), [semester]: timeslots });
   }, [timeslots]);
@@ -197,6 +202,8 @@ function useTimetable(props: TimetableProps): TimetableViewProps {
     fullDays,
     timeSlotState: timeslots,
     onTimeslots,
+    mouseDown,
+    setMouseDown,
   };
 }
 
@@ -208,10 +215,19 @@ export function TimetableView(props: TimetableViewProps) {
     fullDays,
     timeSlotState: timeslots,
     onTimeslots,
+    mouseDown,
+    setMouseDown,
   } = props;
 
   return (
-    <TableDiv>
+    <TableDiv
+      draggable="false"
+      onMouseDown={() => setMouseDown(true)}
+      onMouseUp={() => {
+        setMouseDown(false);
+      }}
+      onMouseLeave={() => setMouseDown(false)}
+    >
       <div style={{ position: "sticky", top: "0px" }}> </div>
       {weekdays.map((day: string) => {
         return <DayHeaderP>{day}</DayHeaderP>;
@@ -231,10 +247,12 @@ export function TimetableView(props: TimetableViewProps) {
 
       {timeslots.map((timeslot, idx) => (
         <TimetableRow
+          draggable="false"
           slotTimes={slotTimes}
           timeslot={timeslot}
           onTimeslots={onTimeslots}
           timeslotIdx={idx}
+          mouseDown={mouseDown}
         ></TimetableRow>
       ))}
     </TableDiv>
