@@ -3,7 +3,7 @@ import { Background } from "../Components/background/background.tsx";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { LoginHelper } from "../Util/LoginHelper.tsx";
+import { PostLoginInfo } from "../Util/LoginHelper.tsx";
 
 function Box({ children, ...props }) {
   return <div {...props}>{children}</div>;
@@ -41,24 +41,18 @@ const RightDiv = styled.div`
   gap: 8px;
 `;
 
-const Center = styled.div`
-  display: flex;
-  flex-direction: column;
-  float: center;
-`;
-
 export function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   function onSubmit() {
-    const resp = LoginHelper(username, password);
+    const resp = PostLoginInfo({ username: username, password: password });
 
-    if (resp == "prof") {
-      //professor landing page
-    } else if (resp == "admin") {
-      //admin landing page
+    if (resp === "prof") {
+      navigate(`/SelectProfessor`);
+    } else if (resp === "admin") {
+      //navigate to professor login page
     }
   }
   return (
@@ -73,7 +67,7 @@ export function LoginPage() {
             minHeight: 200,
             padding: 8,
             width: 500,
-            height: 300,
+            height: 250,
           }}
         >
           <LoginBoxDiv>
@@ -104,17 +98,6 @@ export function LoginPage() {
                 </CustomButtonView>
               </RightDiv>
             </form>
-            <Center>
-              <p>*Questionaire close on May 1st*</p>
-              <CustomButtonView
-                {...{ Theme: "Primary" }}
-                customClickEvent={() => {
-                  navigate(`/SelectProfessor`);
-                }}
-              >
-                Submit Questionaire Here
-              </CustomButtonView>
-            </Center>
           </LoginBoxDiv>
         </Box>
       </BoxDiv>
