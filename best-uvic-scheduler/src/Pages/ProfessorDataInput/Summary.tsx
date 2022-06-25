@@ -7,6 +7,8 @@ import {
   PreferencesContext,
 } from "./index.tsx";
 
+import { TimetableContext, PrefDayContext } from "./ProfessorTimetable.tsx";
+
 import { useNavigate } from "react-router-dom";
 import CustomButtonView from "../../Components/button/button.tsx";
 import CustomButtonGroupView from "../../Components/button/buttongroup.tsx";
@@ -48,6 +50,9 @@ export function Summary() {
   );
   const { preferences, setPreferences } = useContext(PreferencesContext);
   const { selectedProfessor, setProfessor } = useContext(ProfessorContext);
+  const { timeTable, setTimeTable } = useContext(TimetableContext);
+  const { prefDay, setPrefDay } = useContext(PrefDayContext);
+
   const navigate = useNavigate();
 
   return (
@@ -77,7 +82,10 @@ export function Summary() {
 
       <h2>Availibility</h2>
       <Header4>Summer</Header4>
+      <div>{timeTable}</div>
       <Header4>Fall</Header4>
+      <div>{prefDay}</div>
+
       <Header4>Spring</Header4>
 
       <CustomButtonGroupView {...{ Amount: "Double" }}>

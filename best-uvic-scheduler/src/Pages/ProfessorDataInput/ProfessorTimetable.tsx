@@ -50,12 +50,12 @@ function updateString(
   return { ...state, [action.semester]: action.text };
 }
 
-const TimetableContext = React.createContext({
+export const TimetableContext = React.createContext({
   timetables: {},
   setTimetables: (_timetables: {}) => {},
 });
 
-const PrefDayContext = React.createContext({
+export const PrefDayContext = React.createContext({
   prefDays: {},
   setPrefDays: (_prefDays: {}) => {},
 });
