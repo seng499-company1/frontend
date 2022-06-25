@@ -2,8 +2,9 @@ import { CustomButtonView } from "../Components/button/button.tsx";
 import { Background } from "../Components/background/background.tsx";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { PostLoginInfo } from "../Util/LoginHelper.tsx";
+import { ProfessorContext } from "./ProfessorDataInput/index.tsx";
 
 function Box({ children, ...props }) {
   return <div {...props}>{children}</div>;
@@ -44,15 +45,16 @@ const RightDiv = styled.div`
 export function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { selectedProfessor, setProfessor } = useContext(ProfessorContext);
   const navigate = useNavigate();
 
   function onSubmit() {
-    const resp = PostLoginInfo({ username: username, password: password });
-
-    if (resp === "prof") {
-      navigate(`/SelectProfessor`);
-    } else if (resp === "admin") {
-      //navigate to professor login page
+    var resp = PostLoginInfo({ username: username, password: password });
+    console.log(resp);
+    if (resp.first_name === "Rich") {
+      setProfessor(resp);
+      navigate(`/SelectProfessor/Qualifications`);
+    } else {
     }
   }
   return (
