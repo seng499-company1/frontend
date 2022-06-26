@@ -71,15 +71,21 @@ export function Summary_RO() {
   const navigate = useNavigate();
 
   const terms = ["summer", "spring", "fall"];
-  const weekdays = ["mon", "tues", "wed", "thurs", "fri"];
+  const weekdays = {
+    mon: "Monday",
+    tues: "Tuesday",
+    wed: "Wednesday",
+    thurs: "Thrusday",
+    fri: "Friday",
+  };
   //process time data
 
-  const timesMon = Times.summer.mon.times;
-  stringToTime(timesMon);
-  const timesTues = Times.summer.tues.times;
-  const timesWed = Times.summer.wed.times;
-  const timesThurs = Times.summer.thurs.times;
-  const timesFri = Times.summer.fri.times;
+  const timeSummer = Times.summer;
+  //   stringToTime(timesMon);
+  //   const timesTues = Times.summer.tues.times;
+  //   const timesWed = Times.summer.wed.times;
+  //   const timesThurs = Times.summer.thurs.times;
+  //   const timesFri = Times.summer.fri.times;
 
   return (
     <Background>
@@ -112,13 +118,14 @@ export function Summary_RO() {
       </CustomButtonGroupView>
 
       <h2>Availibility</h2>
+      <TimeList>
+        {Object.keys(timeSummer).map(function (Day, index) {
+          const day = weekdays[Day];
 
-      {/* {Times.prefered_times.map(function (term, index) {
-        const test = ""
-        return (
-          <div>ters<div/>
-        );
-      })} */}
+          return <TimeDiv>{day}</TimeDiv>;
+        })}
+      </TimeList>
+
       <Header4>Summer</Header4>
 
       <TimeList>
