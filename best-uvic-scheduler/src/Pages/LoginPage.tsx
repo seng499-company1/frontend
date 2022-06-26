@@ -51,10 +51,11 @@ export function LoginPage() {
   function onSubmit() {
     var resp = PostLoginInfo({ username: username, password: password });
     console.log(resp);
-    if (resp.first_name === "Rich") {
+    if (resp.first_name != "Rich") {
       setProfessor(resp);
       navigate(`/SelectProfessor/Qualifications`);
     } else {
+      //admin so navigate to admin landing page
     }
   }
   return (
