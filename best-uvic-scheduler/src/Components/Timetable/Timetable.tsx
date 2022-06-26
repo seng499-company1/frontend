@@ -15,7 +15,7 @@ export interface TimetableViewProps {
   semester: string;
 }
 
-const slotTimes = [
+export const slotTimes = [
   "8:30",
   "9:00",
   "9:30",
@@ -25,21 +25,21 @@ const slotTimes = [
   "11:30",
   "12:00",
   "12:30",
-  "1:00",
-  "1:30",
-  "2:00",
-  "2:30",
-  "3:00",
-  "3:30",
-  "4:00",
-  "4:30",
-  "5:00",
-  "5:30",
-  "6:00",
-  "6:30",
-  "7:00",
-  "7:30",
-  "8:00",
+  "13:00",
+  "13:30",
+  "14:00",
+  "14:30",
+  "15:00",
+  "15:30",
+  "16:00",
+  "16:30",
+  "17:00",
+  "17:30",
+  "18:00",
+  "18:30",
+  "19:00",
+  "19:30",
+  "20:00",
 ];
 
 export interface TimetableProps {
@@ -85,7 +85,7 @@ export function TimetableView(props: TimetableViewProps) {
     <TableDiv>
       <div style={{ position: "sticky", top: "0px" }}> </div>
       {weekdays.map((day: string) => {
-        return <DayHeaderP>{day}</DayHeaderP>;
+        return <DayHeaderP key={day}>{day}</DayHeaderP>;
       })}
 
       {timetable.map((timeslot, idx) => (
@@ -95,6 +95,7 @@ export function TimetableView(props: TimetableViewProps) {
           onTimeslots={setTimetables}
           timeslotIdx={idx}
           semester={semester}
+          key={`row-${idx}`}
         ></TimetableRow>
       ))}
     </TableDiv>
