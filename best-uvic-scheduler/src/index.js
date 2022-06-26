@@ -7,6 +7,7 @@ import ProfessorDataInputIndex from "./Pages/ProfessorDataInput/index.tsx";
 import reportWebVitals from "./reportWebVitals";
 import LoginPage from "./Pages/LoginPage.tsx";
 import LandingPage from "./Pages/LandingPage.tsx";
+import Summary_RO from "./Pages/Summary_RO.tsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -16,6 +17,7 @@ root.render(
       <Route path="/" element={<LoginPage />} />
       <Route path="/SelectProfessor/*" element={<ProfessorDataInputIndex />} />
       <Route path="/LandingPage" element={<LandingPage />} />
+      <Route path="/LandingPage/Summary_RO" element={<Summary_RO />} />
     </Routes>
   </BrowserRouter>
   //</React.StrictMode>
