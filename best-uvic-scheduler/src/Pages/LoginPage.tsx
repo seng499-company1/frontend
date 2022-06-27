@@ -53,7 +53,7 @@ export function LoginPage() {
     var resp = PostLoginInfo({ username: username, password: password });
     if (resp.first_name != "Rich") {
       setProfessor(resp);
-      navigate(`/SelectProfessor/Qualifications`);
+      navigate(`/SelectProfessor/TimeAvail`);
     } else {
       navigate("/LandingPage");
     }
