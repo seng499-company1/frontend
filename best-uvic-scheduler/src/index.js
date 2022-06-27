@@ -6,8 +6,8 @@ import App from "./App";
 import ProfessorDataInputIndex from "./Pages/ProfessorDataInput/index.tsx";
 import reportWebVitals from "./reportWebVitals";
 import LoginPage from "./Pages/LoginPage.tsx";
-import LandingPage from "./Pages/LandingPage.tsx";
-import Summary_RO from "./Pages/Summary_RO.tsx";
+import LandingPage from "./Pages/AdminPages/LandingPage.tsx";
+import Summary_RO from "./Pages/AdminPages/Summary_RO.tsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

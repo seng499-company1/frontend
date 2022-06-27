@@ -1,14 +1,14 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { Background } from "../Components/background/background.tsx";
-import Logo from "../Images/Uvic-logo.png";
-import Alert from "../Components/Alert/alert.tsx";
-import NavBar from "../Components/navBar/navBar.tsx";
-import * as ProfessorImputHelper from "../Util/ProfessorInputHelper.tsx";
+import { Background } from "../../Components/background/background.tsx";
+import Logo from "../../Images/Uvic-logo.png";
+import Alert from "../../Components/Alert/alert.tsx";
+import NavBar from "../../Components/navBar/navBar.tsx";
+import * as ProfessorImputHelper from "../../Util/ProfessorInputHelper.tsx";
 
 export const ProfessorNameContext = React.createContext({
-  selectedProfessorName: 0,
+  selectedProfessorName: "",
   setProfessorName: () => {},
 });
 const Header = styled.div`
@@ -73,9 +73,8 @@ export function LandingPage() {
     useContext(ProfessorNameContext);
 
   //get data
-  const professorData = ProfessorImputHelper.GetProfessorInputList();
+  const professors = ProfessorImputHelper.GetProfessorInputList().profEntries;
 
-  const professors = professorData.profEntries;
   const oldProf = [];
   const newProf = [];
   const navigate = useNavigate();

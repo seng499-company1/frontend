@@ -162,6 +162,13 @@ const PageTitleH1 = styled.h1`
   text-align: center;
 `;
 
+const WarningText = styled.h4`
+  margin: 0;
+  text-align: center;
+  color: var(--danger-400);
+  font-style: italic;
+`;
+
 const MaxCoursesH3 = styled.h3`
   font-weight: 400;
   margin: 0;
@@ -237,6 +244,10 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
           timetableContext={TimetableContext}
           prefDayContext={PrefDayContext}
         />
+        <WarningText>
+          *Please be aware that you still could be scheduled outside your
+          prefered time
+        </WarningText>
         <AbsenceDiv>
           <AbsenceItemDiv>
             <AbsenceLabelP>I am away for this semester </AbsenceLabelP>
