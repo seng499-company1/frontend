@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { PostLoginInfo } from "../Util/LoginHelper.tsx";
+import { ProfessorContext } from "./ProfessorDataInput/index.tsx";
 import React from "react";
 
 function Box({ children, ...props }) {
@@ -42,11 +43,6 @@ const RightDiv = styled.div`
   gap: 8px;
 `;
 
-export const ProfessorContext = React.createContext({
-  selectedProfessor: 0,
-  setProfessor: () => {},
-});
-
 export function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -55,7 +51,6 @@ export function LoginPage() {
 
   function onSubmit() {
     var resp = PostLoginInfo({ username: username, password: password });
-    console.log(resp);
     if (resp.first_name != "Rich") {
       setProfessor(resp);
       navigate(`/SelectProfessor/Qualifications`);

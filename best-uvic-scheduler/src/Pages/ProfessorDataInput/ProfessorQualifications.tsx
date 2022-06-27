@@ -28,7 +28,6 @@ export function PDISelectProfessorQualifications() {
   const CourseData = CourseListHelper.GetCourseList();
   const Courses = CourseData.Courses;
   const AmountOfCourses = Courses.length;
-  console.log(CourseListHelper.test());
 
   //hooks
   const { qualifications, setQualifications } = useContext(

@@ -7,7 +7,7 @@ import CustomButtonGroupView from "../../Components/button/buttongroup.tsx";
 import CheckboxGroup from "../../Components/checkbox/checkbox.tsx";
 import Dropdown from "../../Components/dropdown/dropdown.tsx";
 import { Timetable } from "../../Components/Timetable/Timetable.tsx";
-import { ProfessorContext } from "../LoginPage.tsx";
+import { ProfessorContext } from "./index.tsx";
 import { Background } from "../../Components/background/background.tsx";
 
 export interface ProfessorTimetableProps {

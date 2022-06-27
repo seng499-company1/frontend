@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import styled from "styled-components";
 
 import { QualificationsContext, PreferencesContext } from "./index.tsx";
-import { ProfessorContext } from "../LoginPage.tsx";
+import { ProfessorContext } from "./index.tsx";
 
 import { useNavigate } from "react-router-dom";
 import CustomButtonView from "../../Components/button/button.tsx";
