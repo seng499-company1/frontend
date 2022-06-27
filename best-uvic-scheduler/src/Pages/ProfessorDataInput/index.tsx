@@ -15,6 +15,10 @@ export const QualificationsContext = React.createContext({
   selectedQualifications: {},
   setQualifications: (event) => {},
 });
+export const TimeContext = React.createContext({
+  selectedTimes: {},
+  setSelectedTimes: (event) => {},
+});
 
 export const PreferencesContext = React.createContext({
   preferences: {},
