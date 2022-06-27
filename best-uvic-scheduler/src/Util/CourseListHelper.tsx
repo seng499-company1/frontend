@@ -29,7 +29,7 @@ export async function test() {
 const TestCourseList = {
   Courses: [
     {
-      uuid: "1e90ab30-c380-4034-acdb-238856a88df3",
+      uuid: "61587323-6632-4dcf-bae8-2a51ed8585a0",
       course_code: "CSC 111",
       course_name: "Fundamentals of C Programming",
       course_desceiption:
