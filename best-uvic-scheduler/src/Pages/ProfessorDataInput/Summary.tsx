@@ -288,7 +288,9 @@ export function Summary() {
           {" "}
           Back{" "}
         </CustomButtonView>
-        <CustomButtonView {...{ Theme: "Primary" }} customClickEvent={() => {}}>
+        <CustomButtonView {...{ Theme: "Primary" }} customClickEvent={() => {
+            navigate(`/`);
+        }}>
           {" "}
           SUBMIT{" "}
         </CustomButtonView>
