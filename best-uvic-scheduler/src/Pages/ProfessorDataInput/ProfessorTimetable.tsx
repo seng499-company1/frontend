@@ -454,7 +454,7 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
         <CustomButtonView
           {...{ Theme: "Secondary" }}
           customClickEvent={() => {
-            navigate(`/SelectProfessor`);
+            navigate(`/`);
           }}
         >
           {" "}

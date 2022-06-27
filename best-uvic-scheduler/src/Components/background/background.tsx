@@ -4,11 +4,14 @@ import "../../index.css";
 
 const InsideDivStyle = styled.div`
   width: 55%;
+  margin-top: 40px;
+  margin-bottom: 40px;
   padding: 36px;
   border-radius: 8px;
   background-color: #fefefe;
   height: 100%;
   position: relative;
+  box-shadow: 2px 12px 12px lightgray;
 `;
 
 const OutsideDivStyle = styled.div`
