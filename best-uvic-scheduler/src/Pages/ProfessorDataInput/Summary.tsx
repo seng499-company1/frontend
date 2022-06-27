@@ -60,6 +60,17 @@ const TimeText = styled.div`
   grid-row: 1;
 `;
 
+const WarningTextRow = styled.div`
+  padding-top: 2px;
+  box-shadow: 1px 1px;
+  background-color: var(--grey-50);
+  padding-bottom: 4px;
+`;
+const WarningText = styled.div`
+  text-align: center;
+  grid-column
+`;
+
 const Space = styled.br`
   margin-bottom: 2px;
 `;
@@ -91,8 +102,6 @@ export function Summary() {
   TimesTest.summer = timesFromContext["Spring 2023"];
   TimesTest.spring = timesFromContext["Summer 2023"];
 
-  console.log(TimesTest);
-  console.log(Times);
   //hooks
   const { qualifications, setQualifications } = useContext(
     QualificationsContext
@@ -123,6 +132,7 @@ export function Summary() {
       <TimeDiv>
         {Courses.map(function (Course, index) {
           let name = Course.course_code;
+
           return (
             <TimeRow>
               <DayText>
@@ -142,15 +152,34 @@ export function Summary() {
 
       <h2>Availibility</h2>
       <Header4>Summer</Header4>
+
+      {(() => {
+        if (
+          timeSummer.Monday.times.length === 0 &&
+          timeSummer.Tuesday.times.length === 0 &&
+          timeSummer.Wednesday.times.length === 0 &&
+          timeSummer.Thursday.times.length === 0 &&
+          timeSummer.Friday.times.length === 0
+        ) {
+          return (
+            <TimeDiv>
+              <WarningTextRow>
+                <WarningText>No Times Entered For This Semester</WarningText>
+              </WarningTextRow>
+            </TimeDiv>
+          );
+        } else {
+          return <div></div>;
+        }
+      })()}
       {Object.keys(timeSummer).map(function (Day, index) {
         const day = weekdays[Day];
         let times = stringToTime(timeSummer[Day].times);
 
+        let loop = 0;
         return (
           <TimeDiv>
             {times.map(function (time, timeIndex) {
-              const timeSplit = time.split(" ");
-
               return (
                 <TimeRow>
                   <DayText> {day}</DayText>
@@ -166,6 +195,26 @@ export function Summary() {
       })}
 
       <Header4>Fall</Header4>
+
+      {(() => {
+        if (
+          timeFall.Monday.times.length === 0 &&
+          timeFall.Tuesday.times.length === 0 &&
+          timeFall.Wednesday.times.length === 0 &&
+          timeFall.Thursday.times.length === 0 &&
+          timeFall.Friday.times.length === 0
+        ) {
+          return (
+            <TimeDiv>
+              <WarningTextRow>
+                <WarningText>No Times Entered For This Semester</WarningText>
+              </WarningTextRow>
+            </TimeDiv>
+          );
+        } else {
+          return <div></div>;
+        }
+      })()}
       {Object.keys(timeFall).map(function (Day, index) {
         const day = weekdays[Day];
         let times = stringToTime(timeFall[Day].times);
@@ -189,6 +238,25 @@ export function Summary() {
         );
       })}
       <Header4>Spring</Header4>
+      {(() => {
+        if (
+          timeSpring.Monday.times.length === 0 &&
+          timeSpring.Tuesday.times.length === 0 &&
+          timeSpring.Wednesday.times.length === 0 &&
+          timeSpring.Thursday.times.length === 0 &&
+          timeSpring.Friday.times.length === 0
+        ) {
+          return (
+            <TimeDiv>
+              <WarningTextRow>
+                <WarningText>No Times Entered For This Semester</WarningText>
+              </WarningTextRow>
+            </TimeDiv>
+          );
+        } else {
+          return <div></div>;
+        }
+      })()}
       {Object.keys(timeSpring).map(function (Day, index) {
         const day = weekdays[Day];
         let times = stringToTime(timeSpring[Day].times);
