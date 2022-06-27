@@ -8,6 +8,7 @@ export interface TimetableRowProps {
   timeslot: Array<boolean>;
   onTimeslots: React.Dispatch<updateTimeslotsAction>;
   timeslotIdx: number;
+  mouseDown: boolean;
 }
 
 export interface TimetableRowViewProps {
@@ -15,6 +16,7 @@ export interface TimetableRowViewProps {
   slotTime: string;
   onTimeslots: React.Dispatch<updateTimeslotsAction>;
   timeslotIdx: number;
+  mouseDown: boolean;
 }
 
 const CellDiv = styled.div<{ highlighted: boolean }>`
@@ -30,6 +32,11 @@ const CellDiv = styled.div<{ highlighted: boolean }>`
     ${(props) => props.highlighted && "background-color: var(--primary-500)"}
   }
 
+  &:active {
+    background-color: var(--primary-400);
+    ${(props) => props.highlighted && "background-color: white"}
+  }
+
   ${(props) => props.highlighted && "background-color: var(--primary-400)"}
 `;
 
@@ -39,6 +46,7 @@ const TimeDiv = styled.div`
   text-align: center;
   padding: var(--space-x-small) var(--space-med);
   box-sizing: border-box;
+  user-select: none;
 `;
 
 function useTimetableRow(props: TimetableRowProps): TimetableRowViewProps {
@@ -47,11 +55,12 @@ function useTimetableRow(props: TimetableRowProps): TimetableRowViewProps {
     timeslot: props.timeslot,
     onTimeslots: props.onTimeslots,
     timeslotIdx: props.timeslotIdx,
+    mouseDown: props.mouseDown,
   };
 }
 
 export function TimetableRowView(props: TimetableRowViewProps) {
-  const { slotTime, timeslot, onTimeslots, timeslotIdx } = props;
+  const { slotTime, timeslot, onTimeslots, timeslotIdx, mouseDown } = props;
 
   return (
     <>
@@ -59,9 +68,16 @@ export function TimetableRowView(props: TimetableRowViewProps) {
       {timeslot.map((slot: boolean, idx) => {
         return (
           <CellDiv
+            draggable="false"
             key={`${idx}-${slot}`}
-            onClick={() => onTimeslots({ dayIdx: idx, slotIdx: timeslotIdx })}
+            onClick={(e) => {
+              onTimeslots({ dayIdx: idx, slotIdx: timeslotIdx });
+              e.stopPropagation();
+            }}
             highlighted={slot}
+            onMouseLeave={() => {
+              mouseDown && onTimeslots({ dayIdx: idx, slotIdx: timeslotIdx });
+            }}
           >
             {" "}
           </CellDiv>
