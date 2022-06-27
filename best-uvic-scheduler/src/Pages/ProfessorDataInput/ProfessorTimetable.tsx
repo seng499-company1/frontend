@@ -414,7 +414,8 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
             <>
               <MaxCoursesDiv>
                 <FieldLabelP>
-                  Maximum number of courses you are willing to teach this year{" "}
+                  Maximum number of courses you are willing to teach this
+                  semester{" "}
                 </FieldLabelP>
                 <MaxCoursesInput
                   type="number"
