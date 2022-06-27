@@ -15,14 +15,13 @@ import {
   QualificationsContext,
   PrefDayContext,
 } from "./index.tsx";
+import { Background } from "../../Components/background/background.tsx";
 
 export interface ProfessorTimetableProps {
   semesters: Array<string>;
 }
 
 export interface ProfessorTimetableViewProps {
-  maxCoursesThisYear: string;
-  onMaxCoursesThisYear: React.Dispatch<React.SetStateAction<string>>;
   semesters: Array<{ value: string; label: string }>;
   selectedSemester: string;
   onSelectedSemester: React.Dispatch<
@@ -37,6 +36,11 @@ export interface ProfessorTimetableViewProps {
   onRequestOff: React.Dispatch<string>;
   absenceReason: string;
   onAbsenceReason: React.Dispatch<{
+    semester: string;
+    text: string;
+  }>;
+  maxCourses: string;
+  setMaxCourses: React.Dispatch<{
     semester: string;
     text: string;
   }>;
@@ -106,9 +110,13 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
     label: semesters[0] || "",
   });
 
-  const [maxCoursesThisYear, onMaxCoursesThisYear] = useState("");
-
   const [absenceReasons, onAbsenceReason] = useReducer(
+    updateString,
+    semesters,
+    initString
+  );
+
+  const [maxCourses, setMaxCourses] = useReducer(
     updateString,
     semesters,
     initString
@@ -158,9 +166,9 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
     away: aways[selectedSemester.label],
     requestOff: requestOffs[selectedSemester.label],
     absenceReason: absenceReasons[selectedSemester.label],
-    maxCoursesThisYear,
+    maxCourses: maxCourses[selectedSemester.label],
+    setMaxCourses,
     onSelectedSemester,
-    onMaxCoursesThisYear,
     onAway,
     onRequestOff,
     onAbsenceReason,
@@ -171,9 +179,9 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
 }
 
 const MaxCoursesDiv = styled.div`
-  display: flex;
   gap: var(--space-large);
-  justify-content: center;
+  justify-content: flex-start;
+  align-items: center;
 `;
 
 const AbsenceDiv = styled.div`
@@ -191,7 +199,6 @@ const CheckboxContainerDiv = styled.div`
 const FreeformDiv = styled.div`
   display: flex;
   flex-direction: column;
-  gap: var(--space-med);
 `;
 
 const LayoutDiv = styled.div`
@@ -201,18 +208,20 @@ const LayoutDiv = styled.div`
   padding: 0 10px var(--space-2x-large);
 `;
 
-const Subheading = styled.h3`
-  font-weight: 400;
+const WarningText = styled.h4`
   margin: 0;
+  text-align: center;
+  color: var(--danger-400);
+  font-style: italic;
 `;
 
 const MaxCoursesInput = styled.input`
-  font-size: var(--font-size-h3);
+  font-size: 16px;
   border: 1px solid var(--border);
-  max-width: 40px;
+  max-width: 280px;
   border-radius: 4px;
   text-align: center;
-  padding: var(--space-3x-small);
+  padding: var(--space-x-small);
 
   &:focus-visible {
     outline-color: var(--primary);
@@ -222,21 +231,6 @@ const MaxCoursesInput = styled.input`
 const AbsenceTextarea = styled.textarea`
   border: 1px solid var(--border);
   border-radius: 4px;
-`;
-
-const InsideDivStyle = styled.div`
-  width: 55%;
-  padding: 36px;
-  border-radius: 8px;
-  background-color: #fefefe;
-`;
-
-const OutsideDivStyle = styled.div`
-  display: flex;
-  justify-content: center;
-  background-color: var(--primary-50);
-  padding: var(--space-x-large);
-  min-height: 100vh;
 `;
 
 const CourseInfoDiv = styled.div`
@@ -251,17 +245,18 @@ const Header = styled.h1`
   text-align: center;
 `;
 
-const CheckboxLabelP = styled.p`
-  padding: var(--space-2x-small) var(--space-med);
+const FieldLabelP = styled.p`
+  padding: var(--space-2x-small) 0;
   box-sizing: border-box;
   color: var(--font-color);
+  margin: 0;
 `;
 
 const PreferredDiv = styled.div`
   width: 100%;
   display: flex;
-  flex-direction: column;
-  gap: var(--space-med);
+  justify-content: space-between;
+  flex-wrap: wrap;
 `;
 
 export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
@@ -271,9 +266,7 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
     away,
     requestOff,
     absenceReason,
-    maxCoursesThisYear,
     onSelectedSemester,
-    onMaxCoursesThisYear,
     onAway,
     onRequestOff,
     onAbsenceReason,
@@ -288,184 +281,196 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
     QualificationItems,
     prefDays,
     setPrefDays,
+    maxCourses,
+    setMaxCourses,
   } = props;
 
   return (
-    <OutsideDivStyle>
-      <InsideDivStyle>
-        <LayoutDiv>
-          <Header>Please Enter Class Scheduling Preferences</Header>
-          {Courses.map(function (Course, index) {
-            let name = Course.course_code;
+    <Background>
+      <LayoutDiv>
+        <Header>Please Enter Class Scheduling Preferences</Header>
+        {Courses.map(function (Course, index) {
+          let name = Course.course_code;
+          return (
+            <div>
+              <h2> {Course.course_code} </h2>
+              <CourseInfoDiv key={index}>
+                <p>
+                  <b>Course description:</b> {Course.course_desceiption}
+                </p>
+                <Dropdown
+                  placeholder={"Desirability"}
+                  startingValue={
+                    preferences.hasOwnProperty(name)
+                      ? {
+                          value: preferences[name],
+                          label: preferences[name],
+                        }
+                      : null
+                  }
+                  dropdownItems={PreferenceItems}
+                  handleChange={(event) => {
+                    setPreferences({
+                      ...preferences,
+                      [Course.course_code]: event.value,
+                    });
+                  }}
+                >
+                  Select
+                </Dropdown>
+                <p>
+                  <b>Qualifications needed:</b> {Course.course_qualifications}
+                  {Course.peng_req ? (
+                    <>
+                      , <b>PENG is Reqiured</b>
+                    </>
+                  ) : (
+                    ""
+                  )}
+                </p>
+                <Dropdown
+                  placeholder={"Qualification"}
+                  startingValue={
+                    qualifications.hasOwnProperty(name)
+                      ? {
+                          value: qualifications[name],
+                          label: qualifications[name],
+                        }
+                      : null
+                  }
+                  dropdownItems={QualificationItems}
+                  handleChange={(event) => {
+                    setQualifications({
+                      ...qualifications,
+                      [Course.course_code]: event.value,
+                    });
+                  }}
+                >
+                  Select
+                </Dropdown>
+              </CourseInfoDiv>
+            </div>
+          );
+        })}
+        <TabGroup initialTabId="0">
+          {semesters.map((sem: { label: string; value: string }, i: number) => {
             return (
-              <div>
-                <h2> {Course.course_code} </h2>
-                <CourseInfoDiv key={index}>
-                  <p>
-                    <b>Course description:</b> {Course.course_desceiption}
-                  </p>
-                  <Dropdown
-                    placeholder={"Desirability"}
-                    startingValue={
-                      preferences.hasOwnProperty(name)
-                        ? {
-                            value: preferences[name],
-                            label: preferences[name],
-                          }
-                        : null
-                    }
-                    dropdownItems={PreferenceItems}
-                    handleChange={(event) => {
-                      setPreferences({
-                        ...preferences,
-                        [Course.course_code]: event.value,
-                      });
-                    }}
-                  >
-                    Select
-                  </Dropdown>
-                  <p>
-                    <b>Qualifications needed:</b> {Course.course_qualifications}
-                    <b>{Course.peng_req ? ", PENG is Reqiured" : ""}</b>
-                  </p>
-                  <Dropdown
-                    placeholder={"Qualification"}
-                    startingValue={
-                      qualifications.hasOwnProperty(name)
-                        ? {
-                            value: qualifications[name],
-                            label: qualifications[name],
-                          }
-                        : null
-                    }
-                    dropdownItems={QualificationItems}
-                    handleChange={(event) => {
-                      setQualifications({
-                        ...qualifications,
-                        [Course.course_code]: event.value,
-                      });
-                    }}
-                  >
-                    Select
-                  </Dropdown>
-                </CourseInfoDiv>
-              </div>
+              <TabGroup.Tab
+                tabId={`${i}`}
+                onClick={() => {
+                  onSelectedSemester(sem);
+                }}
+                size="medium"
+              >
+                {sem.label}
+              </TabGroup.Tab>
             );
           })}
-          <MaxCoursesDiv>
-            <Subheading>
-              Max number of courses you are willing to teach this year{" "}
-            </Subheading>
-            <MaxCoursesInput
-              type="number"
-              value={maxCoursesThisYear}
-              onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                onMaxCoursesThisYear(event.target.value)
+        </TabGroup>
+
+        <AbsenceDiv>
+          <CheckboxContainerDiv>
+            <CheckboxGroup.Checkbox
+              checked={away}
+              onClick={() => onAway(selectedSemester)}
+            />
+            <FieldLabelP>I am away for this semester </FieldLabelP>
+          </CheckboxContainerDiv>
+          <CheckboxContainerDiv>
+            <CheckboxGroup.Checkbox
+              checked={requestOff}
+              onClick={() => onRequestOff(selectedSemester)}
+            />
+            <FieldLabelP>I would like away this semester off </FieldLabelP>
+          </CheckboxContainerDiv>
+        </AbsenceDiv>
+        {requestOff || away ? (
+          <FreeformDiv>
+            <FieldLabelP>Reason for absence:</FieldLabelP>
+            <AbsenceTextarea
+              value={absenceReason}
+              onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+                onAbsenceReason({
+                  semester: selectedSemester,
+                  text: event.target.value,
+                })
               }
             />
-          </MaxCoursesDiv>
-          <TabGroup initialTabId="0">
-            {semesters.map(
-              (sem: { label: string; value: string }, i: number) => {
-                return (
-                  <TabGroup.Tab
-                    tabId={`${i}`}
-                    onClick={() => {
-                      onSelectedSemester(sem);
-                    }}
-                    size="medium"
-                  >
-                    {sem.label}
-                  </TabGroup.Tab>
-                );
-              }
-            )}
-          </TabGroup>
-          <AbsenceDiv>
-            <CheckboxContainerDiv>
-              <CheckboxGroup.Checkbox
-                checked={away}
-                onClick={() => onAway(selectedSemester)}
-              />
-              <CheckboxLabelP>I am away for this semester </CheckboxLabelP>
-            </CheckboxContainerDiv>
-            <CheckboxContainerDiv>
-              <CheckboxGroup.Checkbox
-                checked={requestOff}
-                onClick={() => onRequestOff(selectedSemester)}
-              />
-              <CheckboxLabelP>
-                I would like away this semester off{" "}
-              </CheckboxLabelP>
-            </CheckboxContainerDiv>
-          </AbsenceDiv>
-          {requestOff || away ? (
-            <FreeformDiv>
-              <CheckboxLabelP>Reason for absence:</CheckboxLabelP>
-              <AbsenceTextarea
-                value={absenceReason}
-                onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
-                  onAbsenceReason({
+          </FreeformDiv>
+        ) : (
+          <>
+            <MaxCoursesDiv>
+              <FieldLabelP>
+                Maximum number of courses you are willing to teach this semester{" "}
+              </FieldLabelP>
+              <MaxCoursesInput
+                type="number"
+                value={maxCourses}
+                onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                  setMaxCourses({
                     semester: selectedSemester,
                     text: event.target.value,
                   })
                 }
               />
-            </FreeformDiv>
-          ) : (
-            <>
-              <PreferredDiv>
-                <Subheading>Preferred Day</Subheading>
-                {prefDays[selectedSemester].map((day: boolean, idx: number) => {
-                  return (
-                    <CheckboxContainerDiv>
-                      <CheckboxGroup.Checkbox
-                        onClick={() =>
-                          setPrefDays({
-                            semester: selectedSemester,
-                            dayIdx: idx,
-                          })
-                        }
-                        checked={day}
-                      />
-                      <CheckboxLabelP>{weekdays[idx]}</CheckboxLabelP>
-                    </CheckboxContainerDiv>
-                  );
-                })}
-              </PreferredDiv>
-              <Subheading>Preferred Teaching Times</Subheading>
-              <Timetable semester={selectedSemester} />
-            </>
-          )}
-        </LayoutDiv>
-        <CustomButtonGroupView {...{ Amount: "Double" }}>
-          <CustomButtonView
-            {...{ Theme: "Secondary" }}
-            customClickEvent={() => {
-              navigate(`/SelectProfessor`);
-            }}
-          >
-            {" "}
-            Back{" "}
-          </CustomButtonView>
-          <CustomButtonView
-            {...{ Theme: "Primary" }}
-            Disabled={Object.keys(qualifications).length !== AmountOfCourses}
-            customClickEvent={() => {
-              if (Object.keys(qualifications).length !== AmountOfCourses) {
-                console.log(qualifications);
-              } else {
-                console.log(qualifications);
-                navigate(`/SelectProfessor/Summary`);
-              }
-            }}
-          >
-            {" "}
-            Confirm{" "}
-          </CustomButtonView>
-        </CustomButtonGroupView>
-      </InsideDivStyle>
-    </OutsideDivStyle>
+            </MaxCoursesDiv>
+            <PreferredDiv>
+              <FieldLabelP style={{ flex: " 0 0 100%", marginBottom: "-10px" }}>
+                Check your preferred teaching days
+              </FieldLabelP>
+              {prefDays[selectedSemester].map((day: boolean, idx: number) => {
+                return (
+                  <CheckboxContainerDiv>
+                    <CheckboxGroup.Checkbox
+                      onClick={() =>
+                        setPrefDays({
+                          semester: selectedSemester,
+                          dayIdx: idx,
+                        })
+                      }
+                      checked={day}
+                    />
+                    <FieldLabelP>{weekdays[idx]}</FieldLabelP>
+                  </CheckboxContainerDiv>
+                );
+              })}
+            </PreferredDiv>
+            <FieldLabelP>Select your preferred teaching times</FieldLabelP>
+            <Timetable semester={selectedSemester} />
+            <WarningText>
+              *Please be aware that you still could be scheduled outside your
+              prefered time
+            </WarningText>
+          </>
+        )}
+      </LayoutDiv>
+      <CustomButtonGroupView {...{ Amount: "Double" }}>
+        <CustomButtonView
+          {...{ Theme: "Secondary" }}
+          customClickEvent={() => {
+            navigate(`/SelectProfessor`);
+          }}
+        >
+          {" "}
+          Back{" "}
+        </CustomButtonView>
+        <CustomButtonView
+          {...{ Theme: "Primary" }}
+          Disabled={Object.keys(qualifications).length !== AmountOfCourses}
+          customClickEvent={() => {
+            if (Object.keys(qualifications).length !== AmountOfCourses) {
+              console.log(qualifications);
+            } else {
+              console.log(qualifications);
+              navigate(`/SelectProfessor/Summary`);
+            }
+          }}
+        >
+          {" "}
+          Confirm{" "}
+        </CustomButtonView>
+      </CustomButtonGroupView>
+    </Background>
   );
 }
 
