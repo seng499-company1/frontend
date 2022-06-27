@@ -21,12 +21,12 @@ function useIntegrationTest(props: IntegrationTestProps) {
   const [company2Output, setCompany2Output] = useState("");
 
   const onCompany1Request = async () => {
-    const data = await getAlgo1("http://localhost:5000/scedule/company/1");
+    const data = await getAlgo1("http://localhost:5000/schedules/company/1");
     setCompany1Output(JSON.stringify(data));
   };
 
   const onCompany2Request = async () => {
-    const data = await getAlgo1("http://localhost:5000/scedule/company/2");
+    const data = await getAlgo1("http://localhost:5000/schedules/company/2");
     setCompany2Output(JSON.stringify(data));
   };
 
@@ -55,6 +55,11 @@ const PageTitleH1 = styled.h1`
 const EmptyP = styled.p`
   padding: var(--space-3x-large);
   text-align: center;
+`;
+
+const OutputDiv = styled.div`
+  padding: var(--space-2x-large) 0;
+  gap: var(--space-large);
 `;
 
 export function IntegrationTestView(props: IntegrationTestViewProps) {
@@ -91,14 +96,20 @@ export function IntegrationTestView(props: IntegrationTestViewProps) {
       </TabGroup>
       {company === 1 ? (
         company1Output ? (
-          <code>{company1Output}</code>
+          <OutputDiv>
+            <p>Company 1 response:</p>
+            <code>{company1Output}</code>
+          </OutputDiv>
         ) : (
           <EmptyP>
             No output from Company 1 yet. Click the run button to get output!
           </EmptyP>
         )
       ) : company2Output ? (
-        <code>{company2Output}</code>
+        <OutputDiv>
+          <p>Company 2 response:</p>
+          <code>{company2Output}</code>
+        </OutputDiv>
       ) : (
         <EmptyP>
           No output from Company 2 yet. Click the run button to get output!
