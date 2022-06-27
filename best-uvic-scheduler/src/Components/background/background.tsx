@@ -7,7 +7,7 @@ const InsideDivStyle = styled.div`
   padding: 36px;
   border-radius: 8px;
   background-color: #fefefe;
-  height: 100vh;
+  height: 100%;
   position: relative;
 `;
 
@@ -15,7 +15,7 @@ const OutsideDivStyle = styled.div`
   display: flex;
   justify-content: center;
   background-color: var(--primary-50);
-  height: 100vh;
+  min-height: 100vh;
   position: relative;
 `;
 
