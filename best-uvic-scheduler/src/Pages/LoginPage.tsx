@@ -55,7 +55,7 @@ export function LoginPage() {
       setProfessor(resp);
       navigate(`/SelectProfessor/Qualifications`);
     } else {
-      //admin so navigate to admin landing page
+      navigate("/LandingPage");
     }
   }
   return (
