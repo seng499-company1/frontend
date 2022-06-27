@@ -3,6 +3,7 @@ import styled from "styled-components";
 import CustomButtonView from "../Components/button/button.tsx";
 import { Background } from "../Components/background/background.tsx";
 import TabGroup from "../Components/tab-group/tab-group.tsx";
+import { getAlgo1 } from "../Util/AlgoIntegrationHelper.tsx";
 
 interface IntegrationTestProps {}
 interface IntegrationTestViewProps {
@@ -16,14 +17,26 @@ interface IntegrationTestViewProps {
 
 function useIntegrationTest(props: IntegrationTestProps) {
   const [company, setCompany] = useState(1);
+  const [company1Output, setCompany1Output] = useState("");
+  const [company2Output, setCompany2Output] = useState("");
+
+  const onCompany1Request = async () => {
+    const data = await getAlgo1("http://localhost:5000/scedule/company/1");
+    setCompany1Output(JSON.stringify(data));
+  };
+
+  const onCompany2Request = async () => {
+    const data = await getAlgo1("http://localhost:5000/scedule/company/2");
+    setCompany2Output(JSON.stringify(data));
+  };
 
   return {
     company,
     setCompany,
-    company1Output: "",
-    company2Output: "",
-    onCompany1Request: () => console.log("click 2"),
-    onCompany2Request: () => console.log("click 2"),
+    company1Output,
+    company2Output,
+    onCompany1Request,
+    onCompany2Request,
   };
 }
 
@@ -32,6 +45,7 @@ const ButtonDiv = styled.div`
   width: 100%;
   justify-content: space-around;
   padding: var(--space-2x-large);
+  box-sizing: border-box;
 `;
 
 const PageTitleH1 = styled.h1`
