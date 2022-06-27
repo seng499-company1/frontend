@@ -8,6 +8,7 @@ import reportWebVitals from "./reportWebVitals";
 import LoginPage from "./Pages/LoginPage.tsx";
 import LandingPage from "./Pages/AdminPages/LandingPage.tsx";
 import { IntegrationTest } from "./Pages/IntegrationTest.tsx";
+import Summary_RO from "./Pages/AdminPages/Summary_RO.tsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -18,6 +19,7 @@ root.render(
       <Route path="/SelectProfessor/*" element={<ProfessorDataInputIndex />} />
       <Route path="/LandingPage" element={<LandingPage />} />
       <Route path="/IntegrationTest" element={<IntegrationTest />} />
+      <Route path="/LandingPage/Summary_RO" element={<Summary_RO />} />
     </Routes>
   </BrowserRouter>
   //</React.StrictMode>
