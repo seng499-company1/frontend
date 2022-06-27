@@ -8,7 +8,7 @@ import reportWebVitals from "./reportWebVitals";
 import LoginPage from "./Pages/LoginPage.tsx";
 import LandingPage from "./Pages/AdminPages/LandingPage.tsx";
 import Summary_RO from "./Pages/AdminPages/Summary_RO.tsx";
-impoty AdminIndex from "./Pages/AdminPages/index.tsx";
+import AdminIndex from "./Pages/AdminPages/index.tsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
