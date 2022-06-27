@@ -155,6 +155,7 @@ const LayoutDiv = styled.div`
   flex-direction: column;
   gap: var(--space-2x-large);
   padding: 0 var(--space-2x-large) var(--space-2x-large);
+  
 `;
 
 const PageTitleH1 = styled.h1`
