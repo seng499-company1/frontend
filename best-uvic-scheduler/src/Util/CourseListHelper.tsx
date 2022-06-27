@@ -1,20 +1,5 @@
 //const TestCourseList = {};
 
-//change to async!!
-export function GetCourseList() {
-  // const tenant = "localhost:5000";
-  // const resp = await fetch(`http://${tenant}/courses/`, {
-  //   method: "GET",
-  //   headers: { "content-type": "application/json" },
-  // });
-
-  // const data = await resp.text();
-  // console.log(data);
-
-  // TestCourseList["Courses"] = [resp.json];
-  return TestCourseList;
-}
-
 export async function test() {
   const tenant = "localhost:5000";
   const resp = await fetch(`http://${tenant}/courses/`, {
@@ -58,3 +43,18 @@ const TestCourseList = {
     },
   ],
 };
+
+//change to async!!
+export function GetCourseList() {
+  // const tenant = "localhost:5000";
+  // const resp = await fetch(`http://${tenant}/courses/`, {
+  //   method: "GET",
+  //   headers: { "content-type": "application/json" },
+  // });
+
+  // const data = await resp.text();
+  // console.log(data);
+
+  // TestCourseList["Courses"] = [resp.json];
+  return TestCourseList;
+}
