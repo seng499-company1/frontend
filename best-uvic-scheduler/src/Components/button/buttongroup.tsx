@@ -20,10 +20,15 @@ export interface CustomButtonGroupProps {
 }
 
 const CustomButtonGroup = styled.div`
-  margin: auto;
+  margin: 0;
   padding: 10px;
   display: flex;
   justify-content: ${(props) => AmountOfButton[props.Amount].justifyContent};
+`;
+
+export const ButtonDiv = styled.div`
+  margin: 0;
+  padding: 5px;
 `;
 
 CustomButtonGroup.defaultProps = {

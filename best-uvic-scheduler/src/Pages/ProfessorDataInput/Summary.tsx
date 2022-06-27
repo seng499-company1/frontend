@@ -11,24 +11,7 @@ import { useNavigate } from "react-router-dom";
 import CustomButtonView from "../../Components/button/button.tsx";
 import CustomButtonGroupView from "../../Components/button/buttongroup.tsx";
 import * as CourseListHelper from "../../Util/CourseListHelper.tsx";
-
-const InsideDivStyle = styled.div`
-  width: 55%;
-  padding: 36px;
-  border-radius: 8px;
-  height: 100vh;
-  min-height: 100vh;
-  background-color: #fefefe;
-`;
-
-const OutsideDivStyle = styled.div`
-  display: flex;
-  height: 100vh;
-  min-height: 100vh;
-  justify-content: center;
-  background-color: var(--primary-50);
-  height: 100vh;
-`;
+import { Background } from "../../Components/background/background.tsx";
 
 const SelectDivStyle = styled.div`
   display: flex;
@@ -68,57 +51,51 @@ export function Summary() {
   const navigate = useNavigate();
 
   return (
-    <OutsideDivStyle>
-      <InsideDivStyle>
-        <Header>
-          Summary For {selectedProfessor.first_name}{" "}
-          {selectedProfessor.last_name}
-        </Header>
+    <Background>
+      <Header>
+        Summary For {selectedProfessor.first_name} {selectedProfessor.last_name}
+      </Header>
 
-        <h2>Classes</h2>
-        {Courses.map(function (Course, index) {
-          let name = Course.course_code;
-          return (
-            <SelectDivStyle key={index}>
-              <Header4>
-                {console.log(Course.course_code)}
-                {Course.course_code}{" "}
-              </Header4>
+      <h2>Classes</h2>
+      {Courses.map(function (Course, index) {
+        let name = Course.course_code;
+        return (
+          <SelectDivStyle key={index}>
+            <Header4>
+              {console.log(Course.course_code)}
+              {Course.course_code}{" "}
+            </Header4>
 
-              <ResponseDiv>
-                {qualifications[name]}
-                &emsp;&emsp;
-                {preferences[name]}
-              </ResponseDiv>
-            </SelectDivStyle>
-          );
-        })}
+            <ResponseDiv>
+              {qualifications[name]}
+              &emsp;&emsp;
+              {preferences[name]}
+            </ResponseDiv>
+          </SelectDivStyle>
+        );
+      })}
 
-        <h2>Availibility</h2>
-        <Header4>Summer</Header4>
-        <Header4>Fall</Header4>
-        <Header4>Spring</Header4>
+      <h2>Availibility</h2>
+      <Header4>Summer</Header4>
+      <Header4>Fall</Header4>
+      <Header4>Spring</Header4>
 
-        <CustomButtonGroupView {...{ Amount: "Double" }}>
-          <CustomButtonView
-            {...{ Theme: "Secondary" }}
-            customClickEvent={() => {
-              navigate(`/SelectProfessor/TimeAvail`);
-            }}
-          >
-            {" "}
-            Back{" "}
-          </CustomButtonView>
-          <CustomButtonView
-            {...{ Theme: "Primary" }}
-            customClickEvent={() => {}}
-          >
-            {" "}
-            SUBMIT{" "}
-          </CustomButtonView>
-        </CustomButtonGroupView>
-      </InsideDivStyle>
-    </OutsideDivStyle>
+      <CustomButtonGroupView {...{ Amount: "Double" }}>
+        <CustomButtonView
+          {...{ Theme: "Secondary" }}
+          customClickEvent={() => {
+            navigate(`/SelectProfessor/TimeAvail`);
+          }}
+        >
+          {" "}
+          Back{" "}
+        </CustomButtonView>
+        <CustomButtonView {...{ Theme: "Primary" }} customClickEvent={() => {}}>
+          {" "}
+          SUBMIT{" "}
+        </CustomButtonView>
+      </CustomButtonGroupView>
+    </Background>
   );
 }
 

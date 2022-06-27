@@ -14,6 +14,7 @@ import {
   QualificationsContext,
   PrefDayContext,
 } from "./index.tsx";
+import { Background } from "../../Components/background/background.tsx";
 
 export interface ProfessorTimetableProps {
   semesters: Array<string>;
@@ -204,10 +205,11 @@ const LayoutDiv = styled.div`
   padding: 0 10px var(--space-2x-large);
 `;
 
-const Subheading = styled.h3`
-  font-weight: 400;
+const WarningText = styled.h4`
   margin: 0;
-  flex: 0 0 100%;
+  text-align: center;
+  color: var(--danger-400);
+  font-style: italic;
 `;
 
 const MaxCoursesInput = styled.input`
@@ -226,21 +228,6 @@ const MaxCoursesInput = styled.input`
 const AbsenceTextarea = styled.textarea`
   border: 1px solid var(--border);
   border-radius: 4px;
-`;
-
-const InsideDivStyle = styled.div`
-  width: 55%;
-  padding: 36px;
-  border-radius: 8px;
-  background-color: #fefefe;
-`;
-
-const OutsideDivStyle = styled.div`
-  display: flex;
-  justify-content: center;
-  background-color: var(--primary-50);
-  padding: var(--space-x-large);
-  min-height: 100vh;
 `;
 
 const CourseInfoDiv = styled.div`
@@ -296,194 +283,191 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
   } = props;
 
   return (
-    <OutsideDivStyle>
-      <InsideDivStyle>
-        <LayoutDiv>
-          <Header>Please Enter Class Scheduling Preferences</Header>
-          {Courses.map(function (Course, index) {
-            let name = Course.course_code;
+    <Background>
+      <LayoutDiv>
+        <Header>Please Enter Class Scheduling Preferences</Header>
+        {Courses.map(function (Course, index) {
+          let name = Course.course_code;
+          return (
+            <div>
+              <h2> {Course.course_code} </h2>
+              <CourseInfoDiv key={index}>
+                <p>
+                  <b>Course description:</b> {Course.course_desceiption}
+                </p>
+                <Dropdown
+                  placeholder={"Desirability"}
+                  startingValue={
+                    preferences.hasOwnProperty(name)
+                      ? {
+                          value: preferences[name],
+                          label: preferences[name],
+                        }
+                      : null
+                  }
+                  dropdownItems={PreferenceItems}
+                  handleChange={(event) => {
+                    setPreferences({
+                      ...preferences,
+                      [Course.course_code]: event.value,
+                    });
+                  }}
+                >
+                  Select
+                </Dropdown>
+                <p>
+                  <b>Qualifications needed:</b> {Course.course_qualifications}
+                  {Course.peng_req ? (
+                    <>
+                      , <b>PENG is Reqiured</b>
+                    </>
+                  ) : (
+                    ""
+                  )}
+                </p>
+                <Dropdown
+                  placeholder={"Qualification"}
+                  startingValue={
+                    qualifications.hasOwnProperty(name)
+                      ? {
+                          value: qualifications[name],
+                          label: qualifications[name],
+                        }
+                      : null
+                  }
+                  dropdownItems={QualificationItems}
+                  handleChange={(event) => {
+                    setQualifications({
+                      ...qualifications,
+                      [Course.course_code]: event.value,
+                    });
+                  }}
+                >
+                  Select
+                </Dropdown>
+              </CourseInfoDiv>
+            </div>
+          );
+        })}
+        <TabGroup initialTabId="0">
+          {semesters.map((sem: { label: string; value: string }, i: number) => {
             return (
-              <div>
-                <h2> {Course.course_code} </h2>
-                <CourseInfoDiv key={index}>
-                  <p>
-                    <b>Course description:</b> {Course.course_desceiption}
-                  </p>
-                  <Dropdown
-                    placeholder={"Desirability"}
-                    startingValue={
-                      preferences.hasOwnProperty(name)
-                        ? {
-                            value: preferences[name],
-                            label: preferences[name],
-                          }
-                        : null
-                    }
-                    dropdownItems={PreferenceItems}
-                    handleChange={(event) => {
-                      setPreferences({
-                        ...preferences,
-                        [Course.course_code]: event.value,
-                      });
-                    }}
-                  >
-                    Select
-                  </Dropdown>
-                  <p>
-                    <b>Qualifications needed:</b> {Course.course_qualifications}
-                    {Course.peng_req ? (
-                      <>
-                        , <b>PENG is Reqiured</b>
-                      </>
-                    ) : (
-                      ""
-                    )}
-                  </p>
-                  <Dropdown
-                    placeholder={"Qualification"}
-                    startingValue={
-                      qualifications.hasOwnProperty(name)
-                        ? {
-                            value: qualifications[name],
-                            label: qualifications[name],
-                          }
-                        : null
-                    }
-                    dropdownItems={QualificationItems}
-                    handleChange={(event) => {
-                      setQualifications({
-                        ...qualifications,
-                        [Course.course_code]: event.value,
-                      });
-                    }}
-                  >
-                    Select
-                  </Dropdown>
-                </CourseInfoDiv>
-              </div>
+              <TabGroup.Tab
+                tabId={`${i}`}
+                onClick={() => {
+                  onSelectedSemester(sem);
+                }}
+                size="medium"
+              >
+                {sem.label}
+              </TabGroup.Tab>
             );
           })}
-          <TabGroup initialTabId="0">
-            {semesters.map(
-              (sem: { label: string; value: string }, i: number) => {
-                return (
-                  <TabGroup.Tab
-                    tabId={`${i}`}
-                    onClick={() => {
-                      onSelectedSemester(sem);
-                    }}
-                    size="medium"
-                  >
-                    {sem.label}
-                  </TabGroup.Tab>
-                );
-              }
-            )}
-          </TabGroup>
+        </TabGroup>
 
-          <AbsenceDiv>
-            <CheckboxContainerDiv>
-              <CheckboxGroup.Checkbox
-                checked={away}
-                onClick={() => onAway(selectedSemester)}
-              />
-              <FieldLabelP>I am away for this semester </FieldLabelP>
-            </CheckboxContainerDiv>
-            <CheckboxContainerDiv>
-              <CheckboxGroup.Checkbox
-                checked={requestOff}
-                onClick={() => onRequestOff(selectedSemester)}
-              />
-              <FieldLabelP>I would like away this semester off </FieldLabelP>
-            </CheckboxContainerDiv>
-          </AbsenceDiv>
-          {requestOff || away ? (
-            <FreeformDiv>
-              <FieldLabelP>Reason for absence:</FieldLabelP>
-              <AbsenceTextarea
-                value={absenceReason}
-                onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
-                  onAbsenceReason({
+        <AbsenceDiv>
+          <CheckboxContainerDiv>
+            <CheckboxGroup.Checkbox
+              checked={away}
+              onClick={() => onAway(selectedSemester)}
+            />
+            <FieldLabelP>I am away for this semester </FieldLabelP>
+          </CheckboxContainerDiv>
+          <CheckboxContainerDiv>
+            <CheckboxGroup.Checkbox
+              checked={requestOff}
+              onClick={() => onRequestOff(selectedSemester)}
+            />
+            <FieldLabelP>I would like away this semester off </FieldLabelP>
+          </CheckboxContainerDiv>
+        </AbsenceDiv>
+        {requestOff || away ? (
+          <FreeformDiv>
+            <FieldLabelP>Reason for absence:</FieldLabelP>
+            <AbsenceTextarea
+              value={absenceReason}
+              onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+                onAbsenceReason({
+                  semester: selectedSemester,
+                  text: event.target.value,
+                })
+              }
+            />
+          </FreeformDiv>
+        ) : (
+          <>
+            <MaxCoursesDiv>
+              <FieldLabelP>
+                Maximum number of courses you are willing to teach this semester{" "}
+              </FieldLabelP>
+              <MaxCoursesInput
+                type="number"
+                value={maxCourses}
+                onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                  setMaxCourses({
                     semester: selectedSemester,
                     text: event.target.value,
                   })
                 }
               />
-            </FreeformDiv>
-          ) : (
-            <>
-              <MaxCoursesDiv>
-                <FieldLabelP>
-                  Maximum number of courses you are willing to teach this
-                  semester{" "}
-                </FieldLabelP>
-                <MaxCoursesInput
-                  type="number"
-                  value={maxCourses}
-                  onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                    setMaxCourses({
-                      semester: selectedSemester,
-                      text: event.target.value,
-                    })
-                  }
-                />
-              </MaxCoursesDiv>
-              <PreferredDiv>
-                <FieldLabelP
-                  style={{ flex: " 0 0 100%", marginBottom: "-10px" }}
-                >
-                  Check your preferred teaching days
-                </FieldLabelP>
-                {prefDays[selectedSemester].map((day: boolean, idx: number) => {
-                  return (
-                    <CheckboxContainerDiv>
-                      <CheckboxGroup.Checkbox
-                        onClick={() =>
-                          setPrefDays({
-                            semester: selectedSemester,
-                            dayIdx: idx,
-                          })
-                        }
-                        checked={day}
-                      />
-                      <FieldLabelP>{weekdays[idx]}</FieldLabelP>
-                    </CheckboxContainerDiv>
-                  );
-                })}
-              </PreferredDiv>
-              <FieldLabelP>Select your preferred teaching times</FieldLabelP>
-              <Timetable semester={selectedSemester} />
-            </>
-          )}
-        </LayoutDiv>
-        <CustomButtonGroupView {...{ Amount: "Double" }}>
-          <CustomButtonView
-            {...{ Theme: "Secondary" }}
-            customClickEvent={() => {
-              navigate(`/SelectProfessor`);
-            }}
-          >
-            {" "}
-            Back{" "}
-          </CustomButtonView>
-          <CustomButtonView
-            {...{ Theme: "Primary" }}
-            Disabled={Object.keys(qualifications).length !== AmountOfCourses}
-            customClickEvent={() => {
-              if (Object.keys(qualifications).length !== AmountOfCourses) {
-                console.log(qualifications);
-              } else {
-                console.log(qualifications);
-                navigate(`/SelectProfessor/Summary`);
-              }
-            }}
-          >
-            {" "}
-            Confirm{" "}
-          </CustomButtonView>
-        </CustomButtonGroupView>
-      </InsideDivStyle>
-    </OutsideDivStyle>
+            </MaxCoursesDiv>
+            <PreferredDiv>
+              <FieldLabelP style={{ flex: " 0 0 100%", marginBottom: "-10px" }}>
+                Check your preferred teaching days
+              </FieldLabelP>
+              {prefDays[selectedSemester].map((day: boolean, idx: number) => {
+                return (
+                  <CheckboxContainerDiv>
+                    <CheckboxGroup.Checkbox
+                      onClick={() =>
+                        setPrefDays({
+                          semester: selectedSemester,
+                          dayIdx: idx,
+                        })
+                      }
+                      checked={day}
+                    />
+                    <FieldLabelP>{weekdays[idx]}</FieldLabelP>
+                  </CheckboxContainerDiv>
+                );
+              })}
+            </PreferredDiv>
+            <FieldLabelP>Select your preferred teaching times</FieldLabelP>
+            <Timetable semester={selectedSemester} />
+            <WarningText>
+              *Please be aware that you still could be scheduled outside your
+              prefered time
+            </WarningText>
+          </>
+        )}
+      </LayoutDiv>
+      <CustomButtonGroupView {...{ Amount: "Double" }}>
+        <CustomButtonView
+          {...{ Theme: "Secondary" }}
+          customClickEvent={() => {
+            navigate(`/SelectProfessor`);
+          }}
+        >
+          {" "}
+          Back{" "}
+        </CustomButtonView>
+        <CustomButtonView
+          {...{ Theme: "Primary" }}
+          Disabled={Object.keys(qualifications).length !== AmountOfCourses}
+          customClickEvent={() => {
+            if (Object.keys(qualifications).length !== AmountOfCourses) {
+              console.log(qualifications);
+            } else {
+              console.log(qualifications);
+              navigate(`/SelectProfessor/Summary`);
+            }
+          }}
+        >
+          {" "}
+          Confirm{" "}
+        </CustomButtonView>
+      </CustomButtonGroupView>
+    </Background>
   );
 }
 
