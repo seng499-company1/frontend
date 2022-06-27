@@ -77,7 +77,7 @@ export function LoginPage() {
                 <CustomButtonView
                   {...{ Theme: "Primary" }}
                   customClickEvent={() => {
-                    console.log("Submit Login Info");
+                    navigate(`/Admin`);
                   }}
                 >
                   Submit

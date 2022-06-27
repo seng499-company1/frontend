@@ -22,10 +22,6 @@ export function PDISelectProfessorList() {
   const ProfessorData = ProfessorListHelper.GetProfessorList();
   const Professors = ProfessorData.Professors;
 
-  console.log("Now i'm in the list");
-
-  console.log("Now i'm in the list");
-
   return (
     <Background>
       <Header>Please Select your Name From The List Below</Header>

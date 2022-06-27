@@ -2,19 +2,24 @@ import TabGroup, { TabView } from "../tab-group/tab-group.tsx";
 import { useNavigate } from "react-router-dom";
 import { navigate } from "@storybook/addon-links";
 
-export function NavBar() {
+export interface NavBarProps {
+  initialTabId: string;
+  children: React.ReactNode;
+}
+
+export function NavBar(props: NavBarProps) {
   const navigate = useNavigate();
   return (
-    <TabGroup initialTabId="1">
-      <TabGroup.Tab size="medium" tabId="1" onClick={() => navigate(`../../`)}>
+    <TabGroup initialTabId={props.initialTabId}>
+      <TabGroup.Tab size="medium" tabId="1" onClick={() => navigate(`/Admin`)}>
         Landing Page
       </TabGroup.Tab>
 
-      <TabGroup.Tab size="medium" tabId="2">
-        Edit System
+      <TabGroup.Tab size="medium" tabId="2" onClick={() => navigate(`/Admin/Courses`)}>
+        Edit Courses
       </TabGroup.Tab>
       <TabGroup.Tab size="medium" tabId="3">
-        Edit Professor Data
+        Edit Professors
       </TabGroup.Tab>
 
       <TabGroup.Tab size="medium" tabId="4">

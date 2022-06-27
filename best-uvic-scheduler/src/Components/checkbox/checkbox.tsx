@@ -18,7 +18,7 @@ export interface CheckboxProps {
 export interface CheckboxViewProps {
   onClick?: () => void;
   checked: boolean;
-  setChecked: React.Dispatch<React.SetStateAction<boolean>>;
+  setChecked?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function useCheckboxGroup(
