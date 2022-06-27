@@ -7,6 +7,10 @@ import Alert from "../../Components/Alert/alert.tsx";
 import NavBar from "../../Components/navBar/navBar.tsx";
 import * as ProfessorImputHelper from "../../Util/ProfessorInputHelper.tsx";
 
+export const ProfessorNameContext = React.createContext({
+  selectedProfessorName: "",
+  setProfessorName: () => {},
+});
 const Header = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -65,10 +69,12 @@ const AlertDiv = styled.div`
 `;
 
 export function LandingPage() {
-  //get data
-  const professorData = ProfessorImputHelper.GetProfessorInputList();
+  const { selectedProfessorName, setProfessorName } =
+    useContext(ProfessorNameContext);
 
-  const professors = professorData.profEntries;
+  //get data
+  const professors = ProfessorImputHelper.GetProfessorInputList().profEntries;
+
   const oldProf = [];
   const newProf = [];
   const navigate = useNavigate();
@@ -110,7 +116,15 @@ export function LandingPage() {
       <ProfListDiv>
         <DataEntryTitleDiv>New Data Entries:</DataEntryTitleDiv>
         {newProf.map((item, idx) => (
-          <ProfNameDiv>
+          <ProfNameDiv
+            onClick={() => {
+              console.log(newProf[idx]["firstName"]);
+              setProfessorName(newProf[idx]["firstName"]);
+              console.log(selectedProfessorName);
+
+              navigate(`/LandingPage/Summary_RO`);
+            }}
+          >
             {newProf[idx]["firstName"]}&nbsp;
             {newProf[idx]["lastName"]}
           </ProfNameDiv>
