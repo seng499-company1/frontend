@@ -5,11 +5,7 @@ import PDISelectProfessorQualifications from "./ProfessorQualifications.tsx";
 import PDISelectProfessorPreferences from "./ProfessorPreferences.tsx";
 import Summary from "./Summary.tsx";
 import ProfessorTimetable from "./ProfessorTimetable.tsx";
-
-export const ProfessorContext = React.createContext({
-  selectedProfessor: 0,
-  setProfessor: () => {},
-});
+import { ProfessorContext } from "../LoginPage.tsx";
 
 export const QualificationsContext = React.createContext({
   selectedQualifications: {},

@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { PostLoginInfo } from "../Util/LoginHelper.tsx";
-import { ProfessorContext } from "./ProfessorDataInput/index.tsx";
+import React from "react";
 
 function Box({ children, ...props }) {
   return <div {...props}>{children}</div>;
@@ -41,6 +41,11 @@ const RightDiv = styled.div`
   float: right;
   gap: 8px;
 `;
+
+export const ProfessorContext = React.createContext({
+  selectedProfessor: 0,
+  setProfessor: () => {},
+});
 
 export function LoginPage() {
   const [username, setUsername] = useState("");

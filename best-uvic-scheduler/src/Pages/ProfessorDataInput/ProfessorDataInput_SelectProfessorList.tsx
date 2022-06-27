@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { ProfessorContext } from "./index.tsx";
+import { ProfessorContext } from "../LoginPage.tsx";
 import CustomButtonView from "../../Components/button/button.tsx";
 import CustomButtonGroupView from "../../Components/button/buttongroup.tsx";
 import ProfessorListDivView from "../../Components/ProfessorSearch/ProfessorList.tsx";
