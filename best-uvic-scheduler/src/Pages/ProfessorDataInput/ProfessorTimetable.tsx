@@ -9,6 +9,7 @@ import Dropdown from "../../Components/dropdown/dropdown.tsx";
 import TabGroup from "../../Components/tab-group/tab-group.tsx";
 import { Timetable } from "../../Components/Timetable/Timetable.tsx";
 import * as CourseListHelper from "../../Util/CourseListHelper.tsx";
+import { TimeIntervalHelper } from "../../Util/TimeIntervalHelper.tsx";
 import {
   PreferencesContext,
   QualificationsContext,
@@ -148,6 +149,8 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
   ];
 
   const { prefDays, setPrefDays } = useContext(PrefDayContext);
+
+  console.log(TimeIntervalHelper());
 
   return {
     Courses,
