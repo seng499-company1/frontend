@@ -12,6 +12,7 @@ import CustomButtonView from "../../Components/button/button.tsx";
 import CustomButtonGroupView from "../../Components/button/buttongroup.tsx";
 import * as CourseListHelper from "../../Util/CourseListHelper.tsx";
 import { Background } from "../../Components/background/background.tsx";
+import { TimeIntervalHelper } from "../../Util/TimeIntervalHelper.tsx";
 
 import * as ProfPreferencesHelper from "../../Util/ProfPreferencesHelper.tsx";
 
@@ -83,7 +84,15 @@ export function Summary() {
 
   const Preferences = ProfPreferencesHelper.GetPreferences();
   const Times = Preferences.preferred_times;
+  let TimesTest = Preferences.preferred_times;
+  const timesFromContext = TimeIntervalHelper();
 
+  TimesTest.fall = timesFromContext["Fall 2022"];
+  TimesTest.summer = timesFromContext["Spring 2023"];
+  TimesTest.spring = timesFromContext["Summer 2023"];
+
+  console.log(TimesTest);
+  console.log(Times);
   //hooks
   const { qualifications, setQualifications } = useContext(
     QualificationsContext
@@ -168,7 +177,7 @@ export function Summary() {
 
               return (
                 <TimeRow>
-                  <DayText> {day}</DayText>
+                  <DayText> {Day}</DayText>
                   <TimeText>
                     {" "}
                     {timeSplit[0].slice(1, -1)} - {timeSplit[1].slice(1, -1)}

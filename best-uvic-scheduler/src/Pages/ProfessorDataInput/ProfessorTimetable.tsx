@@ -12,6 +12,7 @@ import * as CourseListHelper from "../../Util/CourseListHelper.tsx";
 import { TimeIntervalHelper } from "../../Util/TimeIntervalHelper.tsx";
 import {
   PreferencesContext,
+  TimeContext,
   QualificationsContext,
   PrefDayContext,
 } from "./index.tsx";
@@ -57,6 +58,8 @@ export interface ProfessorTimetableViewProps {
   }[];
   qualifications: any;
   setQualifications: any;
+  setSelectedTimes: any;
+  selectedTimes: any;
   QualificationItems: {
     value: string;
     label: string;
@@ -131,6 +134,7 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
 
   //hooks
   const { preferences, setPreferences } = useContext(PreferencesContext);
+  const { selectedTimes, setSelectedTimes } = useContext(TimeContext);
 
   const PreferenceItems = [
     { value: "Not Willing", label: "Not Willing" },
@@ -150,7 +154,7 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
 
   const { prefDays, setPrefDays } = useContext(PrefDayContext);
 
-  console.log(TimeIntervalHelper());
+  // console.log(TimeIntervalHelper());
 
   return {
     Courses,
@@ -281,6 +285,8 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
     QualificationItems,
     prefDays,
     setPrefDays,
+    setSelectedTimes,
+    selectedTimes,
     maxCourses,
     setMaxCourses,
   } = props;
@@ -461,7 +467,8 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
             if (Object.keys(qualifications).length !== AmountOfCourses) {
               console.log(qualifications);
             } else {
-              console.log(qualifications);
+              console.log("ERROR HERE :(");
+              // setSelectedTimes(TimeIntervalHelper());
               navigate(`/SelectProfessor/Summary`);
             }
           }}
