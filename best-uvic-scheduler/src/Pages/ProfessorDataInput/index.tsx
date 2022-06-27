@@ -31,7 +31,7 @@ export const PrefDayContext = React.createContext({
   setPrefDays: (_prefDays: {}) => {},
 });
 
-const semesters = ["Fall 2022", "Spring 2023", "Summer 2023"];
+export const semesters = ["Fall 2022", "Spring 2023", "Summer 2023"];
 
 const initPrefDays = semesters.reduce(
   (arr, sem) => ((arr[sem] = Array(5).fill(false)), arr),
