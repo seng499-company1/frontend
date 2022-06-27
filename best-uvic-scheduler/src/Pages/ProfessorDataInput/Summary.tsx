@@ -177,6 +177,8 @@ export function Summary() {
         return (
           <TimeDiv>
             {times.map(function (time, timeIndex) {
+              const timeSplit = time.split(" ");
+              
               return (
                 <TimeRow>
                   <DayText> {day}</DayText>
