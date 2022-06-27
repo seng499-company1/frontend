@@ -7,13 +7,7 @@ import CustomButtonGroupView from "../../Components/button/buttongroup.tsx";
 import CheckboxGroup from "../../Components/checkbox/checkbox.tsx";
 import Dropdown from "../../Components/dropdown/dropdown.tsx";
 import { Timetable } from "../../Components/Timetable/Timetable.tsx";
-import * as CourseListHelper from "../../Util/CourseListHelper.tsx";
-import { TimeIntervalHelper } from "../../Util/TimeIntervalHelper.tsx";
-import {
-  PreferencesContext,
-  QualificationsContext,
-  PrefDayContext,
-} from "./index.tsx";
+import { ProfessorContext } from "../ProfessorDataInput/index.tsx";
 import { Background } from "../../Components/background/background.tsx";
 
 export interface ProfessorTimetableProps {
@@ -184,7 +178,6 @@ const MaxCoursesInput = styled.input`
   border-radius: 4px;
   text-align: center;
   padding: var(--space-3x-small);
-
   &:focus-visible {
     outline-color: var(--primary);
   }
