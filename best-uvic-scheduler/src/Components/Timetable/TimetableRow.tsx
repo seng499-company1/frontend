@@ -1,21 +1,29 @@
-import { number } from "prop-types";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import { updateTimeslotsAction } from "./Timetable";
 
 export interface TimetableRowProps {
   slotTimes: Array<string>;
   timeslot: Array<boolean>;
-  onTimeslots: React.Dispatch<updateTimeslotsAction>;
+  onTimeslots: React.Dispatch<{
+    dayIdx: number;
+    slotIdx: number;
+    semester: string;
+  }>;
   timeslotIdx: number;
+  semester: string;
   mouseDown: boolean;
 }
 
 export interface TimetableRowViewProps {
   timeslot: Array<boolean>;
   slotTime: string;
-  onTimeslots: React.Dispatch<updateTimeslotsAction>;
+  onTimeslots: React.Dispatch<{
+    dayIdx: number;
+    slotIdx: number;
+    semester: string;
+  }>;
   timeslotIdx: number;
+  semester: string;
   mouseDown: boolean;
 }
 
@@ -55,12 +63,14 @@ function useTimetableRow(props: TimetableRowProps): TimetableRowViewProps {
     timeslot: props.timeslot,
     onTimeslots: props.onTimeslots,
     timeslotIdx: props.timeslotIdx,
+    semester: props.semester,
     mouseDown: props.mouseDown,
   };
 }
 
 export function TimetableRowView(props: TimetableRowViewProps) {
-  const { slotTime, timeslot, onTimeslots, timeslotIdx, mouseDown } = props;
+  const { semester, slotTime, timeslot, onTimeslots, timeslotIdx, mouseDown } =
+    props;
 
   return (
     <>
@@ -71,12 +81,21 @@ export function TimetableRowView(props: TimetableRowViewProps) {
             draggable="false"
             key={`${idx}-${slot}`}
             onClick={(e) => {
-              onTimeslots({ dayIdx: idx, slotIdx: timeslotIdx });
+              onTimeslots({
+                dayIdx: idx,
+                slotIdx: timeslotIdx,
+                semester: semester,
+              });
               e.stopPropagation();
             }}
             highlighted={slot}
             onMouseLeave={() => {
-              mouseDown && onTimeslots({ dayIdx: idx, slotIdx: timeslotIdx });
+              mouseDown &&
+                onTimeslots({
+                  dayIdx: idx,
+                  slotIdx: timeslotIdx,
+                  semester: semester,
+                });
             }}
           >
             {" "}

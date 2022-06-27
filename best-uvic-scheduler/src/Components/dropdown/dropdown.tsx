@@ -23,6 +23,7 @@ export interface DropdownProps {
   dropdownItems: dropdownItem[];
   handleChange: any;
   startingValue: string;
+  placeholder?: string;
 }
 
 function Dropdown(props: DropdownProps) {
@@ -30,6 +31,7 @@ function Dropdown(props: DropdownProps) {
     <Select
       defaultValue={props.startingValue}
       options={props.dropdownItems}
+      placeholder={props?.placeholder}
       onChange={props.handleChange}
       styles={colourStyles}
     />
