@@ -97,6 +97,14 @@ export function TimetableRowView(props: TimetableRowViewProps) {
                   semester: semester,
                 });
             }}
+            onMouseUp={() => {
+              mouseDown &&
+                onTimeslots({
+                  dayIdx: idx,
+                  slotIdx: timeslotIdx,
+                  semester: semester,
+                });
+            }}
           >
             {" "}
           </CellDiv>
