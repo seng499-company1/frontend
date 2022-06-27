@@ -4,7 +4,9 @@ import '../../index.css';
 
 export interface TextInputProps {
   children: React.ReactNode;
-  placeholder: String;
+  placeholder?: String;
+  DefaultValue?: String;
+  onchange?: any;
 }
 
 const TextInput = styled.input`
@@ -16,7 +18,7 @@ const TextInput = styled.input`
 
 export function TextInputView(props: TextInputProps) {
   return (
-    <TextInput placeholder={props.placeholder} type="text">
+    <TextInput placeholder={props.placeholder} value={props.DefaultValue} onchange={props.onChange} type="text">
     {props.children}
     </TextInput>
   );

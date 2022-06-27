@@ -98,7 +98,7 @@ export function LandingPage() {
         <Title>UVIC Course Scheduler</Title>
       </Header>
 
-      <NavBar></NavBar>
+      <NavBar initialTabId="1"></NavBar>
       <BreakDiv></BreakDiv>
       {(() => {
         if (entries != 0) {
