@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { PreferencesContext } from "./index.tsx";
@@ -31,11 +31,19 @@ const Header2 = styled.h4`
 `;
 
 export function PDISelectProfessorPreferences() {
-  //get data
-  const CourseData = CourseListHelper.GetCourseList();
-  const Courses = CourseData.Courses;
-  const AmountOfCourses = Courses.length;
+  const [Courses, setCourses] = useState([]);
+  const [AmountOfCourses, setAmmount] = useState(0);
 
+  useEffect(() => {
+    console.log("Inside useEffect");
+    CourseListHelper.GetCourseList()
+      .then((resp) => {
+        setCourses(resp);
+      })
+      .then((resp) => {
+        setAmmount(0);
+      });
+  }, []);
   //hooks
   const { preferences, setPreferences } = useContext(PreferencesContext);
   const navigate = useNavigate();
