@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import '../../index.css';
+import "../../index.css";
 
 export interface TextInputProps {
   children: React.ReactNode;
@@ -11,15 +11,21 @@ export interface TextInputProps {
 
 const TextInput = styled.input`
   margin: 0;
-  padding: 5px;
-  border-radius: 16px;
-  border: 1px solid #000000;
+  border-radius: 4px;
+  padding: var(--space-2x-small) var(--space-x-small);
+  border: 1px solid var(--border);
+  font-size: var(--font-size-normal);
 `;
 
 export function TextInputView(props: TextInputProps) {
   return (
-    <TextInput placeholder={props.placeholder} value={props.DefaultValue} onchange={props.onChange} type="text">
-    {props.children}
+    <TextInput
+      placeholder={props.placeholder}
+      value={props.DefaultValue}
+      onchange={props.onChange}
+      type="text"
+    >
+      {props.children}
     </TextInput>
   );
 }

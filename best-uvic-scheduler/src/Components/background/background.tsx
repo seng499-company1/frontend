@@ -1,17 +1,17 @@
 import React from "react";
 import styled from "styled-components";
+import { DefaultShadow } from "../../GlobalStyles.tsx";
 import "../../index.css";
 
 const InsideDivStyle = styled.div`
-  width: 55%;
-  margin-top: 40px;
-  margin-bottom: 40px;
+  width: 70%;
+  margin-top: var(--space-4x-large);
   padding: 36px;
-  border-radius: 8px;
-  background-color: #fefefe;
+  border-radius: 4px;
+  background-color: var(--surface);
   height: 100%;
   position: relative;
-  box-shadow: 2px 12px 12px lightgray;
+  ${DefaultShadow}
 `;
 
 const OutsideDivStyle = styled.div`
