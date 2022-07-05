@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Background } from "../../Components/background/background.tsx";
@@ -16,17 +16,17 @@ import {
   SelectableTableElementOpenedDivView,
   SelectableTableInputDiv,
   SelectableTableSingleInputDiv,
-  SelectableTableCheckboxDiv
+  SelectableTableCheckboxDiv,
 } from "../../Components/SelectTable/SelectableTable.tsx";
 import { TextInputView } from "../../Components/Input/input.tsx";
 import Dropdown from "../../Components/dropdown/dropdown.tsx";
 import { CheckboxView } from "../../Components/checkbox/checkbox.tsx";
 import { CustomButtonView } from "../../Components/button/button.tsx";
-import { CustomButtonGroupView, ButtonDiv } from "../../Components/button/buttongroup.tsx";
-import { BiCaretDown,
-         BiCaretUp
-} from "react-icons/bi";
-
+import {
+  CustomButtonGroupView,
+  ButtonDiv,
+} from "../../Components/button/buttongroup.tsx";
+import { BiCaretDown, BiCaretUp } from "react-icons/bi";
 
 const Header = styled.div`
   display: grid;
@@ -54,17 +54,25 @@ const TableDiv = styled.div`
   padding-top: 48px;
 `;
 
-
 export function AdminCoursePage() {
-
-  const CourseData = CourseListHelper.GetCourseList();
-  const Courses = CourseData.Courses;
-  const AmountOfCourses = Courses.length;
-
+  const [Courses, setCourses] = useState([]);
+  const [AmountOfCourses, setAmmount] = useState(0);
   const [OpenedCourse, setOpenCourse] = useState(0);
   const [FallNeeded, setFallNeeded] = useState(false);
   const [SpringNeeded, setSpringNeeded] = useState(false);
   const [SummerNeeded, setSummerNeeded] = useState(false);
+
+  //get data
+  useEffect(() => {
+    console.log("Inside useEffect");
+    CourseListHelper.GetCourseList()
+      .then((resp) => {
+        setCourses(resp);
+      })
+      .then((resp) => {
+        setAmmount(resp.length());
+      });
+  }, []);
 
   const Departments = [
     { value: "Computer Science", label: "Computer Science" },
@@ -94,11 +102,13 @@ export function AdminCoursePage() {
       <TableDiv>
         <SelectableTableDivView>
           <SelectableTableHeaderDivView>
-            <SelectableTableIconElementDivView/>
+            <SelectableTableIconElementDivView />
             <SelectableTableLabelDivView>
-            <SelectableTableLabelsView>Course ID</SelectableTableLabelsView>
-            <SelectableTableLabelsView>Course Name</SelectableTableLabelsView>
-            <SelectableTableLabelsView>Terms Available</SelectableTableLabelsView>
+              <SelectableTableLabelsView>Course ID</SelectableTableLabelsView>
+              <SelectableTableLabelsView>Course Name</SelectableTableLabelsView>
+              <SelectableTableLabelsView>
+                Terms Available
+              </SelectableTableLabelsView>
             </SelectableTableLabelDivView>
           </SelectableTableHeaderDivView>
           {Courses.map(function (Course, index) {
@@ -106,115 +116,148 @@ export function AdminCoursePage() {
 
             let TimesOffered = "";
 
-            if(Course.fall_req === true){
-              TimesOffered += "Fall"
+            if (Course.fall_req === true) {
+              TimesOffered += "Fall";
             }
-            if(Course.spring_req === true){
-              TimesOffered += "/Spring"
+            if (Course.spring_req === true) {
+              TimesOffered += "/Spring";
             }
-            if(Course.summer_req === true){
-              TimesOffered += "/Summer"
+            if (Course.summer_req === true) {
+              TimesOffered += "/Summer";
             }
 
-            if(OpenedCourse === Course){
-
+            if (OpenedCourse === Course) {
               return (
-                <SelectableTableElementOpenedDivView {...{ Type: 1 }} >
+                <SelectableTableElementOpenedDivView {...{ Type: 1 }}>
                   <SelectableTableIconElementDivView>
                     <BiCaretUp
                       style={{ height: 30, width: 30 }}
-                      onClick={ () => {
+                      onClick={() => {
                         setOpenCourse(0);
                       }}
                     />
-                    </SelectableTableIconElementDivView>
-                    <SelectableTableInputDiv>
-                      <SelectableTableSingleInputDiv>
-                        <p> Course ID </p>
-                        <TextInputView {...{ DefaultValue: Course.course_code }}/>
-                      </SelectableTableSingleInputDiv>
-                      <SelectableTableSingleInputDiv
-                        style={{ width: 300 }}
-                      >
-                        <p> Course Name </p>
-                        <TextInputView {...{
+                  </SelectableTableIconElementDivView>
+                  <SelectableTableInputDiv>
+                    <SelectableTableSingleInputDiv>
+                      <p> Course ID </p>
+                      <TextInputView
+                        {...{ DefaultValue: Course.course_code }}
+                      />
+                    </SelectableTableSingleInputDiv>
+                    <SelectableTableSingleInputDiv style={{ width: 300 }}>
+                      <p> Course Name </p>
+                      <TextInputView
+                        {...{
                           DefaultValue: Course.course_name,
-                        }}/>
-                      </SelectableTableSingleInputDiv>
-                    </SelectableTableInputDiv>
-                    <SelectableTableInputDiv style={{
+                        }}
+                      />
+                    </SelectableTableSingleInputDiv>
+                  </SelectableTableInputDiv>
+                  <SelectableTableInputDiv
+                    style={{
                       paddingLeft: 32,
                       justifyContent: "start",
-                    }}>
-                      <SelectableTableCheckboxDiv>
-                        <CheckboxView {...{
+                    }}
+                  >
+                    <SelectableTableCheckboxDiv>
+                      <CheckboxView
+                        {...{
                           checked: Course.fall_req,
-                        }}>
-                          X
-                          </CheckboxView>
-                          <p style={{
-                            paddingLeft: 8,
-                            paddingRight: 12,
-                            paddingTop: 4
-                          }}>Fall</p>
-                      </SelectableTableCheckboxDiv>
-                      <SelectableTableCheckboxDiv>
-                      <CheckboxView {...{
-                        checked: Course.spring_req,
-                      }}>
+                        }}
+                      >
                         X
                       </CheckboxView>
-                      <p style={{
-                        paddingLeft: 8,
-                        paddingRight: 12,
-                        paddingTop: 4
-                      }}>Spring</p>
-                      </SelectableTableCheckboxDiv>
-                      <SelectableTableCheckboxDiv>
-                      <CheckboxView {...{
-                        checked: Course.summer_req,
-                      }}>
+                      <p
+                        style={{
+                          paddingLeft: 8,
+                          paddingRight: 12,
+                          paddingTop: 4,
+                        }}
+                      >
+                        Fall
+                      </p>
+                    </SelectableTableCheckboxDiv>
+                    <SelectableTableCheckboxDiv>
+                      <CheckboxView
+                        {...{
+                          checked: Course.spring_req,
+                        }}
+                      >
                         X
                       </CheckboxView>
-                      <p style={{
-                        paddingLeft: 8,
-                        paddingRight: 12,
-                        paddingTop: 4
-                      }}>Summer</p>
-                      </SelectableTableCheckboxDiv>
-                    </SelectableTableInputDiv>
-                    <CustomButtonGroupView {...{ Amount: "Progession" }}>
-                      <ButtonDiv>
-                        <CustomButtonView {...{ Theme: "Secondary" }}
+                      <p
+                        style={{
+                          paddingLeft: 8,
+                          paddingRight: 12,
+                          paddingTop: 4,
+                        }}
+                      >
+                        Spring
+                      </p>
+                    </SelectableTableCheckboxDiv>
+                    <SelectableTableCheckboxDiv>
+                      <CheckboxView
+                        {...{
+                          checked: Course.summer_req,
+                        }}
+                      >
+                        X
+                      </CheckboxView>
+                      <p
+                        style={{
+                          paddingLeft: 8,
+                          paddingRight: 12,
+                          paddingTop: 4,
+                        }}
+                      >
+                        Summer
+                      </p>
+                    </SelectableTableCheckboxDiv>
+                  </SelectableTableInputDiv>
+                  <CustomButtonGroupView {...{ Amount: "Progession" }}>
+                    <ButtonDiv>
+                      <CustomButtonView
+                        {...{ Theme: "Secondary" }}
                         customClickEvent={() => {
                           setOpenCourse(0);
                         }}
-                        >Cancel</CustomButtonView>
-                        <CustomButtonView {...{ Theme: "Primary" }}
+                      >
+                        Cancel
+                      </CustomButtonView>
+                      <CustomButtonView
+                        {...{ Theme: "Primary" }}
                         customClickEvent={() => {
                           CourseData[index] = Course;
                           setOpenCourse(0);
                         }}
-                        >Save</CustomButtonView>
-                      </ButtonDiv>
-                    </CustomButtonGroupView>
+                      >
+                        Save
+                      </CustomButtonView>
+                    </ButtonDiv>
+                  </CustomButtonGroupView>
                 </SelectableTableElementOpenedDivView>
               );
-            }else{
+            } else {
               return (
                 <SelectableTableElementClosedDivView>
                   <SelectableTableIconElementDivView>
                     <BiCaretDown
                       style={{ height: 30, width: 30 }}
-                      onClick={ () => {
+                      onClick={() => {
                         setOpenCourse(Course);
                       }}
                     />
                   </SelectableTableIconElementDivView>
                   <SelectableTableLabelDivView>
-                    <SelectableTableLabelsView>{Course.course_code}</SelectableTableLabelsView>
-                    <SelectableTableLabelsView>{Course.course_name}</SelectableTableLabelsView>
-                    <SelectableTableLabelsView>{TimesOffered}</SelectableTableLabelsView>
+                    <SelectableTableLabelsView>
+                      {Course.course_code}
+                    </SelectableTableLabelsView>
+                    <SelectableTableLabelsView>
+                      {Course.course_name}
+                    </SelectableTableLabelsView>
+                    <SelectableTableLabelsView>
+                      {TimesOffered}
+                    </SelectableTableLabelsView>
                   </SelectableTableLabelDivView>
                 </SelectableTableElementClosedDivView>
               );
@@ -226,4 +269,4 @@ export function AdminCoursePage() {
   );
 }
 
-  export default AdminCoursePage;
+export default AdminCoursePage;
