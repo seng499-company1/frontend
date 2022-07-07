@@ -5,7 +5,7 @@ const axios = require("axios");
 export async function GetCourseList() {
   try {
     const response = await axios.get(
-      "http://com-one-tester.herokuapp.com/courses/"
+      "https://com-one-tester.herokuapp.com/courses/"
     );
     console.log("response  ", response);
     return response.data;
