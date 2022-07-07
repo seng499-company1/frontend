@@ -12,7 +12,6 @@ permissions:
 jobs:
   Building Project:
     concurrency: ci-${{ github.ref }}
-    needs: Getting Code
     runs-on: ubuntu-latest
     defaults:
       run:
