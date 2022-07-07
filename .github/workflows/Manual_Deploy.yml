@@ -1,38 +1,29 @@
-name: Deploy to Github Pages
+name: Deploy to Github Pages [Manual]
 # This is a basic workflow to Deploy our frontend to github pages
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on pull request merge but only for the "main" branch
-  pull_request:
-    types:
-      - closed
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 permissions:
   contents: write
-  
+
 jobs:
-  if_merged:
-    if: github.event.pull_request.merged == true
+  Manual_deploy:
     concurrency: ci-${{ github.ref }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout 🛎
       uses: actions/checkout@v3
-      
+
     - name: Production Build
+      working-directory: ./best-uvic-scheduler
       run: |
         npm run build
-    
+
     - name: Deploy to GitHub Pages
+      working-directory: ./best-uvic-scheduler
       uses: JamesIves/github-pages-deploy-action@v4.3.4
       with:
         folder: build
-
-  
-  
-
-
-
