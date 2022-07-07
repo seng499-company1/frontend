@@ -10,14 +10,34 @@ permissions:
   contents: write
 
 jobs:
-  Manual_Deploy:
+  Unit_testing:
     concurrency: ci-${{ github.ref }}
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./best-uvic-scheduler
     steps:
-    - name: Checkout 🛎
+    - name: Checkout Code 🛎
+      uses: actions/checkout@v3
+
+    - name: Gather Dependencies
+      run: |
+        npm install
+
+    - name: Running Unit Tests
+      working-directory: ./best-uvic-scheduler
+      run: |
+        npm run test:nowatch
+
+  Manual_Deploy:
+    concurrency: ci-${{ github.ref }}
+    needs: Unit_testing
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./best-uvic-scheduler
+    steps:
+    - name: Checkout Code 🛎
       uses: actions/checkout@v3
 
     - name: Gather Dependencies
