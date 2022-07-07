@@ -12,7 +12,7 @@ export interface TextInputProps {
 const TextInput = styled.input`
   margin: 0;
   border-radius: 4px;
-  padding: var(--space-2x-small) var(--space-x-small);
+  padding: var(--space-x-small) var(--space-small);
   border: 1px solid var(--border);
   font-size: var(--font-size-normal);
 `;

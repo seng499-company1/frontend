@@ -6,41 +6,45 @@ import { useState, useContext } from "react";
 import { PostLoginInfo } from "../Util/LoginHelper.tsx";
 import { ProfessorContext } from "./ProfessorDataInput/index.tsx";
 import React from "react";
+import TextInputView from "../Components/Input/input.tsx";
 
-function Box({ children, ...props }) {
-  return <div {...props}>{children}</div>;
-}
-
-const LoginBoxDiv = styled.div`
+const InnerBox = styled.div`
+  border-radius: 4px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  color: black;
+  gap: var(--space-small);
 `;
 
 const BoxDiv = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 70px 0;
+  color: var(--text);
+  padding: var(--space-3x-large) var(--space-5x-large) var(--space-5x-large);
+  max-width: 500px;
+  margin: auto;
 `;
 
 const LineDiv = styled.div`
   display: flex;
-  align-items: center;
-  gap: 8px;
-`;
+  justify-content: space-between;
+  gap: var(--space-x-small);
+  font-weight: 500;
 
-const LineDiv2 = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  & input {
+    max-width: 300px;
+    width: 100%;
+  }
 `;
 
 const RightDiv = styled.div`
   display: flex;
-  float: right;
-  gap: 8px;
+  justify-content: flex-end;
+`;
+
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-large);
 `;
 
 export function LoginPage() {
@@ -61,48 +65,38 @@ export function LoginPage() {
   return (
     <Background>
       <BoxDiv>
-        <h2>Welcome</h2>
-        <Box
-          style={{
-            backgroundColor: "#D9D9D9",
-            borderRadius: 4,
-            color: "#000",
-            minHeight: 200,
-            padding: 8,
-            width: 500,
-            height: 250,
-          }}
-        >
-          <LoginBoxDiv>
-            <h3>Admin Login</h3>
-            <form>
-              <LineDiv>
-                <p>Username:</p>
-                <input
-                  onChange={(event) => setUsername(event.target.value)}
-                  type="text"
-                />
-              </LineDiv>
-              <LineDiv2>
-                <p>Password:</p>
-                <input
-                  onChange={(event) => setPassword(event.target.value)}
-                  type="password"
-                />
-              </LineDiv2>
-              <RightDiv>
-                <CustomButtonView
-                  {...{ Theme: "Primary" }}
-                  customClickEvent={() => {
-                    onSubmit();
-                  }}
-                >
-                  Submit
-                </CustomButtonView>
-              </RightDiv>
-            </form>
-          </LoginBoxDiv>
-        </Box>
+        <h2 style={{ fontWeight: "500" }}>
+          Welcome the the UVic Course Scheduler
+        </h2>
+        <InnerBox>
+          <h3 style={{ fontWeight: "500" }}>Admin Login</h3>
+          <StyledForm>
+            <LineDiv>
+              <p style={{ margin: 0 }}>Username</p>
+              <TextInputView
+                onChange={(event) => setUsername(event.target.value)}
+                type="text"
+              />
+            </LineDiv>
+            <LineDiv>
+              <p style={{ margin: 0 }}>Password</p>
+              <TextInputView
+                onChange={(event) => setPassword(event.target.value)}
+                type="password"
+              />
+            </LineDiv>
+            <RightDiv>
+              <CustomButtonView
+                {...{ Theme: "Primary" }}
+                customClickEvent={() => {
+                  onSubmit();
+                }}
+              >
+                Submit
+              </CustomButtonView>
+            </RightDiv>
+          </StyledForm>
+        </InnerBox>
       </BoxDiv>
     </Background>
   );

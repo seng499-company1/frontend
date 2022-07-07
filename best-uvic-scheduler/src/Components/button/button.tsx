@@ -35,7 +35,7 @@ const CustomButton = styled.button`
   color: ${(props) => ButtonTheme[props.Theme].textcolor};
   cursor: pointer;
   ${DefaultShadow}
-  border: 1px solid ${(props) => ButtonTheme[props.Theme].default};
+  border: 2px solid ${(props) => ButtonTheme[props.Theme].default};
   border-radius: 4px;
   padding: var(--space-x-small) var(--space-large);
   &:hover {

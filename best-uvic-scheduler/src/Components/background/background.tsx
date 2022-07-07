@@ -5,21 +5,24 @@ import "../../index.css";
 
 const InsideDivStyle = styled.div`
   width: 70%;
-  margin-top: var(--space-4x-large);
-  padding: 36px;
+  padding: var(--space-3x-large);
   border-radius: 4px;
   background-color: var(--surface);
   height: 100%;
   position: relative;
+  box-sizing: border-box;
   ${DefaultShadow}
 `;
 
 const OutsideDivStyle = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
   background-color: var(--primary-50);
   min-height: 100vh;
   position: relative;
+  box-sizing: border-box;
+  padding: var(--space-4x-large);
 `;
 
 export function Background({ children }) {
