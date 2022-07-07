@@ -1,5 +1,6 @@
 {
   "name": "best-uvic-scheduler",
+  "homepage": "https://seng499-company1.github.io/frontend/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
