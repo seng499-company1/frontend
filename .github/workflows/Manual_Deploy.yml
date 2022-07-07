@@ -31,7 +31,7 @@ jobs:
 
   Manually_Deploying_Project:
     concurrency: ci-${{ github.ref }}
-    needs: Building Project
+    needs: Building_Project
     runs-on: ubuntu-latest
     defaults:
       run:
