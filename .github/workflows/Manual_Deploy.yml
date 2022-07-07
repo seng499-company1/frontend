@@ -1,4 +1,4 @@
-name: Deploy to Github Pages [Manual]
+name: CI/CD to Github Pages [Manual]
 # This is a basic workflow to Deploy our frontend to github pages
 
 # Controls when the workflow will run
@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 jobs:
-  Manual_deploy:
+  Getting Code:
     concurrency: ci-${{ github.ref }}
     runs-on: ubuntu-latest
     defaults:
@@ -20,6 +20,13 @@ jobs:
     - name: Checkout 🛎
       uses: actions/checkout@v3
 
+  Building Project:
+    concurrency: ci-${{ github.ref }}
+    needs: Getting Code
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./best-uvic-scheduler
     - name: Gather Dependencies
       run: |
         npm install
@@ -29,6 +36,13 @@ jobs:
       run: |
         npm run build
 
+  Manually Deploying Project:
+    concurrency: ci-${{ github.ref }}
+    needs: Building Project
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./best-uvic-scheduler
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4.3.4
       with:
