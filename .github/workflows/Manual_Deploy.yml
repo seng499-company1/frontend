@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 jobs:
-  Building_Project:
+  Manual_Deploy:
     concurrency: ci-${{ github.ref }}
     runs-on: ubuntu-latest
     defaults:
@@ -29,14 +29,6 @@ jobs:
       run: |
         npm run build
 
-  Manually_Deploying_Project:
-    concurrency: ci-${{ github.ref }}
-    needs: Building_Project
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./best-uvic-scheduler
-    steps:
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4.3.4
       with:
