@@ -1,4 +1,4 @@
-name: Deploy to Github Pages [Automatic]
+name: CI/CD to Github Pages [Automatic]
 # This is a basic workflow to Deploy our frontend to github pages
 
 # Controls when the workflow will run
@@ -12,13 +12,42 @@ permissions:
   contents: write
 
 jobs:
-  Automatic Deploy:
-    if: github.event.pull_request.merged == true
+
+  Unit_testing:
     concurrency: ci-${{ github.ref }}
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./best-uvic-scheduler
     steps:
-    - name: Checkout 🛎
+    - name: Checkout Code 🛎
       uses: actions/checkout@v3
+
+    - name: Gather Dependencies
+      run: |
+        npm install
+
+    - name: Running Unit Tests
+      working-directory: ./best-uvic-scheduler
+      run: |
+        npm run test:nowatch
+
+  Automatic_deploy:
+    concurrency: ci-${{ github.ref }}
+    if: github.event.pull_request.merged == true
+    needs: Unit_testing
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./best-uvic-scheduler
+    steps:
+    - name: Checkout Code 🛎
+      uses: actions/checkout@v3
+
+    - name: Gather Dependencies
+      run: |
+        npm install
 
     - name: Production Build
       working-directory: ./best-uvic-scheduler
@@ -26,7 +55,6 @@ jobs:
         npm run build
 
     - name: Deploy to GitHub Pages
-      working-directory: ./best-uvic-scheduler
       uses: JamesIves/github-pages-deploy-action@v4.3.4
       with:
-        folder: build
+        folder: ./best-uvic-scheduler/build
