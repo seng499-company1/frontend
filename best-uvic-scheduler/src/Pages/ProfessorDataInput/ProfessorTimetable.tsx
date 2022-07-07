@@ -212,11 +212,9 @@ const LayoutDiv = styled.div`
   padding: 0 10px var(--space-2x-large);
 `;
 
-const WarningText = styled.h4`
-  margin: 0;
-  text-align: center;
+const WarningText = styled.span`
+  font-weight: 500;
   color: var(--danger-400);
-  font-style: italic;
 `;
 
 const MaxCoursesInput = styled.input`
@@ -241,13 +239,11 @@ const CourseInfoDiv = styled.div`
   display: grid;
   grid-template-columns: 2fr 1fr;
   grid-template-rows: auto auto;
-  grid-gap: var(--space-large) var(--space-3x-large);
+  grid-gap: var(--space-large) var(--space-5x-large);
   align-items: center;
 `;
 
-const Header = styled.h1`
-  text-align: center;
-`;
+const Header = styled.h2``;
 
 const FieldLabelP = styled.p`
   padding: var(--space-2x-small) 0;
@@ -294,12 +290,15 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
   return (
     <Background>
       <LayoutDiv>
-        <Header>Please Enter Class Scheduling Preferences</Header>
+        <Header>Course teaching preferences</Header>
         {Courses.map(function (Course, index) {
           let name = Course.course_code;
           return (
             <div>
-              <h2> {Course.course_code} </h2>
+              <h3 style={{ fontWeight: "500", margin: "0" }}>
+                {" "}
+                {Course.course_code}{" "}
+              </h3>
               <CourseInfoDiv key={index}>
                 <p>
                   <b>Course description:</b> {Course.course_desceiption}
@@ -358,6 +357,7 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
             </div>
           );
         })}
+        <Header>Teaching time preferences</Header>
         <TabGroup initialTabId="0">
           {semesters.map((sem: { label: string; value: string }, i: number) => {
             return (
@@ -373,7 +373,6 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
             );
           })}
         </TabGroup>
-
         <AbsenceDiv>
           <CheckboxContainerDiv>
             <CheckboxGroup.Checkbox
@@ -441,12 +440,15 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                 );
               })}
             </PreferredDiv>
-            <FieldLabelP>Select your preferred teaching times</FieldLabelP>
+            <FieldLabelP>
+              Select your preferred teaching times.{" "}
+              <WarningText>
+                Please be aware that you still could be scheduled outside your
+                prefered times.
+              </WarningText>
+            </FieldLabelP>
+
             <Timetable semester={selectedSemester} />
-            <WarningText>
-              *Please be aware that you still could be scheduled outside your
-              prefered time
-            </WarningText>
           </>
         )}
       </LayoutDiv>

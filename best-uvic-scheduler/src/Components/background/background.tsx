@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { DefaultShadow } from "../../GlobalStyles.tsx";
+import { DefaultShadowLarge } from "../../GlobalStyles.tsx";
 import "../../index.css";
 
 const InsideDivStyle = styled.div`
@@ -11,7 +11,7 @@ const InsideDivStyle = styled.div`
   height: 100%;
   position: relative;
   box-sizing: border-box;
-  ${DefaultShadow}
+  ${DefaultShadowLarge}
 `;
 
 const OutsideDivStyle = styled.div`

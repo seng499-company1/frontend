@@ -10,7 +10,7 @@ const ButtonTheme = {
     textcolor: "var(--grey-50)",
   },
   Secondary: {
-    default: "var(--grey-50)",
+    default: "var(--primary-700)",
     hover: "var(--grey-50)",
     textcolor: "var(--primary)",
   },
@@ -35,7 +35,7 @@ const CustomButton = styled.button`
   color: ${(props) => ButtonTheme[props.Theme].textcolor};
   cursor: pointer;
   ${DefaultShadow}
-  border: 2px solid ${(props) => ButtonTheme[props.Theme].default};
+  border: 1px solid ${(props) => ButtonTheme[props.Theme].default};
   border-radius: 4px;
   padding: var(--space-x-small) var(--space-large);
   &:hover {
@@ -43,7 +43,7 @@ const CustomButton = styled.button`
       props.Disabled
         ? ButtonTheme[props.Theme].default
         : ButtonTheme[props.Theme].hover};
-    border: 2px solid
+    border: 1px solid
       ${(props) =>
         props.Disabled
           ? ButtonTheme[props.Theme].default

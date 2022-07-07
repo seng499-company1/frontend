@@ -12,27 +12,29 @@ const InnerBox = styled.div`
   border-radius: 4px;
   display: flex;
   flex-direction: column;
-  gap: var(--space-small);
 `;
 
 const BoxDiv = styled.div`
   display: flex;
   flex-direction: column;
   color: var(--text);
-  padding: var(--space-3x-large) var(--space-5x-large) var(--space-5x-large);
+  padding: var(--space-4x-large) var(--space-5x-large) var(--space-5x-large);
   max-width: 500px;
   margin: auto;
 `;
 
 const LineDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: var(--space-x-small);
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  grid-template-rows: 1fr 1fr;
+  gap: var(--space-large);
   font-weight: 500;
+  align-items: center;
+  box-sizing: border-box;
 
   & input {
-    max-width: 300px;
     width: 100%;
+    box-sizing: border-box;
   }
 `;
 
@@ -77,8 +79,6 @@ export function LoginPage() {
                 onChange={(event) => setUsername(event.target.value)}
                 type="text"
               />
-            </LineDiv>
-            <LineDiv>
               <p style={{ margin: 0 }}>Password</p>
               <TextInputView
                 onChange={(event) => setPassword(event.target.value)}
