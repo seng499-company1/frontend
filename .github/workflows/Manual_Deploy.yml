@@ -13,9 +13,16 @@ jobs:
   Manual_deploy:
     concurrency: ci-${{ github.ref }}
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./best-uvic-scheduler
     steps:
     - name: Checkout 🛎
       uses: actions/checkout@v3
+
+    - name: Gather Dependencies
+      run: |
+        npm install
 
     - name: Production Build
       working-directory: ./best-uvic-scheduler
@@ -25,4 +32,4 @@ jobs:
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4.3.4
       with:
-        folder: ./best-uvic-scheduler/build
+        folder: build
