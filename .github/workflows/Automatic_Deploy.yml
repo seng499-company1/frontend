@@ -26,7 +26,6 @@ jobs:
         npm run build
 
     - name: Deploy to GitHub Pages
-      working-directory: ./best-uvic-scheduler
       uses: JamesIves/github-pages-deploy-action@v4.3.4
       with:
-        folder: build
+        folder: ./best-uvic-scheduler/build
