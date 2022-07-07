@@ -10,8 +10,9 @@ permissions:
   contents: write
 
 jobs:
-  Getting Code:
+  Building Project:
     concurrency: ci-${{ github.ref }}
+    needs: Getting Code
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -20,13 +21,6 @@ jobs:
     - name: Checkout 🛎
       uses: actions/checkout@v3
 
-  Building Project:
-    concurrency: ci-${{ github.ref }}
-    needs: Getting Code
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./best-uvic-scheduler
     - name: Gather Dependencies
       run: |
         npm install
@@ -43,6 +37,7 @@ jobs:
     defaults:
       run:
         working-directory: ./best-uvic-scheduler
+    steps:
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4.3.4
       with:
