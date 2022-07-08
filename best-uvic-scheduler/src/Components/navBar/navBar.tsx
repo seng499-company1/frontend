@@ -15,14 +15,22 @@ export function NavBar(props: NavBarProps) {
         Landing Page
       </TabGroup.Tab>
 
-      <TabGroup.Tab size="medium" tabId="2" onClick={() => navigate(`/Admin/Courses`)}>
+      <TabGroup.Tab
+        size="medium"
+        tabId="2"
+        onClick={() => navigate(`/Admin/Courses`)}
+      >
         Edit Courses
       </TabGroup.Tab>
       <TabGroup.Tab size="medium" tabId="3">
         Edit Professors
       </TabGroup.Tab>
 
-      <TabGroup.Tab size="medium" tabId="4">
+      <TabGroup.Tab
+        size="medium"
+        tabId="4"
+        onClick={() => navigate(`/Admin/Schedule`)}
+      >
         Generate Schedule
       </TabGroup.Tab>
     </TabGroup>
