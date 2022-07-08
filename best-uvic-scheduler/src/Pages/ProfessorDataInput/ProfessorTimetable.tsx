@@ -3,7 +3,6 @@ import { ChangeEvent, useReducer, useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import CustomButtonView from "../../Components/button/button.tsx";
-import CustomButtonGroupView from "../../Components/button/buttongroup.tsx";
 import CheckboxGroup from "../../Components/checkbox/checkbox.tsx";
 import Dropdown from "../../Components/dropdown/dropdown.tsx";
 import TabGroup from "../../Components/tab-group/tab-group.tsx";
@@ -17,6 +16,7 @@ import {
   PrefDayContext,
 } from "./index.tsx";
 import { Background } from "../../Components/background/background.tsx";
+import { ToggleView } from "../../Components/toggle/toggle.tsx";
 
 export interface ProfessorTimetableProps {
   semesters: Array<string>;
@@ -205,6 +205,12 @@ const FreeformDiv = styled.div`
   flex-direction: column;
 `;
 
+const StepContainerDiv = styled.div`
+  display: flex;
+  gap: var(--space-med);
+  justify-content: flex-end;
+`;
+
 const LayoutDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -246,17 +252,15 @@ const CourseInfoDiv = styled.div`
 const Header = styled.h2``;
 
 const FieldLabelP = styled.p`
-  padding: var(--space-2x-small) 0;
+  padding: var(--space-small) 0;
   box-sizing: border-box;
   color: var(--font-color);
   margin: 0;
+  font-weight: 500;
 `;
 
 const PreferredDiv = styled.div`
   width: 100%;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
 `;
 
 export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
@@ -405,9 +409,7 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
         ) : (
           <>
             <MaxCoursesDiv>
-              <FieldLabelP>
-                Maximum number of courses you are willing to teach this semester{" "}
-              </FieldLabelP>
+              <FieldLabelP>Maximum number of courses per semester </FieldLabelP>
               <MaxCoursesInput
                 type="number"
                 value={maxCourses}
@@ -420,13 +422,11 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
               />
             </MaxCoursesDiv>
             <PreferredDiv>
-              <FieldLabelP style={{ flex: " 0 0 100%", marginBottom: "-10px" }}>
-                Check your preferred teaching days
-              </FieldLabelP>
-              {prefDays[selectedSemester].map((day: boolean, idx: number) => {
-                return (
-                  <CheckboxContainerDiv>
-                    <CheckboxGroup.Checkbox
+              <FieldLabelP>Preferred teaching days</FieldLabelP>
+              <CheckboxContainerDiv>
+                {prefDays[selectedSemester].map((day: boolean, idx: number) => {
+                  return (
+                    <ToggleView
                       onClick={() =>
                         setPrefDays({
                           semester: selectedSemester,
@@ -434,11 +434,13 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                         })
                       }
                       checked={day}
-                    />
-                    <FieldLabelP>{weekdays[idx]}</FieldLabelP>
-                  </CheckboxContainerDiv>
-                );
-              })}
+                      id={idx}
+                    >
+                      {weekdays[idx]}
+                    </ToggleView>
+                  );
+                })}{" "}
+              </CheckboxContainerDiv>
             </PreferredDiv>
             <FieldLabelP>
               Select your preferred teaching times.{" "}
@@ -452,7 +454,7 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
           </>
         )}
       </LayoutDiv>
-      <CustomButtonGroupView {...{ Amount: "Double" }}>
+      <StepContainerDiv>
         <CustomButtonView
           {...{ Theme: "Secondary" }}
           customClickEvent={() => {
@@ -478,7 +480,7 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
           {" "}
           Confirm{" "}
         </CustomButtonView>
-      </CustomButtonGroupView>
+      </StepContainerDiv>
     </Background>
   );
 }

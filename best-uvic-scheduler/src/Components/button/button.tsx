@@ -1,41 +1,48 @@
 import React from "react";
 import styled from "styled-components";
-import { DefaultShadow } from "../../GlobalStyles.tsx";
 import "../../index.css";
 
 const ButtonTheme = {
   Primary: {
     default: "var(--primary)",
     hover: "var(--primary-700)",
+    borderColor: "var(--primary)",
+    borderHover: "var(--primary-700)",
     textcolor: "var(--grey-50)",
   },
   Secondary: {
-    default: "var(--primary-700)",
+    default: "var(--surface)",
     hover: "var(--grey-50)",
+    borderColor: "var(--primary)",
+    borderHover: "var(--primary-700)",
     textcolor: "var(--primary)",
   },
   Cancel: {
     default: "var(--danger-700)",
     hover: "var(--danger-900)",
-    textcolor: "var(--grey-50)",
+    borderColor: "var(--danger-700)",
+    borderHover: "var(--danger-900)",
+    textcolor: "var(--surface)",
   },
 };
 
+type ButtonThemeType = "Primary" | "Secondary" | "Cancel";
 export interface CustomButtonProps {
   customClickEvent: any;
-  Theme: ButtonTheme;
+  Theme: ButtonThemeType;
   Disabled?: boolean;
   children: React.ReactNode;
 }
 
-//
-const CustomButton = styled.button`
+const CustomButton = styled.button<{
+  Theme: ButtonThemeType;
+  Disabled?: boolean;
+}>`
   background-color: ${(props) =>
     props.Theme == "Secondary" ? "#fff" : ButtonTheme[props.Theme].default};
   color: ${(props) => ButtonTheme[props.Theme].textcolor};
   cursor: pointer;
-  ${DefaultShadow}
-  border: 1px solid ${(props) => ButtonTheme[props.Theme].default};
+  border: 1px solid ${(props) => ButtonTheme[props.Theme].borderColor};
   border-radius: 4px;
   padding: var(--space-x-small) var(--space-large);
   &:hover {
@@ -46,8 +53,8 @@ const CustomButton = styled.button`
     border: 1px solid
       ${(props) =>
         props.Disabled
-          ? ButtonTheme[props.Theme].default
-          : ButtonTheme[props.Theme].hover};
+          ? ButtonTheme[props.Theme].borderColor
+          : ButtonTheme[props.Theme].borderHover};
   }
   ${({ Disabled }) =>
     Disabled &&
