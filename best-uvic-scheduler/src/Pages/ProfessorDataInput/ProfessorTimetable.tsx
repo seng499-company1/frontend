@@ -17,6 +17,7 @@ import {
 } from "./index.tsx";
 import { Background } from "../../Components/background/background.tsx";
 import { ToggleView } from "../../Components/toggle/toggle.tsx";
+import { DefaultShadow } from "../../GlobalStyles.tsx";
 
 export interface ProfessorTimetableProps {
   semesters: Array<string>;
@@ -191,12 +192,6 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
   };
 }
 
-const MaxCoursesDiv = styled.div`
-  gap: var(--space-large);
-  justify-content: flex-start;
-  align-items: center;
-`;
-
 const AbsenceDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -209,11 +204,6 @@ const CheckboxContainerDiv = styled.div`
   align-items: center;
 `;
 
-const FreeformDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
 const StepContainerDiv = styled.div`
   display: flex;
   gap: var(--space-med);
@@ -223,17 +213,30 @@ const StepContainerDiv = styled.div`
 const LayoutDiv = styled.div`
   display: flex;
   flex-direction: column;
-  gap: var(--space-2x-large);
-  padding: 0 10px var(--space-2x-large);
+  gap: var(--space-4x-large);
+  padding: 0 var(--space-5x-large) var(--space-2x-large);
 `;
 
-const WarningText = styled.span`
+const TabbedContentDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4x-large);
+  padding: var(--space-x-large) var(--space-4x-large) var(--space-4x-large);
+`;
+
+const TabsContainerDiv = styled.div`
+  ${DefaultShadow}
+  border-radius:4px;
+`;
+
+const WarningText = styled.p`
   font-weight: 500;
   color: var(--danger-400);
+  margin: 0;
 `;
 
 const MaxCoursesInput = styled.input`
-  font-size: 16px;
+  font-size: var(--font-size-normal);
   border: 1px solid var(--border);
   max-width: 280px;
   border-radius: 4px;
@@ -248,28 +251,37 @@ const MaxCoursesInput = styled.input`
 const AbsenceTextarea = styled.textarea`
   border: 1px solid var(--border);
   border-radius: 4px;
+  min-height: 180px;
 `;
 
 const CourseInfoDiv = styled.div`
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  grid-template-rows: auto auto;
-  grid-gap: var(--space-large) var(--space-5x-large);
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  grid-gap: var(--space-x-large);
 `;
 
-const Header = styled.h2``;
+const Header = styled.h2`
+  margin: 0;
+`;
 
 const FieldLabelP = styled.p`
-  padding: var(--space-small) 0;
   box-sizing: border-box;
   color: var(--font-color);
   margin: 0;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: var(--font-size-normal);
 `;
 
-const PreferredDiv = styled.div`
-  width: 100%;
+const FieldContainerDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-x-small);
+`;
+
+const CourseDividerHR = styled.hr`
+  border: none;
+  border-bottom: 1px solid var(--grey-100);
+  margin: 0;
 `;
 
 export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
@@ -307,189 +319,220 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
         {Courses.map(function (Course, index) {
           let name = Course.course_code;
           return (
-            <div>
-              <h3 style={{ fontWeight: "500", margin: "0" }}>
-                {" "}
-                {Course.course_code}{" "}
-              </h3>
-              <CourseInfoDiv key={index}>
-                <p>
-                  <b>Course description:</b> {Course.course_desceiption}
-                </p>
-                <Dropdown
-                  placeholder={"Desirability"}
-                  startingValue={
-                    preferences.hasOwnProperty(name)
-                      ? {
-                          value: preferences[name],
-                          label: preferences[name],
-                        }
-                      : null
-                  }
-                  dropdownItems={PreferenceItems}
-                  handleChange={(event) => {
-                    setPreferences({
-                      ...preferences,
-                      [Course.course_code]: event.value,
-                    });
-                  }}
-                >
-                  Select
-                </Dropdown>
-                <p>
-                  <b>Qualifications needed:</b> {Course.course_qualifications}
-                  {Course.peng_req ? (
-                    <>
-                      , <b>PENG is Reqiured</b>
-                    </>
-                  ) : (
-                    ""
-                  )}
-                </p>
-                <Dropdown
-                  placeholder={"Qualification"}
-                  startingValue={
-                    qualifications.hasOwnProperty(name)
-                      ? {
-                          value: qualifications[name],
-                          label: qualifications[name],
-                        }
-                      : null
-                  }
-                  dropdownItems={QualificationItems}
-                  handleChange={(event) => {
-                    setQualifications({
-                      ...qualifications,
-                      [Course.course_code]: event.value,
-                    });
-                  }}
-                >
-                  Select
-                </Dropdown>
-              </CourseInfoDiv>
-            </div>
+            <>
+              <div>
+                <h3 style={{ fontWeight: "500", margin: "0" }}>
+                  {" "}
+                  {Course.course_code}{" "}
+                </h3>
+                <CourseInfoDiv key={index}>
+                  <p>
+                    {Course.course_desceiption}{" "}
+                    {Course.course_qualifications && (
+                      <>
+                        <br />
+                        <b>Qualifications needed:</b>{" "}
+                        {Course.course_qualifications}
+                        {Course.peng_req ? (
+                          <>
+                            , <b>PENG is Reqiured</b>
+                          </>
+                        ) : (
+                          ""
+                        )}
+                      </>
+                    )}
+                  </p>
+                  <FieldContainerDiv>
+                    <FieldLabelP>Desire to teach</FieldLabelP>
+                    <Dropdown
+                      placeholder={"Desirability"}
+                      startingValue={
+                        preferences.hasOwnProperty(name)
+                          ? {
+                              value: preferences[name],
+                              label: preferences[name],
+                            }
+                          : null
+                      }
+                      dropdownItems={PreferenceItems}
+                      handleChange={(event) => {
+                        setPreferences({
+                          ...preferences,
+                          [Course.course_code]: event.value,
+                        });
+                      }}
+                    >
+                      Select
+                    </Dropdown>
+                  </FieldContainerDiv>
+                  <FieldContainerDiv>
+                    <FieldLabelP>Qualitfication level</FieldLabelP>
+                    <Dropdown
+                      placeholder={"Qualification"}
+                      startingValue={
+                        qualifications.hasOwnProperty(name)
+                          ? {
+                              value: qualifications[name],
+                              label: qualifications[name],
+                            }
+                          : null
+                      }
+                      dropdownItems={QualificationItems}
+                      handleChange={(event) => {
+                        setQualifications({
+                          ...qualifications,
+                          [Course.course_code]: event.value,
+                        });
+                      }}
+                    >
+                      Select
+                    </Dropdown>
+                  </FieldContainerDiv>
+                </CourseInfoDiv>
+              </div>
+              <CourseDividerHR
+                style={{
+                  visibility: `${
+                    index === Courses.length - 1 ? "hidden" : "visible"
+                  }`,
+                }}
+              />
+            </>
           );
         })}
         <Header>Teaching time preferences</Header>
-        <TabGroup initialTabId="0">
-          {semesters.map((sem: { label: string; value: string }, i: number) => {
-            return (
-              <TabGroup.Tab
-                tabId={`${i}`}
-                onClick={() => {
-                  onSelectedSemester(sem);
-                }}
-                size="medium"
-              >
-                {sem.label}
-              </TabGroup.Tab>
-            );
-          })}
-        </TabGroup>
-        <AbsenceDiv>
-          <CheckboxContainerDiv>
-            <CheckboxGroup.Checkbox
-              checked={away}
-              onClick={() => onAway(selectedSemester)}
-            />
-            <FieldLabelP>I am away for this semester </FieldLabelP>
-          </CheckboxContainerDiv>
-          <CheckboxContainerDiv>
-            <CheckboxGroup.Checkbox
-              checked={requestOff}
-              onClick={() => onRequestOff(selectedSemester)}
-            />
-            <FieldLabelP>I would like away this semester off </FieldLabelP>
-          </CheckboxContainerDiv>
-        </AbsenceDiv>
-        {requestOff || away ? (
-          <FreeformDiv>
-            <FieldLabelP>Reason for absence:</FieldLabelP>
-            <AbsenceTextarea
-              value={absenceReason}
-              onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
-                onAbsenceReason({
-                  semester: selectedSemester,
-                  text: event.target.value,
-                })
+        <TabsContainerDiv>
+          <TabGroup initialTabId="0">
+            {semesters.map(
+              (sem: { label: string; value: string }, i: number) => {
+                return (
+                  <TabGroup.Tab
+                    tabId={`${i}`}
+                    onClick={() => {
+                      onSelectedSemester(sem);
+                    }}
+                    size="medium"
+                  >
+                    {sem.label}
+                  </TabGroup.Tab>
+                );
               }
-            />
-          </FreeformDiv>
-        ) : (
-          <>
-            <MaxCoursesDiv>
-              <FieldLabelP>Maximum number of courses per semester </FieldLabelP>
-              <MaxCoursesInput
-                type="number"
-                value={maxCourses}
-                onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                  setMaxCourses({
-                    semester: selectedSemester,
-                    text: event.target.value,
-                  })
-                }
-              />
-            </MaxCoursesDiv>
-            <PreferredDiv>
-              <FieldLabelP>Preferred teaching days</FieldLabelP>
+            )}
+          </TabGroup>
+          <TabbedContentDiv>
+            <AbsenceDiv>
               <CheckboxContainerDiv>
-                {prefDays[selectedSemester].map((day: boolean, idx: number) => {
-                  return (
-                    <ToggleView
-                      onClick={() =>
-                        setPrefDays({
-                          semester: selectedSemester,
-                          dayIdx: idx,
-                        })
-                      }
-                      checked={day}
-                      id={idx}
-                    >
-                      {weekdays[idx]}
-                    </ToggleView>
-                  );
-                })}{" "}
+                <CheckboxGroup.Checkbox
+                  checked={away}
+                  onClick={() => onAway(selectedSemester)}
+                />
+                <FieldLabelP>I am away for this semester </FieldLabelP>
               </CheckboxContainerDiv>
-            </PreferredDiv>
-            <FieldLabelP>
-              Select your preferred teaching times.{" "}
-              <WarningText>
-                Please be aware that you still could be scheduled outside your
-                prefered times.
-              </WarningText>
-            </FieldLabelP>
-
-            <Timetable semester={selectedSemester} />
-          </>
-        )}
+              <CheckboxContainerDiv>
+                <CheckboxGroup.Checkbox
+                  checked={requestOff}
+                  onClick={() => onRequestOff(selectedSemester)}
+                />
+                <FieldLabelP>I would like away this semester off </FieldLabelP>
+              </CheckboxContainerDiv>
+            </AbsenceDiv>
+            {requestOff || away ? (
+              <FieldContainerDiv>
+                <FieldLabelP>Reason for absence:</FieldLabelP>
+                <AbsenceTextarea
+                  value={absenceReason}
+                  onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+                    onAbsenceReason({
+                      semester: selectedSemester,
+                      text: event.target.value,
+                    })
+                  }
+                />
+              </FieldContainerDiv>
+            ) : (
+              <>
+                <FieldContainerDiv>
+                  <FieldLabelP>
+                    Maximum number of courses per semester{" "}
+                  </FieldLabelP>
+                  <MaxCoursesInput
+                    type="number"
+                    value={maxCourses}
+                    onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                      setMaxCourses({
+                        semester: selectedSemester,
+                        text: event.target.value,
+                      })
+                    }
+                  />
+                </FieldContainerDiv>
+                <FieldContainerDiv>
+                  <FieldLabelP>Preferred teaching days</FieldLabelP>
+                  <CheckboxContainerDiv>
+                    {prefDays[selectedSemester].map(
+                      (day: boolean, idx: number) => {
+                        return (
+                          <ToggleView
+                            onClick={() =>
+                              setPrefDays({
+                                semester: selectedSemester,
+                                dayIdx: idx,
+                              })
+                            }
+                            checked={day}
+                            id={idx}
+                          >
+                            {weekdays[idx]}
+                          </ToggleView>
+                        );
+                      }
+                    )}{" "}
+                  </CheckboxContainerDiv>
+                </FieldContainerDiv>
+                <FieldContainerDiv>
+                  <FieldLabelP>
+                    Select your preferred teaching times.
+                  </FieldLabelP>
+                  <WarningText>
+                    Please be aware that you still could be scheduled outside
+                    your prefered times.
+                  </WarningText>
+                  <br />
+                  <Timetable semester={selectedSemester} />
+                </FieldContainerDiv>
+              </>
+            )}
+          </TabbedContentDiv>
+        </TabsContainerDiv>
+        <StepContainerDiv>
+          <CustomButtonView
+            {...{ Theme: "Secondary" }}
+            customClickEvent={() => {
+              navigate(`/`);
+            }}
+          >
+            {" "}
+            Back{" "}
+          </CustomButtonView>
+          <CustomButtonView
+            {...{ Theme: "Primary" }}
+            Disabled={Object.keys(qualifications).length !== AmountOfCourses}
+            customClickEvent={() => {
+              if (Object.keys(qualifications).length !== AmountOfCourses) {
+                console.log(qualifications);
+              } else {
+                console.log("ERROR HERE :(");
+                // setSelectedTimes(TimeIntervalHelper());
+                navigate(`/SelectProfessor/Summary`);
+              }
+            }}
+          >
+            {" "}
+            Confirm{" "}
+          </CustomButtonView>
+        </StepContainerDiv>
       </LayoutDiv>
-      <StepContainerDiv>
-        <CustomButtonView
-          {...{ Theme: "Secondary" }}
-          customClickEvent={() => {
-            navigate(`/`);
-          }}
-        >
-          {" "}
-          Back{" "}
-        </CustomButtonView>
-        <CustomButtonView
-          {...{ Theme: "Primary" }}
-          Disabled={Object.keys(qualifications).length !== AmountOfCourses}
-          customClickEvent={() => {
-            if (Object.keys(qualifications).length !== AmountOfCourses) {
-              console.log(qualifications);
-            } else {
-              console.log("ERROR HERE :(");
-              // setSelectedTimes(TimeIntervalHelper());
-              navigate(`/SelectProfessor/Summary`);
-            }
-          }}
-        >
-          {" "}
-          Confirm{" "}
-        </CustomButtonView>
-      </StepContainerDiv>
     </Background>
   );
 }

@@ -17,7 +17,7 @@ const StyledLabel = styled.label`
   color: var(--primary);
   background-color: transparent;
   border-radius: 4px;
-  font-size: var(--font-size-label);
+  font-size: var(--font-size-normal);
 `;
 
 const ToggleCheckBox = styled.input`

@@ -5,7 +5,7 @@ import "../../index.css";
 
 const InsideDivStyle = styled.div`
   width: 70%;
-  padding: var(--space-3x-large);
+  padding: var(--space-4x-large);
   border-radius: 4px;
   background-color: var(--surface);
   height: 100%;
