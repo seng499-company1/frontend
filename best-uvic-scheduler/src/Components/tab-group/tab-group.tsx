@@ -61,7 +61,7 @@ function useTab(props: TabProps): Omit<TabViewProps, "children"> {
 
 const paddingSize = {
   small: "var(--space-2x-small) var(--space-small)",
-  medium: "var(--space-x-small) var(--space-med)",
+  medium: "var(--space-med) var(--space-med)",
   large: "var(--space-med) var(--space-3x-large)",
 };
 

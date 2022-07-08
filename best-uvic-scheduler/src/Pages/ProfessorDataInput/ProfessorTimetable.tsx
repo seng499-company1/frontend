@@ -202,6 +202,7 @@ const CheckboxContainerDiv = styled.div`
   display: flex;
   gap: var(--space-large);
   align-items: center;
+  flex-wrap: wrap;
 `;
 
 const StepContainerDiv = styled.div`
