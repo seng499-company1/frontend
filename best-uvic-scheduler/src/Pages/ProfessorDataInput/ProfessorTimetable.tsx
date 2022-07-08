@@ -97,7 +97,7 @@ function initString(semesters: string[]) {
 function useProfessorTimetable(props: ProfessorTimetableProps) {
   const { semesters } = props;
   const [Courses, setCourses] = useState([]);
-  const [AmountOfCourses, setAmmount] = useState(0);
+  const [AmountOfCourses, setAmount] = useState(0);
 
   //get data
   useEffect(() => {
@@ -107,7 +107,7 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
         setCourses(resp);
       })
       .then((resp) => {
-        setAmmount(resp.length());
+        setAmount(resp.length());
       });
   }, []);
 
@@ -327,7 +327,7 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                 </h3>
                 <CourseInfoDiv key={index}>
                   <p>
-                    {Course.course_desceiption}{" "}
+                    {Course.course_desc}{" "}
                     {Course.course_qualifications && (
                       <>
                         <br />
