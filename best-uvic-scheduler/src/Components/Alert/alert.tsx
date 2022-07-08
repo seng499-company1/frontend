@@ -9,7 +9,7 @@ export interface AlertProps {
 
 const RedBox = styled.div`
   font-size: 0;
-  width: 500px;
+  width: 100%;
   border-radius: 4px;
   border: 1px solid var(--danger-400);
   ${DefaultShadow}

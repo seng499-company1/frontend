@@ -49,7 +49,7 @@ const CellDiv = styled.div<{ highlighted: boolean }>`
 const TimeDiv = styled.div`
   width: 100%;
   text-align: center;
-  padding: var(--space-x-small) var(--space-med);
+  padding: var(--space-3x-small) var(--space-med);
   box-sizing: border-box;
   user-select: none;
 `;

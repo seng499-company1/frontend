@@ -60,9 +60,9 @@ function useTab(props: TabProps): Omit<TabViewProps, "children"> {
 }
 
 const paddingSize = {
-  small: "var(--space-2x-small) var(--space-small)",
+  small: "var(--space-small) var(--space-small)",
   medium: "var(--space-med) var(--space-med)",
-  large: "var(--space-med) var(--space-3x-large)",
+  large: "var(--space-large) var(--space-3x-large)",
 };
 
 const TabDiv = styled.div<{ active: boolean; size: SizeType }>`

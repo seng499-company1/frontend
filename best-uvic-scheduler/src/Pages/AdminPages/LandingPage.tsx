@@ -34,13 +34,11 @@ const LogoDiv = styled.div`
 `;
 
 const ProfListDiv = styled.div`
-    background-color: var(--grey-50);
-    box-shadow:1px 1px;
-    padding-top:0.5px;
-    padding-bottom: 14px;
-    border-color: var(--grey-700):
-    border-style: solid;
-  `;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2x-large);
+`;
+
 const DataEntryTitleDiv = styled.h4`
   padding-left: 32px;
   color: black;
@@ -49,13 +47,8 @@ const DataEntryTitleDiv = styled.h4`
 const ProfNameDiv = styled.button`
   color: var(--grey-800);
   text-color: black;
-  width: 60%;
-  margin: 2px 128px;
   align: center;
   text-align: left;
-  padding-left: 32px;
-  height: 24px;
-  padding-bottom: 12px;
 `;
 
 const BreakDiv = styled.br`
@@ -66,6 +59,12 @@ const BreakDiv = styled.br`
 const AlertDiv = styled.div`
   display: grid;
   place-items: center;
+`;
+
+const SectionDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-large);
 `;
 
 export function LandingPage() {
@@ -98,44 +97,45 @@ export function LandingPage() {
         <Title>UVIC Course Scheduler</Title>
       </Header>
 
-      <NavBar initialTabId="1"></NavBar>
-      <BreakDiv></BreakDiv>
-      {(() => {
-        if (entries != 0) {
-          return (
-            <AlertDiv>
-              <Alert {...{ new_entries: entries }}></Alert>
-            </AlertDiv>
-          );
-        } else {
-          return <div></div>;
-        }
-      })()}
-
-      <BreakDiv></BreakDiv>
       <ProfListDiv>
-        <DataEntryTitleDiv>New Data Entries:</DataEntryTitleDiv>
-        {newProf.map((item, idx) => (
-          <ProfNameDiv
-            onClick={() => {
-              console.log(newProf[idx]["firstName"]);
-              setProfessorName(newProf[idx]["firstName"]);
-              console.log(selectedProfessorName);
+        <NavBar initialTabId="1"></NavBar>
+        {(() => {
+          if (entries != 0) {
+            return (
+              <AlertDiv>
+                <Alert {...{ new_entries: entries }}></Alert>
+              </AlertDiv>
+            );
+          } else {
+            return <div></div>;
+          }
+        })()}
+        <SectionDiv>
+          <DataEntryTitleDiv>New Data Entries:</DataEntryTitleDiv>
+          {newProf.map((item, idx) => (
+            <ProfNameDiv
+              onClick={() => {
+                console.log(newProf[idx]["firstName"]);
+                setProfessorName(newProf[idx]["firstName"]);
+                console.log(selectedProfessorName);
 
-              navigate(`/LandingPage/Summary_RO`);
-            }}
-          >
-            {newProf[idx]["firstName"]}&nbsp;
-            {newProf[idx]["lastName"]}
-          </ProfNameDiv>
-        ))}
-        <DataEntryTitleDiv>Data Entires:</DataEntryTitleDiv>
-        {oldProf.map((item, idx) => (
-          <ProfNameDiv>
-            {oldProf[idx]["firstName"]} &nbsp;
-            {oldProf[idx]["lastName"]}
-          </ProfNameDiv>
-        ))}
+                navigate(`/LandingPage/Summary_RO`);
+              }}
+            >
+              {newProf[idx]["firstName"]}&nbsp;
+              {newProf[idx]["lastName"]}
+            </ProfNameDiv>
+          ))}
+        </SectionDiv>
+        <SectionDiv>
+          <DataEntryTitleDiv>Data Entires:</DataEntryTitleDiv>
+          {oldProf.map((item, idx) => (
+            <ProfNameDiv>
+              {oldProf[idx]["firstName"]} &nbsp;
+              {oldProf[idx]["lastName"]}
+            </ProfNameDiv>
+          ))}
+        </SectionDiv>
       </ProfListDiv>
     </Background>
   );

@@ -159,26 +159,14 @@ function useGenerateScheudle(props: GenerateScheduleProps) {
 }
 
 const Header = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0px;
+  display: flex;
+  gap: var(--space-2x-large);
 `;
 
-const Title = styled.h1`
-  text-align: center;
-  font-size: 24px;
-  padding-left: 0px;
-  padding-right: 0px;
-  grid-column: 2 / 3;
-  grid-row: 1;
-`;
+const Title = styled.h2``;
 
-const LogoDiv = styled.div`
-  padding-left: 48px;
-  padding-right: 0px;
-  grid-column: 1 / 3;
-  grid-row: 1;
-`;
+const LogoDiv = styled.div``;
+
 const TableDiv = styled.div`
   padding-top: 4px;
 `;
