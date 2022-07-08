@@ -69,7 +69,7 @@ export function PDISelectProfessorPreferences() {
               <h2> {Course.course_code} </h2>
               <p>
                 {" "}
-                <b>course description:</b> {Course.course_desceiption}{" "}
+                <b>course description:</b> {Course.course_desc}{" "}
               </p>
             </div>
             <DropdownDivStyle>
