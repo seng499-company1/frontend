@@ -1,0 +1,55 @@
+name: CI/CD to Github Pages [Manual]
+# This is a basic workflow to Deploy our frontend to github pages
+
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  Unit_testing:
+    concurrency: ci-${{ github.ref }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./best-uvic-scheduler
+    steps:
+    - name: Checkout Code 🛎
+      uses: actions/checkout@v3
+
+    - name: Gather Dependencies
+      run: |
+        npm install
+
+    - name: Running Unit Tests
+      working-directory: ./best-uvic-scheduler
+      run: |
+        npm run test:nowatch
+
+  Manual_Deploy:
+    concurrency: ci-${{ github.ref }}
+    needs: Unit_testing
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./best-uvic-scheduler
+    steps:
+    - name: Checkout Code 🛎
+      uses: actions/checkout@v3
+
+    - name: Gather Dependencies
+      run: |
+        npm install
+
+    - name: Production Build
+      working-directory: ./best-uvic-scheduler
+      run: |
+        npm run build
+
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4.3.4
+      with:
+        folder: ./best-uvic-scheduler/build

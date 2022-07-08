@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
 
 import { QualificationsContext, PreferencesContext } from "./index.tsx";
@@ -86,9 +86,20 @@ function stringToTime(times: string) {
 
 export function Summary() {
   //get data
-  const CourseData = CourseListHelper.GetCourseList();
-  const Courses = CourseData.Courses;
-  const AmountOfCourses = Courses.length;
+  const [Courses, setCourses] = useState([]);
+  const [AmountOfCourses, setAmmount] = useState(0);
+
+  //get data
+  useEffect(() => {
+    console.log("Inside useEffect");
+    CourseListHelper.GetCourseList()
+      .then((resp) => {
+        setCourses(resp);
+      })
+      .then((resp) => {
+        setAmmount(resp.length());
+      });
+  }, []);
 
   const Preferences = ProfPreferencesHelper.GetPreferences();
   const Times = Preferences.preferred_times;
@@ -178,7 +189,7 @@ export function Summary() {
           <TimeDiv>
             {times.map(function (time, timeIndex) {
               const timeSplit = time.split(" ");
-              
+
               return (
                 <TimeRow>
                   <DayText> {day}</DayText>
@@ -290,9 +301,12 @@ export function Summary() {
           {" "}
           Back{" "}
         </CustomButtonView>
-        <CustomButtonView {...{ Theme: "Primary" }} customClickEvent={() => {
+        <CustomButtonView
+          {...{ Theme: "Primary" }}
+          customClickEvent={() => {
             navigate(`/`);
-        }}>
+          }}
+        >
           {" "}
           SUBMIT{" "}
         </CustomButtonView>

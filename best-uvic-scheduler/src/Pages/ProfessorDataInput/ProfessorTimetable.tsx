@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import { ChangeEvent, useReducer, useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -95,6 +95,20 @@ function initString(semesters: string[]) {
 
 function useProfessorTimetable(props: ProfessorTimetableProps) {
   const { semesters } = props;
+  const [Courses, setCourses] = useState([]);
+  const [AmountOfCourses, setAmmount] = useState(0);
+
+  //get data
+  useEffect(() => {
+    console.log("Inside useEffect");
+    CourseListHelper.GetCourseList()
+      .then((resp) => {
+        setCourses(resp);
+      })
+      .then((resp) => {
+        setAmmount(resp.length());
+      });
+  }, []);
 
   const semestersItems = semesters.map((sem: string) => {
     return { value: sem, label: sem };
@@ -126,11 +140,6 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
   );
 
   const navigate = useNavigate();
-
-  //get data
-  const CourseData = CourseListHelper.GetCourseList();
-  const Courses = CourseData.Courses;
-  const AmountOfCourses = Courses.length;
 
   //hooks
   const { preferences, setPreferences } = useContext(PreferencesContext);
