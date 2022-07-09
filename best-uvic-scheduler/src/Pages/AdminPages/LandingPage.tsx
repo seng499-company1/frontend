@@ -40,13 +40,12 @@ const ProfListDiv = styled.div`
 `;
 
 const DataEntryTitleDiv = styled.h4`
-  padding-left: 32px;
-  color: black;
+  color: var(--font-color);
+  margin: 0;
 `;
 
 const ProfNameDiv = styled.button`
-  color: var(--grey-800);
-  text-color: black;
+  color: var(--font-color);
   align: center;
   text-align: left;
 `;

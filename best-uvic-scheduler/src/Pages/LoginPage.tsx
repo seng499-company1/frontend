@@ -17,7 +17,7 @@ const InnerBox = styled.div`
 const BoxDiv = styled.div`
   display: flex;
   flex-direction: column;
-  color: var(--text);
+  color: var(--font-color);
   padding: var(--space-4x-large) var(--space-5x-large) var(--space-5x-large);
   max-width: 500px;
   margin: auto;

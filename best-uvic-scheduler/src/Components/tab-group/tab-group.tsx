@@ -98,7 +98,7 @@ const TabLabelP = styled.p<{ size: SizeType }>`
   margin-bottom: 2px;
   width: 100%;
   text-align: center;
-  color: var(--text);
+  color: var(--font-color);
   margin: 0;
 `;
 
