@@ -115,7 +115,6 @@ const ScheduleList = [
 
 const axios = require("axios");
 
-//add async back!!!!
 export async function GetSchedule() {
   try {
     const response = await axios.get(
