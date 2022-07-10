@@ -1,8 +1,16 @@
 import React, { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
 
+import { ToggleView } from "../../Components/toggle/toggle.tsx";
+
 import { QualificationsContext, PreferencesContext } from "./index.tsx";
-import { ProfessorContext } from "./index.tsx";
+import {
+  ProfessorContext,
+  PrefDayContext,
+  LeaveReasonContext,
+  MaxCourseContext,
+} from "./index.tsx";
+import { DefaultShadow } from "../../GlobalStyles.tsx";
 
 import { useNavigate } from "react-router-dom";
 import CustomButtonView from "../../Components/button/button.tsx";
@@ -13,6 +21,10 @@ import { TimeIntervalHelper } from "../../Util/TimeIntervalHelper.tsx";
 
 import * as ProfPreferencesHelper from "../../Util/ProfPreferencesHelper.tsx";
 
+export interface SummaryProps {
+  maxCourses: any;
+  absenceReason: any;
+}
 const ResponseDiv = styled.div`
   text-indent: -40px;
   display: flex;
@@ -23,6 +35,12 @@ const ResponseDiv = styled.div`
 const Header = styled.h1`
   text-align: center;
 `;
+const CheckboxContainerDiv = styled.div`
+  display: flex;
+  gap: var(--space-large);
+  align-items: center;
+  flex-wrap: wrap;
+`;
 
 const Header4 = styled.h4`
   text-align: left;
@@ -31,15 +49,15 @@ const Header4 = styled.h4`
 
 const TimeDiv = styled.div`
   text-align: left;
-  padding-left: 42px;
+  padding-left: 24px;
+  padding-right: 24px;
 `;
 
 const TimeRow = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   padding-top: 2px;
-  box-shadow: 1px 1px;
-
+  ${DefaultShadow}
   background-color: var(--grey-50);
   padding-bottom: 4px;
 `;
@@ -59,10 +77,11 @@ const TimeText = styled.div`
 
 const WarningTextRow = styled.div`
   padding-top: 2px;
-  box-shadow: 1px 1px;
+  ${DefaultShadow}
   background-color: var(--grey-50);
   padding-bottom: 4px;
 `;
+
 const WarningText = styled.div`
   text-align: center;
   grid-column
@@ -84,7 +103,7 @@ function stringToTime(times: string) {
   return arrayTime;
 }
 
-export function Summary() {
+export function Summary(props: SummaryProps) {
   //get data
   const [Courses, setCourses] = useState([]);
   const [AmountOfCourses, setAmmount] = useState(0);
@@ -103,6 +122,7 @@ export function Summary() {
 
   const Preferences = ProfPreferencesHelper.GetPreferences();
   const Times = Preferences.preferred_times;
+
   let TimesTest = Preferences.preferred_times;
   const timesFromContext = TimeIntervalHelper();
 
@@ -116,6 +136,11 @@ export function Summary() {
   );
   const { preferences, setPreferences } = useContext(PreferencesContext);
   const { selectedProfessor, setProfessor } = useContext(ProfessorContext);
+  const { prefDays, setPrefDays } = useContext(PrefDayContext);
+  const { leaveReason, setLeaveReason } = useContext(LeaveReasonContext);
+  const { maxCourseEntered, setMaxCourseEntered } =
+    useContext(MaxCourseContext);
+
   const navigate = useNavigate();
 
   const weekdays = {
@@ -126,6 +151,9 @@ export function Summary() {
     fri: "Friday",
   };
 
+  const weekdayArray = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+  console.log("TIMES");
+  console.log(Preferences);
   const timeSummer = Times.summer;
   const timeSpring = Times.spring;
   const timeFall = Times.fall;
@@ -136,75 +164,116 @@ export function Summary() {
         Summary For {selectedProfessor.first_name} {selectedProfessor.last_name}
       </Header>
 
-      <h2>Classes</h2>
+      <h2>Course Teaching Preferences</h2>
       <TimeDiv>
         {Courses.map(function (Course, index) {
           let name = Course.course_code;
+          let qual = qualifications[name];
+          let pref = preferences[name];
 
+          if (qual == null) {
+            qual = "N/A";
+          }
+          if (pref == null) {
+            pref = "N/A";
+          }
           return (
             <TimeRow>
-              <DayText>
-                {console.log(Course.course_code)}
-                {Course.course_code}{" "}
-              </DayText>
+              <DayText>{Course.course_code} </DayText>
 
               <ResponseDiv>
-                {qualifications[name]}
+                {qual}
                 &emsp;&emsp;
-                {preferences[name]}
+                {pref}
               </ResponseDiv>
             </TimeRow>
           );
         })}
       </TimeDiv>
 
-      <h2>Availibility</h2>
-      <Header4>Summer</Header4>
+      <h2>Teaching Time Preferences</h2>
+      <TimeDiv>
+        <TimeRow>
+          <Header4>Summer</Header4>
+        </TimeRow>
 
-      {(() => {
-        if (
-          timeSummer.Monday.times.length === 0 &&
-          timeSummer.Tuesday.times.length === 0 &&
-          timeSummer.Wednesday.times.length === 0 &&
-          timeSummer.Thursday.times.length === 0 &&
-          timeSummer.Friday.times.length === 0
-        ) {
-          return (
-            <TimeDiv>
+        <TimeRow>
+          <WarningText>
+            Maximum number of courses per semester:{" "}
+            {Preferences.num_summer_courses}
+          </WarningText>
+        </TimeRow>
+
+        <CheckboxContainerDiv>
+          {prefDays["Summer 2023"].map((day: boolean, idx: number) => {
+            return (
+              <ToggleView readOnly active={day} id={idx}>
+                {weekdayArray[idx]}
+              </ToggleView>
+            );
+          })}{" "}
+        </CheckboxContainerDiv>
+
+        {(() => {
+          if (
+            timeSummer.Monday.times.length === 0 &&
+            timeSummer.Tuesday.times.length === 0 &&
+            timeSummer.Wednesday.times.length === 0 &&
+            timeSummer.Thursday.times.length === 0 &&
+            timeSummer.Friday.times.length === 0
+          ) {
+            return (
               <WarningTextRow>
                 <WarningText>No Times Entered For This Semester</WarningText>
               </WarningTextRow>
+            );
+          }
+        })()}
+        {Object.keys(timeSummer).map(function (Day, index) {
+          const day = weekdays[Day];
+          let times = stringToTime(timeSummer[Day].times);
+
+          let loop = 0;
+          return (
+            <TimeDiv>
+              {times.map(function (time, timeIndex) {
+                const timeSplit = time.split(" ");
+
+                return (
+                  <TimeRow>
+                    <DayText> {day}</DayText>
+                    <TimeText>
+                      {" "}
+                      {timeSplit[0].slice(1, -1)} - {timeSplit[1].slice(1, -1)}
+                    </TimeText>
+                  </TimeRow>
+                );
+              })}
             </TimeDiv>
           );
-        } else {
-          return <div></div>;
-        }
-      })()}
-      {Object.keys(timeSummer).map(function (Day, index) {
-        const day = weekdays[Day];
-        let times = stringToTime(timeSummer[Day].times);
-
-        let loop = 0;
-        return (
-          <TimeDiv>
-            {times.map(function (time, timeIndex) {
-              const timeSplit = time.split(" ");
-
-              return (
-                <TimeRow>
-                  <DayText> {day}</DayText>
-                  <TimeText>
-                    {" "}
-                    {timeSplit[0].slice(1, -1)} - {timeSplit[1].slice(1, -1)}
-                  </TimeText>
-                </TimeRow>
-              );
-            })}
-          </TimeDiv>
-        );
-      })}
-
+        })}
+      </TimeDiv>
       <Header4>Fall</Header4>
+
+      <TimeDiv>
+        <TimeRow>
+          <WarningText>
+            Maximum number of courses per semester:
+            {console.log("NUM ENTERED")}
+            {console.log(maxCourseEntered)}
+            {maxCourseEntered["Summer 2023"]}
+          </WarningText>
+        </TimeRow>
+        <CheckboxContainerDiv>
+          {prefDays["Summer 2023"].map((day: boolean, idx: number) => {
+            return (
+              <ToggleView readOnly active={day} id={idx}>
+                {weekdayArray[idx]}
+              </ToggleView>
+            );
+          })}{" "}
+        </CheckboxContainerDiv>
+      </TimeDiv>
 
       {(() => {
         if (
@@ -228,7 +297,6 @@ export function Summary() {
       {Object.keys(timeFall).map(function (Day, index) {
         const day = weekdays[Day];
         let times = stringToTime(timeFall[Day].times);
-
         return (
           <TimeDiv>
             {times.map(function (time, timeIndex) {
