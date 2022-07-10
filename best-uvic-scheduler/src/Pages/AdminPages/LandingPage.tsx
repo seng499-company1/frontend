@@ -2,35 +2,23 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Background } from "../../Components/background/background.tsx";
-import Logo from "../../Images/Uvic-logo.png";
+import Logo from "../../Images/uvic.png";
 import Alert from "../../Components/Alert/alert.tsx";
 import NavBar from "../../Components/navBar/navBar.tsx";
 import * as ProfessorImputHelper from "../../Util/ProfessorInputHelper.tsx";
+import { Header, TitleDiv, LogoImg } from "./GenerateSchedule.tsx";
+import CustomButtonView from "../../Components/button/button.tsx";
+import { HeaderView } from "../../Components/Header/header.tsx";
 
 export const ProfessorNameContext = React.createContext({
   selectedProfessorName: "",
   setProfessorName: () => {},
 });
-const Header = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0px;
-`;
 
-const Title = styled.h1`
-  text-align: center;
+const Title = styled.h2`
+  text-align: left;
   font-size: 24px;
-  padding-left: 0px;
-  padding-right: 0px;
-  grid-column: 2 / 3;
-  grid-row: 1;
-`;
-
-const LogoDiv = styled.div`
-  padding-left: 48px;
-  padding-right: 0px;
-  grid-column: 1 / 3;
-  grid-row: 1;
+  margin: 0;
 `;
 
 const ProfListDiv = styled.div`
@@ -41,20 +29,10 @@ const ProfListDiv = styled.div`
 
 const DataEntryTitleDiv = styled.h4`
   color: var(--font-color);
+  font-weight: 500;
   margin: 0;
 `;
 
-const ProfNameDiv = styled.button`
-  color: var(--font-color);
-  align: center;
-  text-align: left;
-`;
-
-const BreakDiv = styled.br`
-  display: block;
-  content: "";
-  margin-top: 10px;
-`;
 const AlertDiv = styled.div`
   display: grid;
   place-items: center;
@@ -63,7 +41,7 @@ const AlertDiv = styled.div`
 const SectionDiv = styled.div`
   display: flex;
   flex-direction: column;
-  gap: var(--space-large);
+  gap: var(--space-med);
 `;
 
 export function LandingPage() {
@@ -89,15 +67,9 @@ export function LandingPage() {
 
   return (
     <Background>
-      <Header>
-        <LogoDiv>
-          <img src={Logo} width="50px" height="80px" />
-        </LogoDiv>
-        <Title>UVIC Course Scheduler</Title>
-      </Header>
+      <HeaderView />
 
       <ProfListDiv>
-        <NavBar initialTabId="1"></NavBar>
         {(() => {
           if (entries != 0) {
             return (
@@ -112,8 +84,11 @@ export function LandingPage() {
         <SectionDiv>
           <DataEntryTitleDiv>New Data Entries:</DataEntryTitleDiv>
           {newProf.map((item, idx) => (
-            <ProfNameDiv
-              onClick={() => {
+            <CustomButtonView
+              Theme={"Secondary"}
+              Borderless={true}
+              LeftText={true}
+              customClickEvent={() => {
                 console.log(newProf[idx]["firstName"]);
                 setProfessorName(newProf[idx]["firstName"]);
                 console.log(selectedProfessorName);
@@ -123,16 +98,20 @@ export function LandingPage() {
             >
               {newProf[idx]["firstName"]}&nbsp;
               {newProf[idx]["lastName"]}
-            </ProfNameDiv>
+            </CustomButtonView>
           ))}
         </SectionDiv>
         <SectionDiv>
           <DataEntryTitleDiv>Data Entires:</DataEntryTitleDiv>
           {oldProf.map((item, idx) => (
-            <ProfNameDiv>
+            <CustomButtonView
+              Theme={"Secondary"}
+              Borderless={true}
+              LeftText={true}
+            >
               {oldProf[idx]["firstName"]} &nbsp;
               {oldProf[idx]["lastName"]}
-            </ProfNameDiv>
+            </CustomButtonView>
           ))}
         </SectionDiv>
       </ProfListDiv>

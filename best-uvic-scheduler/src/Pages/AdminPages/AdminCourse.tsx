@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Background } from "../../Components/background/background.tsx";
-import Logo from "../../Images/Uvic-logo.png";
+import Logo from "../../Images/uvic.png";
 import Alert from "../../Components/Alert/alert.tsx";
 import NavBar from "../../Components/navBar/navBar.tsx";
 import * as CourseListHelper from "../../Util/CourseListHelper.tsx";

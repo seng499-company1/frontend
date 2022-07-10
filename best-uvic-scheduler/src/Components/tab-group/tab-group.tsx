@@ -75,6 +75,7 @@ const TabDiv = styled.div<{ active: boolean; size: SizeType }>`
   cursor: pointer;
   transition: border-color 0.5s linear;
   flex: 1 1 0px;
+  width: max-content;
 
   ${(props) =>
     props.active
@@ -94,12 +95,12 @@ const fontSize = {
 
 const TabLabelP = styled.p<{ size: SizeType }>`
   font-size: ${(props) => fontSize[props.size]};
-  font-family: sans-serif;
   margin-bottom: 2px;
   width: 100%;
   text-align: center;
   color: var(--font-color);
   margin: 0;
+  width: max-content;
 `;
 
 const GroupContainerDiv = styled.div`

@@ -4,7 +4,7 @@ import styled from "styled-components";
 import TabGroup from "../../Components/tab-group/tab-group.tsx";
 
 import { Background } from "../../Components/background/background.tsx";
-import Logo from "../../Images/Uvic-logo.png";
+import Logo from "../../Images/uvic.png";
 import * as ScheduleHelper from "../../Util/ScheduleHelper.tsx";
 
 import {
@@ -20,6 +20,7 @@ import {
   SelectableTableCheckboxDiv,
 } from "../../Components/SelectTable/SelectableTable.tsx";
 import NavBar from "../../Components/navBar/navBar.tsx";
+import { HeaderView } from "../../Components/Header/header.tsx";
 
 export interface GenerateScheduleProps {
   semesters: Array<string>;
@@ -158,15 +159,6 @@ function useGenerateScheudle(props: GenerateScheduleProps) {
   };
 }
 
-const Header = styled.div`
-  display: flex;
-  gap: var(--space-2x-large);
-`;
-
-const Title = styled.h2``;
-
-const LogoDiv = styled.div``;
-
 const TableDiv = styled.div`
   padding-top: 4px;
 `;
@@ -219,15 +211,7 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
 
   return (
     <Background>
-      <Header>
-        <LogoDiv>
-          <img src={Logo} width="50px" height="80px" />
-        </LogoDiv>
-        <Title>UVIC Course Scheduler</Title>
-      </Header>
-
-      <NavBar initialTabId="4"></NavBar>
-      <br></br>
+      <HeaderView />
       <TabGroup initialTabId="0">
         {semesters.map((sem: { label: string; value: string }, i: number) => {
           return (

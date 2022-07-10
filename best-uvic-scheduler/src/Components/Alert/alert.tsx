@@ -23,7 +23,7 @@ const RedBox = styled.div`
 const AlertText = styled.p`
   color: var(--font-color);
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 600;
   margin: 0;
   padding-right: var(--space-med);
 `;
