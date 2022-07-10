@@ -9,7 +9,6 @@ export interface AlertProps {
 
 const RedBox = styled.div`
   font-size: 0;
-  width: 100%;
   border-radius: 4px;
   border: 1px solid var(--danger-400);
   ${DefaultShadow}
@@ -18,6 +17,7 @@ const RedBox = styled.div`
   background-color: var(--danger-50);
   padding: var(--space-small) var(--space-large);
   box-sizing: border-box;
+  margin: auto;
 `;
 
 const AlertText = styled.p`
@@ -32,6 +32,7 @@ const Message = styled.p`
   color: black;
   font-size: var(--font-size-normal);
   margin: 0;
+  width: max-content;
 `;
 
 export function Alert(props: AlertProps) {
