@@ -35,7 +35,10 @@ export interface SelectableTableElementOpenedDivProps {
 const SelectableTableDiv = styled.div<{ columns: number }>`
   height: 100%;
   display: grid;
-  grid-template-columns: repeat(${(props) => props.columns}, auto);
+  grid-template-columns: max-content repeat(
+      ${(props) => props.columns - 1},
+      auto
+    );
   border: 1px solid var(--primary);
   border-radius: 4px;
   ${DefaultShadow};
@@ -90,9 +93,15 @@ const SelectableTableIconElementDiv = styled.p`
   padding: 0;
   display: flex;
   flex-direction: row;
-  align-content: center;
+  align-items: center;
   justify-content: center;
   cursor: pointer;
+  max-width: min-content;
+  padding: var(--space-small) !important;
+  width: fit-content !important;
+  &:hover {
+    background-color: var(--primary-100) !important;
+  }
 `;
 
 const SelectableTableElementClosedDiv = styled.div`
@@ -106,7 +115,7 @@ const SelectableTableElementOpenedDiv = styled.div`
   width: 100%;
   display: contents;
   & p {
-    padding: var(--space-small) 0 !important;
+    padding: 0 0 var(--space-small) !important;
   }
 `;
 
@@ -114,7 +123,7 @@ export const SelectableTableInputDiv = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
-  align-content: center;
+  align-items: center;
   gap: var(--space-2x-large);
   padding: var(--space-small) var(--space-med);
 `;
@@ -123,14 +132,13 @@ export const SelectableTableCheckboxDiv = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
+  gap: var(--space-small);
+  & p {
+    padding: var(--space-small) 0 !important;
+  }
 `;
 
 export const SelectableTableSingleInputDiv = styled.div`
-  margin: 0;
-  padding: 0;
-  width: 15%;
-  height: 100px;
   display: flex;
   flex-direction: column;
 `;

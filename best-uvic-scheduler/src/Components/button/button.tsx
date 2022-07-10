@@ -50,9 +50,10 @@ const CustomButton = styled.button<{
   ${(props) =>
     props.Borderless
       ? "border: none;"
-      : `border: 1px solid ${(props) => ButtonTheme[props.Theme].borderColor};`}
+      : `border: 1px solid ${ButtonTheme[props.Theme].borderColor};`}
   border-radius: 4px;
   padding: var(--space-x-small) var(--space-large);
+  height: fit-content;
 
   ${(props) => props.LeftText && "text-align: left;"}
 
@@ -70,12 +71,7 @@ const CustomButton = styled.button<{
           ? ButtonTheme[props.Theme].borderColor
           : ButtonTheme[props.Theme].borderHover};`}
   }
-  ${({ Disabled }) =>
-    Disabled &&
-    `
-    cursor: default;
-    opacity: 0.5;
-  `}
+  ${(props) => props.Disabled && "cursor: default; opacity: 0.5;"}
 `;
 
 CustomButton.defaultProps = {

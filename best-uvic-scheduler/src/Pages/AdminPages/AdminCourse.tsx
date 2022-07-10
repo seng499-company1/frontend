@@ -125,12 +125,7 @@ export function AdminCoursePage() {
                       />
                     </SelectableTableSingleInputDiv>
                   </SelectableTableInputDiv>
-                  <SelectableTableInputDiv
-                    style={{
-                      paddingLeft: 32,
-                      justifyContent: "start",
-                    }}
-                  >
+                  <SelectableTableInputDiv>
                     <SelectableTableCheckboxDiv>
                       <CheckboxView
                         {...{
@@ -139,15 +134,7 @@ export function AdminCoursePage() {
                       >
                         X
                       </CheckboxView>
-                      <p
-                        style={{
-                          paddingLeft: 8,
-                          paddingRight: 12,
-                          paddingTop: 4,
-                        }}
-                      >
-                        Fall
-                      </p>
+                      <p>Fall</p>
                     </SelectableTableCheckboxDiv>
                     <SelectableTableCheckboxDiv>
                       <CheckboxView
@@ -157,15 +144,7 @@ export function AdminCoursePage() {
                       >
                         X
                       </CheckboxView>
-                      <p
-                        style={{
-                          paddingLeft: 8,
-                          paddingRight: 12,
-                          paddingTop: 4,
-                        }}
-                      >
-                        Spring
-                      </p>
+                      <p>Spring</p>
                     </SelectableTableCheckboxDiv>
                     <SelectableTableCheckboxDiv>
                       <CheckboxView
@@ -175,38 +154,28 @@ export function AdminCoursePage() {
                       >
                         X
                       </CheckboxView>
-                      <p
-                        style={{
-                          paddingLeft: 8,
-                          paddingRight: 12,
-                          paddingTop: 4,
-                        }}
-                      >
-                        Summer
-                      </p>
+                      <p>Summer</p>
                     </SelectableTableCheckboxDiv>
                   </SelectableTableInputDiv>
-                  <CustomButtonGroupView {...{ Amount: "Progession" }}>
-                    <ButtonDiv>
-                      <CustomButtonView
-                        {...{ Theme: "Secondary" }}
-                        customClickEvent={() => {
-                          setOpenCourse(0);
-                        }}
-                      >
-                        Cancel
-                      </CustomButtonView>
-                      <CustomButtonView
-                        {...{ Theme: "Primary" }}
-                        customClickEvent={() => {
-                          CourseData[index] = Course;
-                          setOpenCourse(0);
-                        }}
-                      >
-                        Save
-                      </CustomButtonView>
-                    </ButtonDiv>
-                  </CustomButtonGroupView>
+                  <SelectableTableInputDiv>
+                    <CustomButtonView
+                      {...{ Theme: "Secondary" }}
+                      customClickEvent={() => {
+                        setOpenCourse(0);
+                      }}
+                    >
+                      Cancel
+                    </CustomButtonView>
+                    <CustomButtonView
+                      {...{ Theme: "Primary" }}
+                      customClickEvent={() => {
+                        CourseData[index] = Course;
+                        setOpenCourse(0);
+                      }}
+                    >
+                      Save
+                    </CustomButtonView>
+                  </SelectableTableInputDiv>
                 </SelectableTableElementOpenedDivView>
               );
             } else {
