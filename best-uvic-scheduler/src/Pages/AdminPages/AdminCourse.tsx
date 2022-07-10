@@ -29,28 +29,6 @@ import {
 import { BiCaretDown, BiCaretUp } from "react-icons/bi";
 import { HeaderView } from "../../Components/Header/header.tsx";
 
-const Header = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0px;
-`;
-
-const Title = styled.h1`
-  text-align: center;
-  font-size: 24px;
-  padding-left: 0px;
-  padding-right: 0px;
-  grid-column: 2 / 3;
-  grid-row: 1;
-`;
-
-const LogoDiv = styled.div`
-  padding-left: 48px;
-  padding-right: 0px;
-  grid-column: 1 / 3;
-  grid-row: 1;
-`;
-
 const TableDiv = styled.div`
   padding-top: 48px;
 `;
