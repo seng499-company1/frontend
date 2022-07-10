@@ -113,6 +113,18 @@ const ScheduleList = [
   },
 ];
 
-export function GetSchedule() {
-  return ScheduleList;
+const axios = require("axios");
+
+//add async back!!!!
+export async function GetSchedule() {
+  try {
+    const response = await axios.get(
+      "http://uvic.immortalmind.ca:5000/schedules/"
+    );
+    console.log("response  ", response);
+    //return response.data;
+    return ScheduleList;
+  } catch (error) {
+    return [];
+  }
 }

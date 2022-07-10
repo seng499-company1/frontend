@@ -1,5 +1,3 @@
-const TestCourseList = {};
-
 const axios = require("axios");
 
 export async function GetCourseList() {

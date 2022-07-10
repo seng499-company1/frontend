@@ -1,4 +1,4 @@
-import React, { useState, useContext, useReducer } from "react";
+import React, { useEffect, useState, useContext, useReducer } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import TabGroup from "../../Components/tab-group/tab-group.tsx";
@@ -63,6 +63,9 @@ export interface GenerateScheduleViewProps {
   setQualifications: any;
   setSelectedTimes: any;
   selectedTimes: any;
+  ScheduleFall: any;
+  ScheduleSummer: any;
+  ScheduleSpring: any;
   QualificationItems: {
     value: string;
     label: string;
@@ -70,7 +73,20 @@ export interface GenerateScheduleViewProps {
 }
 
 function useGenerateScheudle(props: GenerateScheduleProps) {
+  const [ScheduleFall, setFallSchedule] = useState([]);
+  const [ScheduleSpring, setSpringSchedule] = useState([]);
+  const [ScheduleSummer, setSummerSchedule] = useState([]);
   const { semesters } = props;
+
+  //get data
+  useEffect(() => {
+    ScheduleHelper.GetSchedule().then((resp) => {
+      console.log(resp[0].schedule);
+      setFallSchedule(resp[0].schedule.fall);
+      setSpringSchedule(resp[0].schedule.spring);
+      setSummerSchedule(resp[0].schedule.summer);
+    });
+  }, []);
 
   const semestersItems = semesters.map((sem: string) => {
     return { value: sem, label: sem };
@@ -133,6 +149,9 @@ function useGenerateScheudle(props: GenerateScheduleProps) {
   // console.log(TimeIntervalHelper());
 
   return {
+    ScheduleFall,
+    ScheduleSummer,
+    ScheduleSpring,
     // Courses,
     // AmountOfCourses,
     // preferences,
@@ -185,6 +204,9 @@ const TableDiv = styled.div`
 export function GenerateScheduleView(props: GenerateScheduleViewProps) {
   const {
     semesters,
+    ScheduleFall,
+    ScheduleSpring,
+    ScheduleSummer,
     selectedSemester,
     away,
     requestOff,
@@ -211,17 +233,13 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
   } = props;
   // **** first schedule output only
 
-  const scheduleFall = ScheduleHelper.GetSchedule()[0].schedule.fall;
-  const scheduleSpring = ScheduleHelper.GetSchedule()[0].schedule.spring;
-  const scheduleSummer = ScheduleHelper.GetSchedule()[0].schedule.summer;
-
   let viewSchedule;
   if (selectedSemester == "Summer 2023") {
-    viewSchedule = scheduleSummer;
+    viewSchedule = ScheduleSummer;
   } else if (selectedSemester == "Spring 2023") {
-    viewSchedule = scheduleSpring;
+    viewSchedule = ScheduleSpring;
   } else if (selectedSemester == "Fall 2022") {
-    viewSchedule = scheduleFall;
+    viewSchedule = ScheduleFall;
   }
   //   const semesters = [
   //     { label: "Fall 2023", value: "fall" },
