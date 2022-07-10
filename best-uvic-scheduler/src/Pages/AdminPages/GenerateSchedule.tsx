@@ -10,7 +10,6 @@ import * as ScheduleHelper from "../../Util/ScheduleHelper.tsx";
 import {
   SelectableTableDivView,
   SelectableTableHeaderDivView,
-  SelectableTableLabelDivView,
   SelectableTableLabelsView,
   SelectableTableIconElementDivView,
   SelectableTableElementClosedDivView,
@@ -76,41 +75,12 @@ function useGenerateScheudle(props: GenerateScheduleProps) {
     return { value: sem, label: sem };
   });
 
-  //   const [aways, onAway] = useReducer(updateCheckbox, semesters, initCheckbox);
-
-  //   const [requestOffs, onRequestOff] = useReducer(
-  //     updateCheckbox,
-  //     semesters,
-  //     initCheckbox
-  //   );
-
   const [selectedSemester, onSelectedSemester] = useState({
     value: semesters[0] || "",
     label: semesters[0] || "",
   });
 
-  //   const [absenceReasons, onAbsenceReason] = useReducer(
-  //     updateString,
-  //     semesters,
-  //     initString
-  //   );
-
-  //   const [maxCourses, setMaxCourses] = useReducer(
-  //     updateString,
-  //     semesters,
-  //     initString
-  //   );
-
   const navigate = useNavigate();
-
-  //get data
-  //const CourseData = CourseListHelper.GetCourseList();
-  // const Courses = CourseData.Courses;
-  // const AmountOfCourses = Courses.length;
-
-  //hooks
-  //   const { preferences, setPreferences } = useContext(PreferencesContext);
-  //   const { selectedTimes, setSelectedTimes } = useContext(TimeContext);
 
   const PreferenceItems = [
     { value: "Not Willing", label: "Not Willing" },
@@ -118,19 +88,12 @@ function useGenerateScheudle(props: GenerateScheduleProps) {
     { value: "Very Willing", label: "Very Willing" },
   ];
 
-  //hooks
-  //   const { qualifications, setQualifications } = useContext(
-  //     QualificationsContext
-  //   );
 
   const QualificationItems = [
     { value: "Not Qualified", label: "Not Qualified" },
     { value: "Qualified", label: "Qualified" },
   ];
 
-  //   const { prefDays, setPrefDays } = useContext(PrefDayContext);
-
-  // console.log(TimeIntervalHelper());
 
   return {
     // Courses,
@@ -164,6 +127,16 @@ const Header = styled.div`
   gap: 0px;
 `;
 
+const SelectableTableLabelDivView = styled.div`
+margin: 0;
+padding: 0;
+height: 5px;
+width: 100%;
+display: flex;
+flex-direction: row;
+justify-content: space-around;
+`;
+
 const Title = styled.h1`
   text-align: center;
   font-size: 24px;
@@ -182,6 +155,80 @@ const LogoDiv = styled.div`
 const TableDiv = styled.div`
   padding-top: 4px;
 `;
+
+function CreateListelement(scheduleElement) {
+
+  console.log("Here is Course ID")
+  const couseID = scheduleElement.course.code;
+  console.log(couseID);
+
+  console.log("Here is Course Name")
+  const couseName = scheduleElement.course.title;
+  console.log(couseName);
+
+  console.log("Here is Course Instructor")
+  const couseInstructor = scheduleElement.sections[0].professor.name;
+  console.log(couseInstructor);
+
+  console.log("Here are the Course days")
+  const courseSections = scheduleElement.sections;
+  let daysOffered;
+  console.log(courseSections);
+  scheduleElement.sections.forEach(section => {
+    //console.log(section);
+    section.timeSlots.forEach((day, index) => {
+      if(index === 0){
+        if(day === 'THURSDAY'){
+          daysOffered = "Th"
+        }else{
+          daysOffered = day.dayOfWeek[0]
+        }
+      }else{
+        if(day.dayOfWeek === 'THURSDAY'){
+          daysOffered = daysOffered + "/Th"
+        }else{
+          daysOffered = daysOffered + "/" + day.dayOfWeek[0]
+        }
+      }
+      //console.log(day.dayOfWeek + index);
+    });
+  });
+  console.log(daysOffered);
+
+  console.log("Here are the Course Times")
+  let timeOffered;
+  scheduleElement.sections.forEach(section => {
+    console.log(section);
+    const time = section.timeSlots[0].timeRange;
+      timeOffered = time[0] + " - " + time[1];
+      console.log(timeOffered);
+      //console.log(day.dayOfWeek + index);
+  });
+  console.log(daysOffered);
+
+  return (
+    <SelectableTableElementClosedDivView>
+      <SelectableTableLabelDivView>
+        <SelectableTableLabelsView>
+          {couseID}
+        </SelectableTableLabelsView>
+        <SelectableTableLabelsView>
+          {couseName}
+        </SelectableTableLabelsView>
+        <SelectableTableLabelsView>
+          {couseInstructor}
+        </SelectableTableLabelsView>
+        <SelectableTableLabelsView>
+          {daysOffered}
+        </SelectableTableLabelsView>
+        <SelectableTableLabelsView>
+          {timeOffered}
+        </SelectableTableLabelsView>
+      </SelectableTableLabelDivView>
+    </SelectableTableElementClosedDivView>
+  );
+}
+
 export function GenerateScheduleView(props: GenerateScheduleViewProps) {
   const {
     semesters,
@@ -211,23 +258,75 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
   } = props;
   // **** first schedule output only
 
-  const scheduleFall = ScheduleHelper.GetSchedule()[0].schedule.fall;
-  const scheduleSpring = ScheduleHelper.GetSchedule()[0].schedule.spring;
-  const scheduleSummer = ScheduleHelper.GetSchedule()[0].schedule.summer;
+  const returnValue = ScheduleHelper.GetSchedule();
 
-  let viewSchedule;
+  const scheduleFall = returnValue.fall;
+  console.log("Fall Scedule");
+  console.log(scheduleFall);
+  const scheduleSpring = returnValue.spring;
+  const scheduleSummer = returnValue.summer;
+
+  let currentlyShownSchedule;
   if (selectedSemester == "Summer 2023") {
-    viewSchedule = scheduleSummer;
+    currentlyShownSchedule = scheduleSummer;
   } else if (selectedSemester == "Spring 2023") {
-    viewSchedule = scheduleSpring;
+    currentlyShownSchedule = scheduleSpring;
   } else if (selectedSemester == "Fall 2022") {
-    viewSchedule = scheduleFall;
+    currentlyShownSchedule = scheduleFall;
   }
-  //   const semesters = [
-  //     { label: "Fall 2023", value: "fall" },
-  //     { label: "Spring 2023", value: "spring" },
-  //     { label: "Summer 2022", value: "summer" },
-  //   ];
+
+  console.log("Here is Course ID")
+  const couseID = currentlyShownSchedule[0].course.code;
+  console.log(couseID);
+
+  console.log("Here is Course Name")
+  const couseName = currentlyShownSchedule[0].course.title;
+  console.log(couseName);
+
+  console.log("Here is Course Instructor")
+  const couseInstructor = currentlyShownSchedule[0].sections[0].professor.name;
+  console.log(couseInstructor);
+
+  console.log("Here are the Course days")
+  const courseSections = currentlyShownSchedule[0].sections;
+  let daysOffered;
+  console.log(courseSections);
+  currentlyShownSchedule[0].sections.forEach(section => {
+    //console.log(section);
+    section.timeSlots.forEach((day, index) => {
+      if(index === 0){
+        if(day === 'THURSDAY'){
+          daysOffered = "Th"
+        }else{
+          daysOffered = day.dayOfWeek[0]
+        }
+      }else{
+        if(day === 'THURSDAY'){
+          daysOffered = daysOffered + "/Th"
+        }else{
+          daysOffered = daysOffered + "/" + day.dayOfWeek[0]
+        }
+      }
+      //console.log(day.dayOfWeek + index);
+    });
+  });
+  console.log(daysOffered);
+
+  console.log("Here are the Course Times")
+  let timeOffered;
+  currentlyShownSchedule[0].sections.forEach(section => {
+    console.log(section);
+    const time = section.timeSlots[0].timeRange;
+      timeOffered = time[0] + " - " + time[1];
+      console.log(timeOffered);
+      //console.log(day.dayOfWeek + index);
+  });
+  console.log(daysOffered);
+
+  let secondcourse = CreateListelement(currentlyShownSchedule[1]);
+
+  console.log(secondcourse);
+
 
   return (
     <Background>
@@ -261,38 +360,40 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
             <SelectableTableLabelsView>Course ID</SelectableTableLabelsView>
             <SelectableTableLabelsView>Course Name</SelectableTableLabelsView>
             <SelectableTableLabelsView>Instructor</SelectableTableLabelsView>
-            <SelectableTableLabelsView>Day</SelectableTableLabelsView>
+            <SelectableTableLabelsView>Days</SelectableTableLabelsView>
             <SelectableTableLabelsView>Time</SelectableTableLabelsView>
           </SelectableTableHeaderDivView>
-
-          {viewSchedule.map(function (Course, index) {
-            console.log(selectedSemester);
-            console.log(viewSchedule);
-            console.log(Course.sections[0].professor.name);
-
-            return (
-              <SelectableTableElementClosedDivView>
-                <SelectableTableLabelDivView>
-                  <SelectableTableLabelsView>
-                    {Course.course.code}
-                  </SelectableTableLabelsView>
-                  <SelectableTableLabelsView>
-                    {Course.course.title}
-                  </SelectableTableLabelsView>
-                  <SelectableTableLabelsView>
-                    {Course.sections[0].professor.name}
-                  </SelectableTableLabelsView>
-                  <SelectableTableLabelsView>
-                    {/* {Course.sections[0].timeSlots[0].MONDAY} */}
-                  </SelectableTableLabelsView>
-                </SelectableTableLabelDivView>
-              </SelectableTableElementClosedDivView>
-            );
+          {currentlyShownSchedule.map(course => {
+            return CreateListelement(course);
           })}
         </SelectableTableDivView>
       </TableDiv>
-    </Background>
-  );
+      </Background>
+    );
+          //{viewSchedule.map(function (Course, index) {
+            //console.log(selectedSemester);
+            //console.log(viewSchedule);
+            //console.log(Course.sections[0].professor.name);
+
+            //return (
+              //<SelectableTableElementClosedDivView>
+                //<SelectableTableLabelDivView>
+                  //<SelectableTableLabelsView>
+                    //{Course.course.code}
+                  //</SelectableTableLabelsView>
+                  //<SelectableTableLabelsView>
+                    //{Course.course.title}
+                  //</SelectableTableLabelsView>
+                  //<SelectableTableLabelsView>
+                    //{Course.sections[0].professor.name}
+                  //</SelectableTableLabelsView>
+                  //<SelectableTableLabelsView>
+                    //{/* {Course.sections[0].timeSlots[0].MONDAY} */}
+                  //</SelectableTableLabelsView>
+                //</SelectableTableLabelDivView>
+              //</SelectableTableElementClosedDivView>
+            //);
+          //})}
 }
 
 const GenerateSchedule = (props: GenerateScheduleProps) => {
