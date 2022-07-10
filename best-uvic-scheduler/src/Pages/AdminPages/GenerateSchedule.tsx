@@ -329,7 +329,7 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
         })}
       </TabGroup>
       <TableDiv>
-        <SelectableTableDivView>
+        <SelectableTableDivView columns={5}>
           <SelectableTableHeaderDivView>
             <SelectableTableLabelsView>Course ID</SelectableTableLabelsView>
             <SelectableTableLabelsView>Course Name</SelectableTableLabelsView>

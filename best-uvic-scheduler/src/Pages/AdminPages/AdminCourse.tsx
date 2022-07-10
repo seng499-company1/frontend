@@ -94,7 +94,7 @@ export function AdminCoursePage() {
       <HeaderView />
 
       <TableDiv>
-        <SelectableTableDivView>
+        <SelectableTableDivView columns={4}>
           <SelectableTableHeaderDivView>
             <SelectableTableIconElementDivView />
             <SelectableTableLabelDivView>
@@ -125,7 +125,7 @@ export function AdminCoursePage() {
                 <SelectableTableElementOpenedDivView {...{ Type: 1 }}>
                   <SelectableTableIconElementDivView>
                     <BiCaretUp
-                      style={{ height: 30, width: 30 }}
+                      style={{ height: 16, width: 16 }}
                       onClick={() => {
                         setOpenCourse(0);
                       }}
@@ -236,7 +236,7 @@ export function AdminCoursePage() {
                 <SelectableTableElementClosedDivView>
                   <SelectableTableIconElementDivView>
                     <BiCaretDown
-                      style={{ height: 30, width: 30 }}
+                      style={{ height: 16, width: 16 }}
                       onClick={() => {
                         setOpenCourse(Course);
                       }}

@@ -5,6 +5,7 @@ import "../../index.css";
 
 export interface SelectableTableDivProps {
   children: React.ReactNode;
+  columns: number;
 }
 
 export interface SelectableTableHeaderDivProps {
@@ -29,15 +30,12 @@ export interface SelectableTableElementClosedDivProps {
 
 export interface SelectableTableElementOpenedDivProps {
   children: React.ReactNode;
-
-  Type: boolean;
-  //zero is for the professor table, 1 is for the course table
 }
 
-const SelectableTableDiv = styled.div`
+const SelectableTableDiv = styled.div<{ columns: number }>`
   height: 100%;
   display: grid;
-  grid-template-columns: repeat(5, auto);
+  grid-template-columns: repeat(${(props) => props.columns}, auto);
   border: 1px solid var(--primary);
   border-radius: 4px;
   ${DefaultShadow};
@@ -72,11 +70,6 @@ const SelectableTableHeaderDiv = styled.div`
   top: 0;
   position: sticky;
   display: contents;
-  border: 1px solid #000000;
-  border-top-width: ${(props) => (props.InList ? "0" : "1px")};
-  border-left-width: ${(props) => (props.InList ? "0" : "1px")};
-  border-right-width: ${(props) => (props.InList ? "0" : "1px")};
-  border-radius: 8px 8px 0px 0px;
 `;
 
 const SelectableTableLabelDiv = styled.div`
@@ -93,15 +86,12 @@ const SelectableTableLabelElementDiv = styled.div`
   justify-content: space-around;
 `;
 
-const SelectableTableIconElementDiv = styled.div`
-  margin-top: 10px;
+const SelectableTableIconElementDiv = styled.p`
   padding: 0;
-  height: 30px;
-  width: 10%;
   display: flex;
   flex-direction: row;
   align-content: center;
-  justify-content: space-around;
+  justify-content: center;
   cursor: pointer;
 `;
 
@@ -109,20 +99,12 @@ const SelectableTableElementClosedDiv = styled.div`
   height: 50px;
   width: 100%;
   display: contents;
-  border: 1px solid #000000;
-  border-top-width: ${(props) => (props.InList ? "0" : "1px")};
-  border-left-width: ${(props) => (props.InList ? "0" : "1px")};
-  border-right-width: ${(props) => (props.InList ? "0" : "1px")};
 `;
 
 const SelectableTableElementOpenedDiv = styled.div`
-  height: ${(props) => (props.Type ? "250px" : "200px")};
+  height: 250px;
   width: 100%;
   display: contents;
-  border: 1px solid #000000;
-  border-top-width: ${(props) => (props.InList ? "0" : "1px")};
-  border-left-width: ${(props) => (props.InList ? "0" : "1px")};
-  border-right-width: ${(props) => (props.InList ? "0" : "1px")};
 `;
 
 export const SelectableTableInputDiv = styled.div`
@@ -180,7 +162,7 @@ export function SelectableTableElementOpenedDivView(
   props: SelectableTableElementOpenedDivProps
 ) {
   return (
-    <SelectableTableElementOpenedDiv Type={props.Type} {...{ InList: true }}>
+    <SelectableTableElementOpenedDiv {...{ InList: true }}>
       {props.children}
     </SelectableTableElementOpenedDiv>
   );
@@ -207,7 +189,11 @@ export function SelectableTableLabelsView(props: SelectableTableLabelsProps) {
 }
 
 export function SelectableTableDivView(props: SelectableTableDivProps) {
-  return <SelectableTableDiv>{props.children}</SelectableTableDiv>;
+  return (
+    <SelectableTableDiv columns={props.columns}>
+      {props.children}
+    </SelectableTableDiv>
+  );
 }
 
 export default SelectableTableDivView;
