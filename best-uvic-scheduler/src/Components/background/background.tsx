@@ -8,8 +8,7 @@ const InsideDivStyle = styled.div<{ centered: boolean }>`
   padding: var(--space-4x-large);
   border-radius: 4px;
   background-color: var(--surface);
-  height: 100%;
-  height: ${(props) => (props.centered ? "100%" : "inherit")};
+  height: ${(props) => (props.centered ? "100%" : "max(auto, 100%)")};
   position: relative;
   box-sizing: border-box;
   ${DefaultShadowLarge}

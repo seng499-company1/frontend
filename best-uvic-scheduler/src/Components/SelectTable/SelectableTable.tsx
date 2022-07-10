@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { DefaultShadow } from "../../GlobalStyles.tsx";
 import "../../index.css";
 
 export interface SelectableTableDivProps {
@@ -34,31 +35,43 @@ export interface SelectableTableElementOpenedDivProps {
 }
 
 const SelectableTableDiv = styled.div`
-  margin: 0;
-  padding: 0;
-  height: 350px;
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  background-color: var(--grey-100);
-  border: 1px solid #000000;
-  border-radius: 8px;
-  box-shadow: 45px 45px 100px -80px;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(5, auto);
+  border: 1px solid var(--primary);
+  border-radius: 4px;
+  ${DefaultShadow};
+  box-sizing: border-box;
+
+  & p {
+    padding: var(--space-small) var(--space-med);
+    margin: 0;
+    text-align: left;
+    max-width: max-content;
+    min-width: 100%;
+  }
+
+  & * {
+    box-sizing: border-box;
+  }
+
+  & > *:nth-child(2n + 1) p {
+    background: var(--primary-50);
+  }
+
+  & > *:nth-child(1) p {
+    background: var(--primary-400);
+    font-weight: 600;
+    color: #fff;
+    position: sticky;
+    top: 0;
+  }
 `;
 
 const SelectableTableHeaderDiv = styled.div`
-  margin: 0;
-  padding: 0;
   top: 0;
   position: sticky;
-  height: 50px;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  background-color: var(--grey-200);
-  font-weight: 750;
+  display: contents;
   border: 1px solid #000000;
   border-top-width: ${(props) => (props.InList ? "0" : "1px")};
   border-left-width: ${(props) => (props.InList ? "0" : "1px")};
@@ -67,13 +80,7 @@ const SelectableTableHeaderDiv = styled.div`
 `;
 
 const SelectableTableLabelDiv = styled.div`
-  margin: 0;
-  padding: 0;
-  height: 50px;
-  width: 90%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  display: contents;
 `;
 
 const SelectableTableLabelElementDiv = styled.div`
@@ -99,13 +106,9 @@ const SelectableTableIconElementDiv = styled.div`
 `;
 
 const SelectableTableElementClosedDiv = styled.div`
-  margin: 0;
-  padding: 0;
   height: 50px;
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  background-color: var(--grey-50);
+  display: contents;
   border: 1px solid #000000;
   border-top-width: ${(props) => (props.InList ? "0" : "1px")};
   border-left-width: ${(props) => (props.InList ? "0" : "1px")};
@@ -113,13 +116,9 @@ const SelectableTableElementClosedDiv = styled.div`
 `;
 
 const SelectableTableElementOpenedDiv = styled.div`
-  margin: 0;
-  padding: 0;
   height: ${(props) => (props.Type ? "250px" : "200px")};
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--grey-50);
+  display: contents;
   border: 1px solid #000000;
   border-top-width: ${(props) => (props.InList ? "0" : "1px")};
   border-left-width: ${(props) => (props.InList ? "0" : "1px")};
@@ -155,10 +154,7 @@ export const SelectableTableSingleInputDiv = styled.div`
   flex-direction: column;
 `;
 
-const SelectableTableLabels = styled.p`
-  width: 20%;
-  text-align: center;
-`;
+const SelectableTableLabels = styled.p``;
 
 export function SelectableTableHeaderDivView(
   props: SelectableTableHeaderDivProps

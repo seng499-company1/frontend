@@ -125,13 +125,9 @@ const Header = styled.div`
 `;
 
 const SelectableTableLabelDivView = styled.div`
-  margin: 0;
-  padding: 0;
   height: 5px;
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  display: contents;
 `;
 
 const Title = styled.h1`
