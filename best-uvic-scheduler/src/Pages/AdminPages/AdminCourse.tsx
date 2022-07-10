@@ -27,6 +27,7 @@ import {
   ButtonDiv,
 } from "../../Components/button/buttongroup.tsx";
 import { BiCaretDown, BiCaretUp } from "react-icons/bi";
+import { HeaderView } from "../../Components/Header/header.tsx";
 
 const Header = styled.div`
   display: grid;
@@ -90,14 +91,7 @@ export function AdminCoursePage() {
 
   return (
     <Background>
-      <Header>
-        <LogoDiv>
-          <img src={Logo} width="50px" height="80px" />
-        </LogoDiv>
-        <Title>UVIC Course Scheduler</Title>
-      </Header>
-
-      <NavBar initialTabId="2"></NavBar>
+      <HeaderView />
 
       <TableDiv>
         <SelectableTableDivView>

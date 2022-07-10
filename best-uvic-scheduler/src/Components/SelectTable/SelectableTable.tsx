@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import '../../index.css';
+import "../../index.css";
 
 export interface SelectableTableDivProps {
   children: React.ReactNode;
@@ -28,6 +28,7 @@ export interface SelectableTableElementClosedDivProps {
 
 export interface SelectableTableElementOpenedDivProps {
   children: React.ReactNode;
+
   Type: boolean;
   //zero is for the professor table, 1 is for the course table
 }
@@ -59,9 +60,9 @@ const SelectableTableHeaderDiv = styled.div`
   background-color: var(--grey-200);
   font-weight: 750;
   border: 1px solid #000000;
-  border-top-width: ${(props) => props.InList ? "0" : "1px"};
-  border-left-width: ${(props) => props.InList ? "0" : "1px"};
-  border-right-width: ${(props) => props.InList ? "0" : "1px"};
+  border-top-width: ${(props) => (props.InList ? "0" : "1px")};
+  border-left-width: ${(props) => (props.InList ? "0" : "1px")};
+  border-right-width: ${(props) => (props.InList ? "0" : "1px")};
   border-radius: 8px 8px 0px 0px;
 `;
 
@@ -106,23 +107,23 @@ const SelectableTableElementClosedDiv = styled.div`
   flex-direction: row;
   background-color: var(--grey-50);
   border: 1px solid #000000;
-  border-top-width: ${(props) => props.InList ? "0" : "1px"};
-  border-left-width: ${(props) => props.InList ? "0" : "1px"};
-  border-right-width: ${(props) => props.InList ? "0" : "1px"};
+  border-top-width: ${(props) => (props.InList ? "0" : "1px")};
+  border-left-width: ${(props) => (props.InList ? "0" : "1px")};
+  border-right-width: ${(props) => (props.InList ? "0" : "1px")};
 `;
 
 const SelectableTableElementOpenedDiv = styled.div`
   margin: 0;
   padding: 0;
-  height: ${(props) => props.Type ? "250px" : "200px"};
+  height: ${(props) => (props.Type ? "250px" : "200px")};
   width: 100%;
   display: flex;
   flex-direction: column;
   background-color: var(--grey-50);
   border: 1px solid #000000;
-  border-top-width: ${(props) => props.InList ? "0" : "1px"};
-  border-left-width: ${(props) => props.InList ? "0" : "1px"};
-  border-right-width: ${(props) => props.InList ? "0" : "1px"};
+  border-top-width: ${(props) => (props.InList ? "0" : "1px")};
+  border-left-width: ${(props) => (props.InList ? "0" : "1px")};
+  border-right-width: ${(props) => (props.InList ? "0" : "1px")};
 `;
 
 export const SelectableTableInputDiv = styled.div`
@@ -159,7 +160,9 @@ const SelectableTableLabels = styled.p`
   text-align: center;
 `;
 
-export function SelectableTableHeaderDivView(props: SelectableTableHeaderDivProps) {
+export function SelectableTableHeaderDivView(
+  props: SelectableTableHeaderDivProps
+) {
   return (
     <SelectableTableHeaderDiv {...{ InList: true }}>
       {props.children}
@@ -167,7 +170,9 @@ export function SelectableTableHeaderDivView(props: SelectableTableHeaderDivProp
   );
 }
 
-export function SelectableTableElementClosedDivView(props: SelectableTableElementClosedDivProps) {
+export function SelectableTableElementClosedDivView(
+  props: SelectableTableElementClosedDivProps
+) {
   return (
     <SelectableTableElementClosedDiv {...{ InList: true }}>
       {props.children}
@@ -175,7 +180,9 @@ export function SelectableTableElementClosedDivView(props: SelectableTableElemen
   );
 }
 
-export function SelectableTableElementOpenedDivView(props: SelectableTableElementOpenedDivProps) {
+export function SelectableTableElementOpenedDivView(
+  props: SelectableTableElementOpenedDivProps
+) {
   return (
     <SelectableTableElementOpenedDiv Type={props.Type} {...{ InList: true }}>
       {props.children}
@@ -183,15 +190,15 @@ export function SelectableTableElementOpenedDivView(props: SelectableTableElemen
   );
 }
 
-export function SelectableTableLabelDivView(props: SelectableTableLabelDivProps) {
-  return (
-    <SelectableTableLabelDiv>
-      {props.children}
-    </SelectableTableLabelDiv>
-  );
+export function SelectableTableLabelDivView(
+  props: SelectableTableLabelDivProps
+) {
+  return <SelectableTableLabelDiv>{props.children}</SelectableTableLabelDiv>;
 }
 
-export function SelectableTableIconElementDivView(props: SelectableTableIconElementDivProps) {
+export function SelectableTableIconElementDivView(
+  props: SelectableTableIconElementDivProps
+) {
   return (
     <SelectableTableIconElementDiv>
       {props.children}
@@ -200,19 +207,11 @@ export function SelectableTableIconElementDivView(props: SelectableTableIconElem
 }
 
 export function SelectableTableLabelsView(props: SelectableTableLabelsProps) {
-  return (
-    <SelectableTableLabels>
-      {props.children}
-    </SelectableTableLabels>
-  );
+  return <SelectableTableLabels>{props.children}</SelectableTableLabels>;
 }
 
 export function SelectableTableDivView(props: SelectableTableDivProps) {
-  return (
-    <SelectableTableDiv>
-    {props.children}
-    </SelectableTableDiv>
-  );
+  return <SelectableTableDiv>{props.children}</SelectableTableDiv>;
 }
 
 export default SelectableTableDivView;

@@ -4,7 +4,6 @@ import styled from "styled-components";
 import TabGroup from "../../Components/tab-group/tab-group.tsx";
 
 import { Background } from "../../Components/background/background.tsx";
-import Logo from "../../Images/uvic.png";
 import * as ScheduleHelper from "../../Util/ScheduleHelper.tsx";
 
 import {
@@ -19,7 +18,6 @@ import {
   SelectableTableSingleInputDiv,
   SelectableTableCheckboxDiv,
 } from "../../Components/SelectTable/SelectableTable.tsx";
-import NavBar from "../../Components/navBar/navBar.tsx";
 import { HeaderView } from "../../Components/Header/header.tsx";
 
 export interface GenerateScheduleProps {
@@ -217,6 +215,7 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
           return (
             <TabGroup.Tab
               tabId={`${i}`}
+              shrinkTab={true}
               onClick={() => {
                 onSelectedSemester(sem);
               }}

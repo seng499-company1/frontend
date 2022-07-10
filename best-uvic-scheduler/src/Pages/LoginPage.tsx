@@ -65,7 +65,7 @@ export function LoginPage() {
     }
   }
   return (
-    <Background>
+    <Background centered={true}>
       <BoxDiv>
         <h2 style={{ fontWeight: "500" }}>
           Welcome the the UVic Course Scheduler
