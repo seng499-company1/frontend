@@ -105,25 +105,24 @@ const SelectableTableElementOpenedDiv = styled.div`
   height: 250px;
   width: 100%;
   display: contents;
+  & p {
+    padding: var(--space-small) 0 !important;
+  }
 `;
 
 export const SelectableTableInputDiv = styled.div`
-  margin: 0;
-  padding: 0;
   width: 100%;
-  height: 100px;
   display: flex;
   flex-direction: row;
   align-content: center;
-  justify-content: space-around;
+  gap: var(--space-2x-large);
+  padding: var(--space-small) var(--space-med);
 `;
 
 export const SelectableTableCheckboxDiv = styled.div`
-  margin: 0;
-  padding: 0;
   display: flex;
   flex-direction: row;
-  align-content: center;
+  align-items: center;
   justify-content: space-around;
 `;
 
