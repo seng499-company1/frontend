@@ -1,3 +1,4 @@
+import { checkPropTypes } from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import "../../index.css";
@@ -12,7 +13,7 @@ const ButtonTheme = {
   },
   Secondary: {
     default: "var(--surface)",
-    hover: "var(--grey-50)",
+    hover: "var(--primary-50)",
     borderColor: "var(--primary)",
     borderHover: "var(--primary-700)",
     textcolor: "var(--primary)",
@@ -31,37 +32,46 @@ export interface CustomButtonProps {
   customClickEvent: any;
   Theme: ButtonThemeType;
   Disabled?: boolean;
+  Borderless?: boolean;
+  LeftText?: boolean;
   children: React.ReactNode;
 }
 
 const CustomButton = styled.button<{
   Theme: ButtonThemeType;
   Disabled?: boolean;
+  Borderless?: boolean;
+  LeftText?: boolean;
 }>`
   background-color: ${(props) =>
     props.Theme == "Secondary" ? "#fff" : ButtonTheme[props.Theme].default};
   color: ${(props) => ButtonTheme[props.Theme].textcolor};
   cursor: pointer;
-  border: 1px solid ${(props) => ButtonTheme[props.Theme].borderColor};
+  ${(props) =>
+    props.Borderless
+      ? "border: none;"
+      : `border: 1px solid ${ButtonTheme[props.Theme].borderColor};`}
   border-radius: 4px;
   padding: var(--space-x-small) var(--space-large);
+  height: fit-content;
+
+  ${(props) => props.LeftText && "text-align: left;"}
+
   &:hover {
     background-color: ${(props) =>
       props.Disabled
         ? ButtonTheme[props.Theme].default
         : ButtonTheme[props.Theme].hover};
-    border: 1px solid
+    ${(props) =>
+      props.Borderless
+        ? "border: none;"
+        : `border: 1px solid
       ${(props) =>
         props.Disabled
           ? ButtonTheme[props.Theme].borderColor
-          : ButtonTheme[props.Theme].borderHover};
+          : ButtonTheme[props.Theme].borderHover};`}
   }
-  ${({ Disabled }) =>
-    Disabled &&
-    `
-    cursor: default;
-    opacity: 0.5;
-  `}
+  ${(props) => props.Disabled && "cursor: default; opacity: 0.5;"}
 `;
 
 CustomButton.defaultProps = {
@@ -74,6 +84,8 @@ export function CustomButtonView(props: CustomButtonProps) {
     <CustomButton
       Theme={props.Theme}
       Disabled={props.Disabled}
+      LeftText={props.LeftText}
+      Borderless={props.Borderless}
       onClick={props.customClickEvent}
     >
       {props.children}

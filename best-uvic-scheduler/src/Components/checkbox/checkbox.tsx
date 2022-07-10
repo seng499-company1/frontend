@@ -44,9 +44,11 @@ export function CheckboxGroupView(props: CheckboxGroupViewProps) {
 }
 
 const CheckboxDiv = styled.div<{ checked: boolean }>`
-  border: 2px solid var(--grey-700);
+  border: 1px solid var(--grey-700);
   border-radius: 4px;
   padding: var(--space-x-small);
+  max-width: 14px;
+  max-height: 14px;
   ${(props) =>
     props.checked
       ? "background-color: var(--primary-400)"

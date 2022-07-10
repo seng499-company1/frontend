@@ -9,32 +9,30 @@ export interface AlertProps {
 
 const RedBox = styled.div`
   font-size: 0;
-  width: 500px;
   border-radius: 4px;
   border: 1px solid var(--danger-400);
   ${DefaultShadow}
-  display: grid;
+  display: flex;
   align-items: center;
   background-color: var(--danger-50);
   padding: var(--space-small) var(--space-large);
-  grid-template-columns: repeat(3, 1fr);
+  box-sizing: border-box;
+  margin: auto;
 `;
 
 const AlertText = styled.p`
-  grid-column: 1;
-  color: black;
+  color: var(--font-color);
   font-size: 16px;
-  grid-row: 1;
-  font-weight: bold;
+  font-weight: 600;
   margin: 0;
+  padding-right: var(--space-med);
 `;
 
 const Message = styled.p`
   color: black;
-  grid-column: 2 / -1;
   font-size: var(--font-size-normal);
-  grid-row: 1;
   margin: 0;
+  width: max-content;
 `;
 
 export function Alert(props: AlertProps) {
