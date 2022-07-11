@@ -3,6 +3,8 @@ import { Routes, Route } from "react-router-dom";
 import LandingPage from "./LandingPage.tsx";
 import AdminCoursePage from "./AdminCourse.tsx";
 import GenerateSchedule from "./GenerateSchedule.tsx";
+import GenerateSchedule1 from "./GenerateSchedule1.tsx";
+import GenerateSchedule2 from "./GenerateSchedule2.tsx";
 import { HeaderView } from "../../Components/Header/header.tsx";
 import { Background } from "../../Components/background/background.tsx";
 
@@ -26,6 +28,26 @@ export function AdminIndex() {
           path="Schedule"
           element={
             <GenerateSchedule
+              {...{
+                semesters,
+              }}
+            />
+          }
+        />
+        <Route
+          path="Schedule1"
+          element={
+            <GenerateSchedule1
+              {...{
+                semesters,
+              }}
+            />
+          }
+        />
+        <Route
+          path="Schedule2"
+          element={
+            <GenerateSchedule2
               {...{
                 semesters,
               }}
