@@ -194,12 +194,15 @@ function CreateListelement(scheduleElement) {
   let timeOffered;
   scheduleElement.sections.forEach((section) => {
     console.log(section);
-    // const time = section.timeSlots[0].timeRange;
-    // timeOffered = time[0] + " - " + time[1];
-    console.log(timeOffered);
-    //console.log(day.dayOfWeek + index);
+     if(section.timeSlots.length > 0){
+       const time = section.timeSlots[0].timeRange;
+       timeOffered = time[0][0] + " - " + time[0][1];
+      console.log(timeOffered);
+     } else {
+      timeOffered = "Course not scheduled"
+    }
   });
-  console.log(daysOffered);
+  //console.log(daysOffered);
 
   return (
     <SelectableTableElementClosedDivView>
@@ -288,7 +291,7 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
   let daysOffered;
   console.log(courseSections);
   currentlyShownSchedule[0].sections.forEach((section) => {
-    //console.log(section);
+    console.log(section);
     section.timeSlots.forEach((day, index) => {
       if (index === 0) {
         if (day === "THURSDAY") {
