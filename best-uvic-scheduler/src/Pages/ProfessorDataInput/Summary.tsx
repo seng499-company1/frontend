@@ -132,7 +132,6 @@ export function Summary(props: SummaryProps) {
 
   //get data
   useEffect(() => {
-    console.log("Inside useEffect");
     CourseListHelper.GetCourseList()
       .then((resp) => {
         setCourses(resp);
@@ -174,11 +173,11 @@ export function Summary(props: SummaryProps) {
   };
 
   const weekdayArray = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-  console.log("TIMES");
-  console.log(Preferences);
   const timeSummer = Times.summer;
   const timeSpring = Times.spring;
   const timeFall = Times.fall;
+
+  console.log("summer" + timeSummer, "spring" + timeSpring, "fall" + timeFall);
 
   return (
     <Background>
@@ -303,11 +302,7 @@ export function Summary(props: SummaryProps) {
             }
           })()}
           {Object.keys(timeSummer).map(function (Day, index) {
-            console.log("DAY");
-            console.log(Day);
-
             let times = stringToTime(timeSummer[Day].times);
-            console.log(times);
             let loop = 0;
             if (times.length != 0) {
               return (
@@ -417,11 +412,7 @@ export function Summary(props: SummaryProps) {
             }
           })()}
           {Object.keys(timeFall).map(function (Day, index) {
-            console.log("DAY");
-            console.log(Day);
-
             let times = stringToTime(timeFall[Day].times);
-            console.log(times);
             let loop = 0;
             if (times.length != 0) {
               return (
@@ -532,11 +523,7 @@ export function Summary(props: SummaryProps) {
             }
           })()}
           {Object.keys(timeSpring).map(function (Day, index) {
-            console.log("DAY");
-            console.log(Day);
-
             let times = stringToTime(timeSpring[Day].times);
-            console.log(times);
             let loop = 0;
             if (times.length != 0) {
               return (

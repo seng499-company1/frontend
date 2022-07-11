@@ -87,3 +87,40 @@ const TestPreferenceList = {
 export function GetPreferences() {
   return TestPreferenceList;
 }
+
+export type Json = {
+  year: Number;
+  semester_off: Number;
+  num_relief: Number;
+  num_summer_courses: Number;
+  num_fall_courses: Number;
+  num_spring_courses: Number;
+  why_relief: String;
+  preferred_times: Boolean;
+  fall_peng_req: Boolean;
+  course_desc: String;
+  prof_prereq: String;
+  year_req: {};
+  course_preferences: {};
+};
+
+export interface PostPrefProps {
+  id: number;
+  json: Json;
+}
+
+export async function PostPreferences(props: PostPrefProps) {
+  console.log("PROPS  ", props.json, props.id);
+
+  const axios = require("axios");
+
+  try {
+    const response = await axios.put(
+      "http://localhost:5000.com/professors/${id}/preferences",
+      props.json
+    );
+    console.log("response  ", response);
+  } catch (error) {
+    console.log("POST PROFESSOR PREFERENCES FAILED! " + error);
+  }
+}
