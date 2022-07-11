@@ -21,6 +21,18 @@ import { TimeIntervalHelper } from "../../Util/TimeIntervalHelper.tsx";
 
 import * as ProfPreferencesHelper from "../../Util/ProfPreferencesHelper.tsx";
 
+import {
+  SelectableTableDivView,
+  SelectableTableHeaderDivView,
+  SelectableTableLabelsView,
+  SelectableTableIconElementDivView,
+  SelectableTableElementClosedDivView,
+  SelectableTableElementOpenedDivView,
+  SelectableTableInputDiv,
+  SelectableTableSingleInputDiv,
+  SelectableTableCheckboxDiv,
+} from "../../Components/SelectTable/SelectableTable.tsx";
+
 export interface SummaryProps {
   maxCourses: any;
   absenceReason: any;
@@ -89,6 +101,16 @@ const WarningText = styled.div`
 
 const Space = styled.br`
   margin-bottom: 2px;
+`;
+
+const SelectableTableLabelDivView = styled.div`
+  height: 5px;
+  width: 100%;
+  display: contents;
+`;
+
+const TableDiv = styled.div`
+  padding-top: 4px;
 `;
 
 function stringToTime(times: string) {
@@ -165,198 +187,383 @@ export function Summary(props: SummaryProps) {
       </Header>
 
       <h2>Course Teaching Preferences</h2>
-      <TimeDiv>
-        {Courses.map(function (Course, index) {
-          let name = Course.course_code;
-          let qual = qualifications[name];
-          let pref = preferences[name];
+      <TableDiv>
+        <SelectableTableDivView columns={3}>
+          <SelectableTableHeaderDivView>
+            <SelectableTableLabelsView>Course ID</SelectableTableLabelsView>
+            <SelectableTableLabelsView>Qualification</SelectableTableLabelsView>
+            <SelectableTableLabelsView>Preference</SelectableTableLabelsView>
+          </SelectableTableHeaderDivView>
+          {Courses.map(function (Course, index) {
+            let name = Course.course_code;
+            let qual = qualifications[name];
+            let pref = preferences[name];
 
-          if (qual == null) {
-            qual = "N/A";
-          }
-          if (pref == null) {
-            pref = "N/A";
-          }
-          return (
-            <TimeRow>
-              <DayText>{Course.course_code} </DayText>
-
-              <ResponseDiv>
-                {qual}
-                &emsp;&emsp;
-                {pref}
-              </ResponseDiv>
-            </TimeRow>
-          );
-        })}
-      </TimeDiv>
+            if (qual == null) {
+              qual = "N/A";
+            }
+            if (pref == null) {
+              pref = "N/A";
+            }
+            return (
+              <SelectableTableElementClosedDivView>
+                <SelectableTableLabelDivView>
+                  <SelectableTableLabelsView>
+                    {Course.course_code}
+                  </SelectableTableLabelsView>
+                  <SelectableTableLabelsView> {qual}</SelectableTableLabelsView>
+                  <SelectableTableLabelsView> {pref}</SelectableTableLabelsView>
+                </SelectableTableLabelDivView>
+              </SelectableTableElementClosedDivView>
+            );
+          })}
+        </SelectableTableDivView>
+      </TableDiv>
 
       <h2>Teaching Time Preferences</h2>
-      <TimeDiv>
-        <TimeRow>
-          <Header4>Summer</Header4>
-        </TimeRow>
+      <TableDiv>
+        <SelectableTableDivView columns={5}>
+          <SelectableTableHeaderDivView>
+            <SelectableTableLabelsView>Summer</SelectableTableLabelsView>
+            <SelectableTableLabelsView></SelectableTableLabelsView>
+            <SelectableTableLabelsView></SelectableTableLabelsView>
+            <SelectableTableLabelsView></SelectableTableLabelsView>
+            <SelectableTableLabelsView></SelectableTableLabelsView>
+          </SelectableTableHeaderDivView>
 
-        <TimeRow>
-          <WarningText>
-            Maximum number of courses per semester:{" "}
-            {Preferences.num_summer_courses}
-          </WarningText>
-        </TimeRow>
+          <SelectableTableElementClosedDivView>
+            <SelectableTableLabelDivView>
+              <SelectableTableLabelsView>
+                {" "}
+                Maximum number of courses per semester:{" "}
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView>
+                {Preferences.num_summer_courses}
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView> </SelectableTableLabelsView>
+              <SelectableTableLabelsView> </SelectableTableLabelsView>
+              <SelectableTableLabelsView> </SelectableTableLabelsView>
+            </SelectableTableLabelDivView>
+          </SelectableTableElementClosedDivView>
 
-        <CheckboxContainerDiv>
-          {prefDays["Summer 2023"].map((day: boolean, idx: number) => {
-            return (
-              <ToggleView readOnly active={day} id={idx}>
-                {weekdayArray[idx]}
-              </ToggleView>
-            );
-          })}{" "}
-        </CheckboxContainerDiv>
+          <SelectableTableElementClosedDivView>
+            <SelectableTableLabelDivView>
+              <SelectableTableLabelsView>
+                Prefered Days:
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView>
+                {prefDays["Summer 2023"].map((day: boolean, idx: number) => {
+                  return (
+                    <ToggleView readOnly active={day} id={idx}>
+                      {weekdayArray[idx]}
+                    </ToggleView>
+                  );
+                })}{" "}
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+            </SelectableTableLabelDivView>
+          </SelectableTableElementClosedDivView>
 
-        {(() => {
-          if (
-            timeSummer.Monday.times.length === 0 &&
-            timeSummer.Tuesday.times.length === 0 &&
-            timeSummer.Wednesday.times.length === 0 &&
-            timeSummer.Thursday.times.length === 0 &&
-            timeSummer.Friday.times.length === 0
-          ) {
-            return (
-              <WarningTextRow>
-                <WarningText>No Times Entered For This Semester</WarningText>
-              </WarningTextRow>
-            );
-          }
-        })()}
-        {Object.keys(timeSummer).map(function (Day, index) {
-          const day = weekdays[Day];
-          let times = stringToTime(timeSummer[Day].times);
-
-          let loop = 0;
-          return (
-            <TimeDiv>
-              {times.map(function (time, timeIndex) {
-                const timeSplit = time.split(" ");
-
-                return (
-                  <TimeRow>
-                    <DayText> {day}</DayText>
-                    <TimeText>
-                      {" "}
-                      {timeSplit[0].slice(1, -1)} - {timeSplit[1].slice(1, -1)}
-                    </TimeText>
-                  </TimeRow>
-                );
-              })}
-            </TimeDiv>
-          );
-        })}
-      </TimeDiv>
-      <Header4>Fall</Header4>
-
-      <TimeDiv>
-        <TimeRow>
-          <WarningText>
-            Maximum number of courses per semester:
-            {console.log("NUM ENTERED")}
-            {console.log(maxCourseEntered)}
-            {maxCourseEntered["Summer 2023"]}
-          </WarningText>
-        </TimeRow>
-        <CheckboxContainerDiv>
-          {prefDays["Summer 2023"].map((day: boolean, idx: number) => {
-            return (
-              <ToggleView readOnly active={day} id={idx}>
-                {weekdayArray[idx]}
-              </ToggleView>
-            );
-          })}{" "}
-        </CheckboxContainerDiv>
-      </TimeDiv>
-
-      {(() => {
-        if (
-          timeFall.Monday.times.length === 0 &&
-          timeFall.Tuesday.times.length === 0 &&
-          timeFall.Wednesday.times.length === 0 &&
-          timeFall.Thursday.times.length === 0 &&
-          timeFall.Friday.times.length === 0
-        ) {
-          return (
-            <TimeDiv>
-              <WarningTextRow>
-                <WarningText>No Times Entered For This Semester</WarningText>
-              </WarningTextRow>
-            </TimeDiv>
-          );
-        } else {
-          return <div></div>;
-        }
-      })()}
-      {Object.keys(timeFall).map(function (Day, index) {
-        const day = weekdays[Day];
-        let times = stringToTime(timeFall[Day].times);
-        return (
-          <TimeDiv>
-            {times.map(function (time, timeIndex) {
-              const timeSplit = time.split(" ");
-
+          {(() => {
+            if (
+              timeSummer.Monday.times.length === 0 &&
+              timeSummer.Tuesday.times.length === 0 &&
+              timeSummer.Wednesday.times.length === 0 &&
+              timeSummer.Thursday.times.length === 0 &&
+              timeSummer.Friday.times.length === 0
+            ) {
               return (
-                <TimeRow>
-                  <DayText> {Day}</DayText>
-                  <TimeText>
-                    {" "}
-                    {timeSplit[0].slice(1, -1)} - {timeSplit[1].slice(1, -1)}
-                  </TimeText>
-                </TimeRow>
+                <SelectableTableElementClosedDivView>
+                  <SelectableTableLabelDivView>
+                    <SelectableTableLabelsView>
+                      No Times Entered For This Semester
+                    </SelectableTableLabelsView>
+                  </SelectableTableLabelDivView>
+                </SelectableTableElementClosedDivView>
               );
-            })}
-          </TimeDiv>
-        );
-      })}
-      <Header4>Spring</Header4>
-      {(() => {
-        if (
-          timeSpring.Monday.times.length === 0 &&
-          timeSpring.Tuesday.times.length === 0 &&
-          timeSpring.Wednesday.times.length === 0 &&
-          timeSpring.Thursday.times.length === 0 &&
-          timeSpring.Friday.times.length === 0
-        ) {
-          return (
-            <TimeDiv>
-              <WarningTextRow>
-                <WarningText>No Times Entered For This Semester</WarningText>
-              </WarningTextRow>
-            </TimeDiv>
-          );
-        } else {
-          return <div></div>;
-        }
-      })()}
-      {Object.keys(timeSpring).map(function (Day, index) {
-        const day = weekdays[Day];
-        let times = stringToTime(timeSpring[Day].times);
-
-        return (
-          <TimeDiv>
-            {times.map(function (time, timeIndex) {
-              const timeSplit = time.split(" ");
-
+            } else {
               return (
-                <TimeRow>
-                  <DayText> {day}</DayText>
-                  <TimeText>
-                    {" "}
-                    {timeSplit[0].slice(1, -1)} - {timeSplit[1].slice(1, -1)}
-                  </TimeText>
-                </TimeRow>
+                <SelectableTableElementClosedDivView>
+                  <SelectableTableLabelDivView>
+                    <SelectableTableLabelsView>
+                      Times Entered:
+                    </SelectableTableLabelsView>
+                    <SelectableTableLabelsView></SelectableTableLabelsView>
+                    <SelectableTableLabelsView></SelectableTableLabelsView>
+                    <SelectableTableLabelsView></SelectableTableLabelsView>
+                    <SelectableTableLabelsView></SelectableTableLabelsView>
+                  </SelectableTableLabelDivView>
+                </SelectableTableElementClosedDivView>
               );
-            })}
-          </TimeDiv>
-        );
-      })}
+            }
+          })()}
+          {Object.keys(timeSummer).map(function (Day, index) {
+            console.log("DAY");
+            console.log(Day);
+
+            let times = stringToTime(timeSummer[Day].times);
+            console.log(times);
+            let loop = 0;
+            if (times.length != 0) {
+              return (
+                <SelectableTableElementClosedDivView>
+                  {times.map(function (time, timeIndex) {
+                    const timeSplit = time.split(" ");
+
+                    return (
+                      <SelectableTableLabelDivView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                        <SelectableTableLabelsView>
+                          {" "}
+                          {Day}
+                        </SelectableTableLabelsView>
+                        <SelectableTableLabelsView>
+                          {" "}
+                          {timeSplit[0].slice(1, -1)} -{" "}
+                          {timeSplit[1].slice(1, -1)}
+                        </SelectableTableLabelsView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                      </SelectableTableLabelDivView>
+                    );
+                  })}
+                </SelectableTableElementClosedDivView>
+              );
+            }
+          })}
+        </SelectableTableDivView>
+      </TableDiv>
+      <TableDiv>
+        <SelectableTableDivView columns={5}>
+          <SelectableTableHeaderDivView>
+            <SelectableTableLabelsView>Fall</SelectableTableLabelsView>
+            <SelectableTableLabelsView></SelectableTableLabelsView>
+            <SelectableTableLabelsView></SelectableTableLabelsView>
+            <SelectableTableLabelsView></SelectableTableLabelsView>
+            <SelectableTableLabelsView></SelectableTableLabelsView>
+          </SelectableTableHeaderDivView>
+
+          <SelectableTableElementClosedDivView>
+            <SelectableTableLabelDivView>
+              <SelectableTableLabelsView>
+                {" "}
+                Maximum number of courses per semester:{" "}
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView>
+                {Preferences.num_fall_courses}
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView> </SelectableTableLabelsView>
+              <SelectableTableLabelsView> </SelectableTableLabelsView>
+              <SelectableTableLabelsView> </SelectableTableLabelsView>
+            </SelectableTableLabelDivView>
+          </SelectableTableElementClosedDivView>
+
+          <SelectableTableElementClosedDivView>
+            <SelectableTableLabelDivView>
+              <SelectableTableLabelsView>
+                Prefered Days:
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView>
+                {prefDays["Fall 2022"].map((day: boolean, idx: number) => {
+                  return (
+                    <ToggleView readOnly active={day} id={idx}>
+                      {weekdayArray[idx]}
+                    </ToggleView>
+                  );
+                })}{" "}
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+            </SelectableTableLabelDivView>
+          </SelectableTableElementClosedDivView>
+
+          {(() => {
+            if (
+              timeFall.Monday.times.length === 0 &&
+              timeFall.Tuesday.times.length === 0 &&
+              timeFall.Wednesday.times.length === 0 &&
+              timeFall.Thursday.times.length === 0 &&
+              timeFall.Friday.times.length === 0
+            ) {
+              return (
+                <SelectableTableElementClosedDivView>
+                  <SelectableTableLabelDivView>
+                    <SelectableTableLabelsView>
+                      No Times Entered For This Semester
+                    </SelectableTableLabelsView>
+                  </SelectableTableLabelDivView>
+                </SelectableTableElementClosedDivView>
+              );
+            } else {
+              return (
+                <SelectableTableElementClosedDivView>
+                  <SelectableTableLabelDivView>
+                    <SelectableTableLabelsView>
+                      Times Entered:
+                    </SelectableTableLabelsView>
+                    <SelectableTableLabelsView></SelectableTableLabelsView>
+                    <SelectableTableLabelsView></SelectableTableLabelsView>
+                    <SelectableTableLabelsView></SelectableTableLabelsView>
+                    <SelectableTableLabelsView></SelectableTableLabelsView>
+                  </SelectableTableLabelDivView>
+                </SelectableTableElementClosedDivView>
+              );
+            }
+          })()}
+          {Object.keys(timeFall).map(function (Day, index) {
+            console.log("DAY");
+            console.log(Day);
+
+            let times = stringToTime(timeFall[Day].times);
+            console.log(times);
+            let loop = 0;
+            if (times.length != 0) {
+              return (
+                <SelectableTableElementClosedDivView>
+                  {times.map(function (time, timeIndex) {
+                    const timeSplit = time.split(" ");
+
+                    return (
+                      <SelectableTableLabelDivView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                        <SelectableTableLabelsView>
+                          {" "}
+                          {Day}
+                        </SelectableTableLabelsView>
+                        <SelectableTableLabelsView>
+                          {" "}
+                          {timeSplit[0].slice(1, -1)} -{" "}
+                          {timeSplit[1].slice(1, -1)}
+                        </SelectableTableLabelsView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                      </SelectableTableLabelDivView>
+                    );
+                  })}
+                </SelectableTableElementClosedDivView>
+              );
+            }
+          })}
+        </SelectableTableDivView>
+      </TableDiv>
+
+      <TableDiv>
+        <SelectableTableDivView columns={5}>
+          <SelectableTableHeaderDivView>
+            <SelectableTableLabelsView>Spring</SelectableTableLabelsView>
+            <SelectableTableLabelsView></SelectableTableLabelsView>
+            <SelectableTableLabelsView></SelectableTableLabelsView>
+            <SelectableTableLabelsView></SelectableTableLabelsView>
+            <SelectableTableLabelsView></SelectableTableLabelsView>
+          </SelectableTableHeaderDivView>
+
+          <SelectableTableElementClosedDivView>
+            <SelectableTableLabelDivView>
+              <SelectableTableLabelsView>
+                {" "}
+                Maximum number of courses per semester:{" "}
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView>
+                {Preferences.num_spring_courses}
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView> </SelectableTableLabelsView>
+              <SelectableTableLabelsView> </SelectableTableLabelsView>
+              <SelectableTableLabelsView> </SelectableTableLabelsView>
+            </SelectableTableLabelDivView>
+          </SelectableTableElementClosedDivView>
+
+          <SelectableTableElementClosedDivView>
+            <SelectableTableLabelDivView>
+              <SelectableTableLabelsView>
+                Prefered Days:
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView>
+                {prefDays["Spring 2023"].map((day: boolean, idx: number) => {
+                  return (
+                    <ToggleView readOnly active={day} id={idx}>
+                      {weekdayArray[idx]}
+                    </ToggleView>
+                  );
+                })}{" "}
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+            </SelectableTableLabelDivView>
+          </SelectableTableElementClosedDivView>
+
+          {(() => {
+            if (
+              timeSpring.Monday.times.length === 0 &&
+              timeSpring.Tuesday.times.length === 0 &&
+              timeSpring.Wednesday.times.length === 0 &&
+              timeSpring.Thursday.times.length === 0 &&
+              timeSpring.Friday.times.length === 0
+            ) {
+              return (
+                <SelectableTableElementClosedDivView>
+                  <SelectableTableLabelDivView>
+                    <SelectableTableLabelsView>
+                      No Times Entered For This Semester
+                    </SelectableTableLabelsView>
+                  </SelectableTableLabelDivView>
+                </SelectableTableElementClosedDivView>
+              );
+            } else {
+              return (
+                <SelectableTableElementClosedDivView>
+                  <SelectableTableLabelDivView>
+                    <SelectableTableLabelsView>
+                      Times Entered:
+                    </SelectableTableLabelsView>
+                    <SelectableTableLabelsView></SelectableTableLabelsView>
+                    <SelectableTableLabelsView></SelectableTableLabelsView>
+                    <SelectableTableLabelsView></SelectableTableLabelsView>
+                    <SelectableTableLabelsView></SelectableTableLabelsView>
+                  </SelectableTableLabelDivView>
+                </SelectableTableElementClosedDivView>
+              );
+            }
+          })()}
+          {Object.keys(timeSpring).map(function (Day, index) {
+            console.log("DAY");
+            console.log(Day);
+
+            let times = stringToTime(timeSpring[Day].times);
+            console.log(times);
+            let loop = 0;
+            if (times.length != 0) {
+              return (
+                <SelectableTableElementClosedDivView>
+                  {times.map(function (time, timeIndex) {
+                    const timeSpring = time.split(" ");
+
+                    return (
+                      <SelectableTableLabelDivView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                        <SelectableTableLabelsView>
+                          {" "}
+                          {Day}
+                        </SelectableTableLabelsView>
+                        <SelectableTableLabelsView>
+                          {" "}
+                          {timeSpring[0].slice(1, -1)} -{" "}
+                          {timeSpring[1].slice(1, -1)}
+                        </SelectableTableLabelsView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                      </SelectableTableLabelDivView>
+                    );
+                  })}
+                </SelectableTableElementClosedDivView>
+              );
+            }
+          })}
+        </SelectableTableDivView>
+      </TableDiv>
       <Space></Space>
 
       <CustomButtonGroupView {...{ Amount: "Double" }}>
