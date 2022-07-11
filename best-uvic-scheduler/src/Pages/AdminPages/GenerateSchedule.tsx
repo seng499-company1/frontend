@@ -5,7 +5,7 @@ import TabGroup from "../../Components/tab-group/tab-group.tsx";
 
 import { Background } from "../../Components/background/background.tsx";
 import Logo from "../../Images/Uvic-logo.png";
-import { GetSchedule1 } from "../../Util/ScheduleHelper.tsx";
+import { GetSchedule1, GetSchedule2 } from "../../Util/ScheduleHelper.tsx";
 import * as ScheduleHelper from "../../Util/ScheduleHelper.tsx";
 
 import {
@@ -196,7 +196,7 @@ function CreateListelement(scheduleElement) {
     console.log(section);
      if(section.timeSlots.length > 0){
        const time = section.timeSlots[0].timeRange;
-       timeOffered = time[0][0] + " - " + time[0][1];
+       timeOffered = time[0] + " - " + time[1];
       console.log(timeOffered);
      } else {
       timeOffered = "Course not scheduled"
@@ -247,7 +247,7 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
   const [Schedule, setSchedule] = useState([]);
 
   useEffect(() => {
-    GetSchedule1().then((resp) => {
+    GetSchedule2().then((resp) => {
       setSchedule(resp);
     });
   }, []);
