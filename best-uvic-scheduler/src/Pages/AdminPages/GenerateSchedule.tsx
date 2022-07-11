@@ -153,22 +153,22 @@ const TableDiv = styled.div`
 `;
 
 function CreateListelement(scheduleElement) {
-  console.log("Here is Course ID");
+
   const couseID = scheduleElement.course.code;
-  console.log(couseID);
 
-  console.log("Here is Course Name");
   const couseName = scheduleElement.course.title;
-  console.log(couseName);
 
-  console.log("Here is Course Instructor");
+
   const couseInstructor = scheduleElement.sections[0].professor.name;
-  console.log(couseInstructor);
 
-  console.log("Here are the Course days");
+  let capacity = 0;
+
+  scheduleElement.sections.forEach((section) => {
+    capacity = capacity + section.capacity;
+  });
+
   const courseSections = scheduleElement.sections;
   let daysOffered;
-  console.log(courseSections);
   scheduleElement.sections.forEach((section) => {
     //console.log(section);
     section.timeSlots.forEach((day, index) => {
@@ -188,16 +188,12 @@ function CreateListelement(scheduleElement) {
       //console.log(day.dayOfWeek + index);
     });
   });
-  console.log(daysOffered);
 
-  console.log("Here are the Course Times");
   let timeOffered;
   scheduleElement.sections.forEach((section) => {
-    console.log(section);
      if(section.timeSlots.length > 0){
        const time = section.timeSlots[0].timeRange;
        timeOffered = time[0] + " - " + time[1];
-      console.log(timeOffered);
      } else {
       timeOffered = "Course not scheduled"
     }
@@ -210,6 +206,7 @@ function CreateListelement(scheduleElement) {
         <SelectableTableLabelsView>{couseID}</SelectableTableLabelsView>
         <SelectableTableLabelsView>{couseName}</SelectableTableLabelsView>
         <SelectableTableLabelsView>{couseInstructor}</SelectableTableLabelsView>
+        <SelectableTableLabelsView>{capacity}</SelectableTableLabelsView>
         <SelectableTableLabelsView>{daysOffered}</SelectableTableLabelsView>
         <SelectableTableLabelsView>{timeOffered}</SelectableTableLabelsView>
       </SelectableTableLabelDivView>
@@ -274,63 +271,10 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
     currentlyShownSchedule = scheduleFall;
   }
 
-  console.log("Here is Course ID");
-  const couseID = currentlyShownSchedule[0].course.code;
-  console.log(couseID);
-
-  console.log("Here is Course Name");
-  const couseName = currentlyShownSchedule[0].course.title;
-  console.log(couseName);
-
-  console.log("Here is Course Instructor");
-  const couseInstructor = currentlyShownSchedule[0].sections[0].professor.name;
-  console.log(couseInstructor);
-
-  console.log("Here are the Course days");
-  const courseSections = currentlyShownSchedule[0].sections;
-  let daysOffered;
-  console.log(courseSections);
-  currentlyShownSchedule[0].sections.forEach((section) => {
-    console.log(section);
-    section.timeSlots.forEach((day, index) => {
-      if (index === 0) {
-        if (day === "THURSDAY") {
-          daysOffered = "Th";
-        } else {
-          daysOffered = day.dayOfWeek[0];
-        }
-      } else {
-        if (day === "THURSDAY") {
-          daysOffered = daysOffered + "/Th";
-        } else {
-          daysOffered = daysOffered + "/" + day.dayOfWeek[0];
-        }
-      }
-      //console.log(day.dayOfWeek + index);
-    });
-  });
-  console.log(daysOffered);
-
-  console.log("Here are the Course Times");
-  let timeOffered;
-  currentlyShownSchedule[0].sections.forEach((section) => {
-    console.log(section);
-
-    // const time = section.timeSlots[0].timeRange;
-    // timeOffered = time[0] + " - " + time[1];
-    // console.log(timeOffered);
-    //console.log(day.dayOfWeek + index);
-  });
-  console.log(daysOffered);
-
-  let secondcourse = CreateListelement(currentlyShownSchedule[1]);
-
-  console.log(secondcourse);
-
   return (
     <Background>
       <HeaderView />
-      <TabGroup initialTabId="0">
+      <TabGroup initialTabId="3">
         {semesters.map((sem: { label: string; value: string }, i: number) => {
           return (
             <TabGroup.Tab
@@ -347,11 +291,12 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
         })}
       </TabGroup>
       <TableDiv>
-        <SelectableTableDivView columns={5}>
+        <SelectableTableDivView columns={6}>
           <SelectableTableHeaderDivView>
             <SelectableTableLabelsView>Course ID</SelectableTableLabelsView>
             <SelectableTableLabelsView>Course Name</SelectableTableLabelsView>
             <SelectableTableLabelsView>Instructor</SelectableTableLabelsView>
+            <SelectableTableLabelsView>Capacity</SelectableTableLabelsView>
             <SelectableTableLabelsView>Days</SelectableTableLabelsView>
             <SelectableTableLabelsView>Time</SelectableTableLabelsView>
           </SelectableTableHeaderDivView>
