@@ -2682,7 +2682,7 @@ const axios = require("axios");
 export async function GetSchedule1() {
   try {
     const response = await axios.get(
-      "http://uvic.immortalmind.ca:5000/schedules/company/1"
+      "https://uvic.immortalmind.ca:5000/schedules/company/1"
     );
     console.log("response  ", response);
     return response.data;
@@ -2695,7 +2695,7 @@ export async function GetSchedule1() {
 export async function GetSchedule2() {
   try {
     const response = await axios.get(
-      "http://uvic.immortalmind.ca:5000/schedules/company/2"
+      "https://uvic.immortalmind.ca:5000/schedules/company/2"
     );
     console.log("response  ", response);
     return response.data;
