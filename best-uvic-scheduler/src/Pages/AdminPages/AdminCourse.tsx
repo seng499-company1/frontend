@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Background } from "../../Components/background/background.tsx";
-import Logo from "../../Images/Uvic-logo.png";
+import Logo from "../../Images/uvic.png";
 import Alert from "../../Components/Alert/alert.tsx";
 import NavBar from "../../Components/navBar/navBar.tsx";
 import * as CourseListHelper from "../../Util/CourseListHelper.tsx";
@@ -27,28 +27,7 @@ import {
   ButtonDiv,
 } from "../../Components/button/buttongroup.tsx";
 import { BiCaretDown, BiCaretUp } from "react-icons/bi";
-
-const Header = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0px;
-`;
-
-const Title = styled.h1`
-  text-align: center;
-  font-size: 24px;
-  padding-left: 0px;
-  padding-right: 0px;
-  grid-column: 2 / 3;
-  grid-row: 1;
-`;
-
-const LogoDiv = styled.div`
-  padding-left: 48px;
-  padding-right: 0px;
-  grid-column: 1 / 3;
-  grid-row: 1;
-`;
+import { HeaderView } from "../../Components/Header/header.tsx";
 
 const TableDiv = styled.div`
   padding-top: 48px;
@@ -90,17 +69,10 @@ export function AdminCoursePage() {
 
   return (
     <Background>
-      <Header>
-        <LogoDiv>
-          <img src={Logo} width="50px" height="80px" />
-        </LogoDiv>
-        <Title>UVIC Course Scheduler</Title>
-      </Header>
-
-      <NavBar initialTabId="2"></NavBar>
+      <HeaderView />
 
       <TableDiv>
-        <SelectableTableDivView>
+        <SelectableTableDivView columns={4}>
           <SelectableTableHeaderDivView>
             <SelectableTableIconElementDivView />
             <SelectableTableLabelDivView>
@@ -131,7 +103,7 @@ export function AdminCoursePage() {
                 <SelectableTableElementOpenedDivView {...{ Type: 1 }}>
                   <SelectableTableIconElementDivView>
                     <BiCaretUp
-                      style={{ height: 30, width: 30 }}
+                      style={{ height: 16, width: 16 }}
                       onClick={() => {
                         setOpenCourse(0);
                       }}
@@ -153,12 +125,7 @@ export function AdminCoursePage() {
                       />
                     </SelectableTableSingleInputDiv>
                   </SelectableTableInputDiv>
-                  <SelectableTableInputDiv
-                    style={{
-                      paddingLeft: 32,
-                      justifyContent: "start",
-                    }}
-                  >
+                  <SelectableTableInputDiv>
                     <SelectableTableCheckboxDiv>
                       <CheckboxView
                         {...{
@@ -167,15 +134,7 @@ export function AdminCoursePage() {
                       >
                         X
                       </CheckboxView>
-                      <p
-                        style={{
-                          paddingLeft: 8,
-                          paddingRight: 12,
-                          paddingTop: 4,
-                        }}
-                      >
-                        Fall
-                      </p>
+                      <p>Fall</p>
                     </SelectableTableCheckboxDiv>
                     <SelectableTableCheckboxDiv>
                       <CheckboxView
@@ -185,15 +144,7 @@ export function AdminCoursePage() {
                       >
                         X
                       </CheckboxView>
-                      <p
-                        style={{
-                          paddingLeft: 8,
-                          paddingRight: 12,
-                          paddingTop: 4,
-                        }}
-                      >
-                        Spring
-                      </p>
+                      <p>Spring</p>
                     </SelectableTableCheckboxDiv>
                     <SelectableTableCheckboxDiv>
                       <CheckboxView
@@ -203,38 +154,28 @@ export function AdminCoursePage() {
                       >
                         X
                       </CheckboxView>
-                      <p
-                        style={{
-                          paddingLeft: 8,
-                          paddingRight: 12,
-                          paddingTop: 4,
-                        }}
-                      >
-                        Summer
-                      </p>
+                      <p>Summer</p>
                     </SelectableTableCheckboxDiv>
                   </SelectableTableInputDiv>
-                  <CustomButtonGroupView {...{ Amount: "Progession" }}>
-                    <ButtonDiv>
-                      <CustomButtonView
-                        {...{ Theme: "Secondary" }}
-                        customClickEvent={() => {
-                          setOpenCourse(0);
-                        }}
-                      >
-                        Cancel
-                      </CustomButtonView>
-                      <CustomButtonView
-                        {...{ Theme: "Primary" }}
-                        customClickEvent={() => {
-                          CourseData[index] = Course;
-                          setOpenCourse(0);
-                        }}
-                      >
-                        Save
-                      </CustomButtonView>
-                    </ButtonDiv>
-                  </CustomButtonGroupView>
+                  <SelectableTableInputDiv>
+                    <CustomButtonView
+                      {...{ Theme: "Secondary" }}
+                      customClickEvent={() => {
+                        setOpenCourse(0);
+                      }}
+                    >
+                      Cancel
+                    </CustomButtonView>
+                    <CustomButtonView
+                      {...{ Theme: "Primary" }}
+                      customClickEvent={() => {
+                        CourseData[index] = Course;
+                        setOpenCourse(0);
+                      }}
+                    >
+                      Save
+                    </CustomButtonView>
+                  </SelectableTableInputDiv>
                 </SelectableTableElementOpenedDivView>
               );
             } else {
@@ -242,7 +183,7 @@ export function AdminCoursePage() {
                 <SelectableTableElementClosedDivView>
                   <SelectableTableIconElementDivView>
                     <BiCaretDown
-                      style={{ height: 30, width: 30 }}
+                      style={{ height: 16, width: 16 }}
                       onClick={() => {
                         setOpenCourse(Course);
                       }}

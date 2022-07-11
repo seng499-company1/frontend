@@ -12,7 +12,7 @@ export function NavBar(props: NavBarProps) {
   return (
     <TabGroup initialTabId={props.initialTabId}>
       <TabGroup.Tab size="medium" tabId="1" onClick={() => navigate(`/Admin`)}>
-        Landing Page
+        Home
       </TabGroup.Tab>
 
       <TabGroup.Tab
@@ -20,10 +20,10 @@ export function NavBar(props: NavBarProps) {
         tabId="2"
         onClick={() => navigate(`/Admin/Courses`)}
       >
-        Edit Courses
+        Courses
       </TabGroup.Tab>
       <TabGroup.Tab size="medium" tabId="3">
-        Edit Professors
+        Professors
       </TabGroup.Tab>
 
       <TabGroup.Tab

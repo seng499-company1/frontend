@@ -6,6 +6,7 @@ import TabGroup from "../../Components/tab-group/tab-group.tsx";
 import { Background } from "../../Components/background/background.tsx";
 import Logo from "../../Images/Uvic-logo.png";
 import { GetSchedule } from "../../Util/ScheduleHelper.tsx";
+import * as ScheduleHelper from "../../Util/ScheduleHelper.tsx";
 
 import {
   SelectableTableDivView,
@@ -18,7 +19,7 @@ import {
   SelectableTableSingleInputDiv,
   SelectableTableCheckboxDiv,
 } from "../../Components/SelectTable/SelectableTable.tsx";
-import NavBar from "../../Components/navBar/navBar.tsx";
+import { HeaderView } from "../../Components/Header/header.tsx";
 
 export interface GenerateScheduleProps {
   semesters: Array<string>;
@@ -127,13 +128,9 @@ const Header = styled.div`
 `;
 
 const SelectableTableLabelDivView = styled.div`
-  margin: 0;
-  padding: 0;
   height: 5px;
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  display: contents;
 `;
 
 const Title = styled.h1`
@@ -329,20 +326,13 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
 
   return (
     <Background>
-      <Header>
-        <LogoDiv>
-          <img src={Logo} width="50px" height="80px" />
-        </LogoDiv>
-        <Title>UVIC Course Scheduler</Title>
-      </Header>
-
-      <NavBar initialTabId="4"></NavBar>
-      <br></br>
+      <HeaderView />
       <TabGroup initialTabId="0">
         {semesters.map((sem: { label: string; value: string }, i: number) => {
           return (
             <TabGroup.Tab
               tabId={`${i}`}
+              shrinkTab={true}
               onClick={() => {
                 onSelectedSemester(sem);
               }}
@@ -354,7 +344,7 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
         })}
       </TabGroup>
       <TableDiv>
-        <SelectableTableDivView>
+        <SelectableTableDivView columns={5}>
           <SelectableTableHeaderDivView>
             <SelectableTableLabelsView>Course ID</SelectableTableLabelsView>
             <SelectableTableLabelsView>Course Name</SelectableTableLabelsView>
