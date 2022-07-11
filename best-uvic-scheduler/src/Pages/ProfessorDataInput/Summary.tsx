@@ -188,9 +188,11 @@ export function Summary(props: SummaryProps) {
 
       <h2>Course Teaching Preferences</h2>
       <TableDiv>
-        <SelectableTableDivView columns={3}>
+        <SelectableTableDivView columns={5}>
           <SelectableTableHeaderDivView>
             <SelectableTableLabelsView>Course ID</SelectableTableLabelsView>
+            <SelectableTableLabelsView></SelectableTableLabelsView>
+            <SelectableTableLabelsView></SelectableTableLabelsView>
             <SelectableTableLabelsView>Qualification</SelectableTableLabelsView>
             <SelectableTableLabelsView>Preference</SelectableTableLabelsView>
           </SelectableTableHeaderDivView>
@@ -211,6 +213,9 @@ export function Summary(props: SummaryProps) {
                   <SelectableTableLabelsView>
                     {Course.course_code}
                   </SelectableTableLabelsView>
+                  <SelectableTableLabelsView></SelectableTableLabelsView>
+                  <SelectableTableLabelsView></SelectableTableLabelsView>
+
                   <SelectableTableLabelsView> {qual}</SelectableTableLabelsView>
                   <SelectableTableLabelsView> {pref}</SelectableTableLabelsView>
                 </SelectableTableLabelDivView>
