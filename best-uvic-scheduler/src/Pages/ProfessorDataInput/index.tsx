@@ -36,13 +36,13 @@ export const PrefDayContext = React.createContext({
 });
 
 export const MaxCourseContext = React.createContext({
-  maxCourseEntered: {},
-  setMaxCourseEntered: (maxCourseEntered: {}) => {},
+  MaxCourseEntered: {},
+  setMaxCourseEntered: (event) => {},
 });
 
 export const LeaveReasonContext = React.createContext({
   leaveReason: {},
-  setLeaveReason: (_prefDays: {}) => {},
+  setLeaveReason: (_leaveReason: {}) => {},
 });
 
 export const semesters = ["Fall 2022", "Spring 2023", "Summer 2023"];

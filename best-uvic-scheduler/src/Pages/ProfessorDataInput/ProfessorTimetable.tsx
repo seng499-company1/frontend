@@ -160,10 +160,13 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
 
   useEffect(() => {
     setMaxCourseEntered({
-      semester: selectedSemester,
-      courses: maxCourses,
+      [selectedSemester.value]: maxCourses[selectedSemester.value],
     });
-    console.log("EHRE");
+    console.log("HERE");
+    const val = selectedSemester.value;
+    console.log(val);
+    console.log(qualifications);
+    console.log(maxCourses[val]);
     console.log(maxCourseEntered);
   }, [maxCourses]);
 
