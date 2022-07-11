@@ -2,14 +2,14 @@ const axios = require("axios");
 
 export async function PostLoginInfo(props) {
   try {
-    await axios.post(
-      "http://uvic.immortalmind.ca:5000/login", {
-        "username": props.username,
-        "password": props.password
-      }
-    ).then( response => {
-      return response.data;
-    });
+    await axios
+      .post("http://uvic.immortalmind.ca:5000/login", {
+        username: props.username,
+        password: props.password,
+      })
+      .then((response) => {
+        return response.data;
+      });
     console.log("response  ", response);
     return response.data;
   } catch (error) {

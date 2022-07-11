@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,32 @@ import * as CourseListHelper from "../../Util/CourseListHelper.tsx";
 import * as ProfPreferencesHelper from "../../Util/ProfPreferencesHelper.tsx";
 import { ProfessorNameContext } from "./LandingPage.tsx";
 import { Background } from "../../Components/background/background.tsx";
+import LandingPage from "./LandingPage.tsx";
+import { array, number } from "prop-types";
+import { isConstructorDeclaration } from "typescript";
+import {
+  noTimesMessage,
+  timesEnteredMessage,
+  semesterHeader,
+  maxCoursesMessage,
+  coursesMessage,
+} from "../../Components/Summary/SummaryElements.tsx";
+
+import {
+  SelectableTableDivView,
+  SelectableTableHeaderDivView,
+  SelectableTableLabelsView,
+  SelectableTableElementClosedDivView,
+} from "../../Components/SelectTable/SelectableTable.tsx";
+
+const SelectDivStyle = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 0px;
+  padding-right: 100px;
+  box-shadow: 1px 1px;
+  background-color: var(--grey-50);
+`;
 
 const ResponseDiv = styled.div`
   text-indent: -40px;
@@ -35,7 +61,6 @@ const TimeRow = styled.div`
   grid-template-columns: repeat(3, 1fr);
   padding-top: 2px;
   box-shadow: 1px 1px;
-
   background-color: var(--grey-50);
   padding-bottom: 4px;
 `;
@@ -51,6 +76,14 @@ const DayText = styled.div`
 const TimeText = styled.div`
   grid-column: 2/3;
   grid-row: 1;
+`;
+const TableDiv = styled.div`
+  padding-top: 4px;
+`;
+const SelectableTableLabelDivView = styled.div`
+  height: 5px;
+  width: 100%;
+  display: contents;
 `;
 
 const Space = styled.br`
@@ -72,13 +105,27 @@ function stringToTime(times: string) {
 export function Summary_RO() {
   //get data, call get professor entry endpoint using professor uuid
   const Preferences = ProfPreferencesHelper.GetPreferences();
-  const Courses = Preferences.course_preferences;
+  const CoursesPref = Preferences.course_preferences;
   const Times = Preferences.preferred_times;
+  const [Courses, setCourses] = useState([]);
+  const [AmountOfCourses, setAmmount] = useState(0);
+
+  useEffect(() => {
+    CourseListHelper.GetCourseList()
+      .then((resp) => {
+        setCourses(resp);
+      })
+      .then((resp) => {
+        setAmmount(resp.length());
+      });
+  }, []);
 
   //   //hooks
-  const { selectedProfessorName } = useContext(ProfessorNameContext);
+  const { selectedProfessorName, setProfessorName } =
+    useContext(ProfessorNameContext);
   const navigate = useNavigate();
 
+  const terms = ["summer", "spring", "fall"];
   const weekdays = {
     mon: "Monday",
     tues: "Tuesday",
@@ -101,35 +148,44 @@ export function Summary_RO() {
 
   return (
     <Background>
-      <Header>Summary For {selectedProfessorName}</Header>
+      <Header>Entries For {selectedProfessorName}</Header>
 
       <h2>Classes</h2>
-      <TimeDiv>
-        {Courses.map(function (Course) {
-          let courseList = CourseListHelper.GetCourseList().Courses;
-          const willing = avail[Course.will_to_teach];
-          const qualified = avail[Course.able_to_teach];
+      <TableDiv>
+        <SelectableTableDivView columns={5}>
+          {coursesMessage}
+          {CoursesPref.map(function (Course, index) {
+            let courseName = "";
+            const willing = avail[Course.will_to_teach];
+            const qualified = avail[Course.able_to_teach];
+            var indexCourseList = Courses.findIndex(
+              (p) => p.id === Course.course_id
+            );
+            if (indexCourseList != -1) {
+              return (
+                <SelectableTableElementClosedDivView>
+                  <SelectableTableLabelDivView>
+                    <SelectableTableLabelsView>
+                      {Courses[indexCourseList].course_code}{" "}
+                    </SelectableTableLabelsView>
+                    <SelectableTableLabelsView></SelectableTableLabelsView>
+                    <SelectableTableLabelsView></SelectableTableLabelsView>
 
-          const indexCourseList = courseList.findIndex(
-            (x) => x.uuid === Course.course_id
-          );
-
-          return (
-            <TimeRow>
-              <DayText>
-                {console.log(Course.course_code)}
-                {courseList[indexCourseList].course_code}{" "}
-              </DayText>
-
-              <ResponseDiv>
-                {willing}
-                &emsp;&emsp;
-                {qualified}
-              </ResponseDiv>
-            </TimeRow>
-          );
-        })}
-      </TimeDiv>
+                    <SelectableTableLabelsView>
+                      {" "}
+                      {willing}
+                    </SelectableTableLabelsView>
+                    <SelectableTableLabelsView>
+                      {" "}
+                      {qualified}
+                    </SelectableTableLabelsView>
+                  </SelectableTableLabelDivView>
+                </SelectableTableElementClosedDivView>
+              );
+            }
+          })}
+        </SelectableTableDivView>
+      </TableDiv>
       <Space></Space>
       <CustomButtonGroupView {...{ Amount: "Progession" }}>
         <CustomButtonView {...{ Theme: "Primary" }} customClickEvent={() => {}}>
@@ -140,84 +196,168 @@ export function Summary_RO() {
 
       <h2>Availibility</h2>
 
-      <Header4>Summer</Header4>
+      <TableDiv>
+        <SelectableTableDivView columns={5}>
+          {semesterHeader("Summer")}
+          {maxCoursesMessage(Preferences.num_summer_courses)}
 
-      {Object.keys(timeSummer).map(function (Day) {
-        const day = weekdays[Day];
-        let times = stringToTime(timeSummer[Day].times);
+          {(() => {
+            if (
+              timeSummer.mon.times.length === 0 &&
+              timeSummer.tues.times.length === 0 &&
+              timeSummer.wed.times.length === 0 &&
+              timeSummer.thurs.times.length === 0 &&
+              timeSummer.fri.times.length === 0
+            ) {
+              return noTimesMessage;
+            } else {
+              return timesEnteredMessage;
+            }
+          })()}
 
-        return (
-          <TimeDiv>
-            {times.map(function (time) {
-              const timeSplit = time.split(" ");
-
+          {Object.keys(timeSummer).map(function (Day, index) {
+            const day = weekdays[Day];
+            let times = stringToTime(timeSummer[Day].times);
+            if (times.length != 0) {
               return (
-                <TimeRow>
-                  <DayText> {day}</DayText>
-                  <TimeText>
-                    {" "}
-                    {timeSplit[0].slice(1, -1)} - {timeSplit[1].slice(1, -1)}
-                  </TimeText>
-                </TimeRow>
+                <SelectableTableElementClosedDivView>
+                  {times.map(function (time, timeIndex) {
+                    const timeSplit = time.split(" ");
+
+                    return (
+                      <SelectableTableLabelDivView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                        <SelectableTableLabelsView>
+                          {" "}
+                          {day}
+                        </SelectableTableLabelsView>
+                        <SelectableTableLabelsView>
+                          {" "}
+                          {timeSplit[0].slice(1, -1)} -{" "}
+                          {timeSplit[1].slice(1, -1)}
+                        </SelectableTableLabelsView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                      </SelectableTableLabelDivView>
+                    );
+                  })}
+                </SelectableTableElementClosedDivView>
               );
-            })}
-          </TimeDiv>
-        );
-      })}
+            }
+          })}
+        </SelectableTableDivView>
+      </TableDiv>
+      <TableDiv>
+        <SelectableTableDivView columns={5}>
+          {semesterHeader("Fall")}
+          {maxCoursesMessage(Preferences.num_fall_courses)}
 
-      <Header4>Fall</Header4>
-      {Object.keys(timeFall).map(function (Day) {
-        const day = weekdays[Day];
-        let times = stringToTime(timeFall[Day].times);
+          {(() => {
+            if (
+              timeFall.mon.times.length === 0 &&
+              timeFall.tues.times.length === 0 &&
+              timeFall.wed.times.length === 0 &&
+              timeFall.thurs.times.length === 0 &&
+              timeFall.fri.times.length === 0
+            ) {
+              return noTimesMessage;
+            } else {
+              return timesEnteredMessage;
+            }
+          })()}
+          {Object.keys(timeFall).map(function (Day, index) {
+            const day = weekdays[Day];
+            let times = stringToTime(timeFall[Day].times);
 
-        return (
-          <TimeDiv>
-            {times.map(function (time) {
-              const timeSplit = time.split(" ");
-
+            if (times.length != 0) {
               return (
-                <TimeRow>
-                  <DayText> {day}</DayText>
-                  <TimeText>
-                    {" "}
-                    {timeSplit[0].slice(1, -1)} - {timeSplit[1].slice(1, -1)}
-                  </TimeText>
-                </TimeRow>
+                <SelectableTableElementClosedDivView>
+                  {times.map(function (time, timeIndex) {
+                    const timeSplit = time.split(" ");
+
+                    return (
+                      <SelectableTableLabelDivView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                        <SelectableTableLabelsView>
+                          {" "}
+                          {day}
+                        </SelectableTableLabelsView>
+                        <SelectableTableLabelsView>
+                          {" "}
+                          {timeSplit[0].slice(1, -1)} -{" "}
+                          {timeSplit[1].slice(1, -1)}
+                        </SelectableTableLabelsView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                      </SelectableTableLabelDivView>
+                    );
+                  })}
+                </SelectableTableElementClosedDivView>
               );
-            })}
-          </TimeDiv>
-        );
-      })}
-      <Header4>Spring</Header4>
-      {Object.keys(timeSpring).map(function (Day) {
-        const day = weekdays[Day];
-        let times = stringToTime(timeSpring[Day].times);
+            }
+          })}
+        </SelectableTableDivView>
+      </TableDiv>
 
-        return (
-          <TimeDiv>
-            {times.map(function (time) {
-              const timeSplit = time.split(" ");
+      <TableDiv>
+        <SelectableTableDivView columns={5}>
+          {semesterHeader("Spring")}
 
+          {maxCoursesMessage(Preferences.num_spring_courses)}
+          {(() => {
+            if (
+              timeSpring.mon.times.length === 0 &&
+              timeSpring.tues.times.length === 0 &&
+              timeSpring.wed.times.length === 0 &&
+              timeSpring.thurs.times.length === 0 &&
+              timeSpring.fri.times.length === 0
+            ) {
+              return noTimesMessage;
+            } else {
+              return timesEnteredMessage;
+            }
+          })()}
+
+          {Object.keys(timeSpring).map(function (Day, index) {
+            const day = weekdays[Day];
+            let times = stringToTime(timeSpring[Day].times);
+
+            if (times.length != 0) {
               return (
-                <TimeRow>
-                  <DayText> {day}</DayText>
-                  <TimeText>
-                    {" "}
-                    {timeSplit[0].slice(1, -1)} - {timeSplit[1].slice(1, -1)}
-                  </TimeText>
-                </TimeRow>
+                <SelectableTableElementClosedDivView>
+                  {times.map(function (time, timeIndex) {
+                    const timeSpring = time.split(" ");
+
+                    return (
+                      <SelectableTableLabelDivView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                        <SelectableTableLabelsView>
+                          {" "}
+                          {day}
+                        </SelectableTableLabelsView>
+                        <SelectableTableLabelsView>
+                          {" "}
+                          {timeSpring[0].slice(1, -1)} -{" "}
+                          {timeSpring[1].slice(1, -1)}
+                        </SelectableTableLabelsView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                      </SelectableTableLabelDivView>
+                    );
+                  })}
+                </SelectableTableElementClosedDivView>
               );
-            })}
-          </TimeDiv>
-        );
-      })}
+            }
+          })}
+        </SelectableTableDivView>
+      </TableDiv>
       <Space></Space>
 
       <CustomButtonGroupView {...{ Amount: "Double" }}>
         <CustomButtonView
           {...{ Theme: "Secondary" }}
           customClickEvent={() => {
-            navigate(`/LandingPage`);
+            navigate(`/Admin`);
           }}
         >
           {" "}
