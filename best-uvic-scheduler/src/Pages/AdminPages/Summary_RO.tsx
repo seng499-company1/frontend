@@ -333,7 +333,7 @@ export function Summary_RO() {
                         <SelectableTableLabelsView></SelectableTableLabelsView>
                         <SelectableTableLabelsView>
                           {" "}
-                          {Day}
+                          {day}
                         </SelectableTableLabelsView>
                         <SelectableTableLabelsView>
                           {" "}
