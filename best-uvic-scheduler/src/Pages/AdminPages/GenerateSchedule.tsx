@@ -5,7 +5,7 @@ import TabGroup from "../../Components/tab-group/tab-group.tsx";
 
 import { Background } from "../../Components/background/background.tsx";
 import Logo from "../../Images/Uvic-logo.png";
-import * as ScheduleHelper from "../../Util/ScheduleHelper.tsx";
+import { GetSchedule } from "../../Util/ScheduleHelper.tsx";
 
 import {
   SelectableTableDivView,
@@ -197,8 +197,8 @@ function CreateListelement(scheduleElement) {
   let timeOffered;
   scheduleElement.sections.forEach((section) => {
     console.log(section);
-    const time = section.timeSlots[0].timeRange;
-    timeOffered = time[0] + " - " + time[1];
+    // const time = section.timeSlots[0].timeRange;
+    // timeOffered = time[0] + " - " + time[1];
     console.log(timeOffered);
     //console.log(day.dayOfWeek + index);
   });
@@ -245,24 +245,25 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
     setMaxCourses,
   } = props;
   const [Schedule, setSchedule] = useState([]);
+
   useEffect(() => {
-    ScheduleHelper.GetSchedule().then((resp) => {
-      console.log(resp);
+    GetSchedule().then((resp) => {
       setSchedule(resp);
     });
   }, []);
+
   if (Schedule.length === 0) {
     return <></>;
   }
 
   // **** first schedule output only
 
-  console.log(Schedule.fall);
-  const scheduleFall = Schedule.fall;
+  console.log(Schedule.schedule.fall);
+  const scheduleFall = Schedule.schedule.fall;
   console.log("Fall Scedule");
 
-  const scheduleSpring = Schedule.spring;
-  const scheduleSummer = Schedule.summer;
+  const scheduleSpring = Schedule.schedule.spring;
+  const scheduleSummer = Schedule.schedule.summer;
 
   let currentlyShownSchedule;
   if (selectedSemester == "Summer 2023") {
@@ -314,9 +315,10 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
   let timeOffered;
   currentlyShownSchedule[0].sections.forEach((section) => {
     console.log(section);
-    const time = section.timeSlots[0].timeRange;
-    timeOffered = time[0] + " - " + time[1];
-    console.log(timeOffered);
+
+    // const time = section.timeSlots[0].timeRange;
+    // timeOffered = time[0] + " - " + time[1];
+    // console.log(timeOffered);
     //console.log(day.dayOfWeek + index);
   });
   console.log(daysOffered);
