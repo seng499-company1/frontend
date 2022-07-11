@@ -12,6 +12,8 @@ import { TimeIntervalHelper } from "../../Util/TimeIntervalHelper.tsx";
 import {
   PreferencesContext,
   TimeContext,
+  LeaveReasonContext,
+  MaxCourseContext,
   QualificationsContext,
   PrefDayContext,
 } from "./index.tsx";
@@ -24,6 +26,8 @@ export interface ProfessorTimetableProps {
 }
 
 export interface ProfessorTimetableViewProps {
+  maxCourseEntered: any;
+  setMaxCourseEntered: any;
   semesters: Array<{ value: string; label: string }>;
   selectedSemester: string;
   onSelectedSemester: React.Dispatch<
@@ -101,7 +105,6 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
 
   //get data
   useEffect(() => {
-    console.log("Inside useEffect");
     CourseListHelper.GetCourseList()
       .then((resp) => {
         setCourses(resp);
@@ -145,12 +148,33 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
   //hooks
   const { preferences, setPreferences } = useContext(PreferencesContext);
   const { selectedTimes, setSelectedTimes } = useContext(TimeContext);
+  const { leaveReason, setLeaveReason } = useContext(LeaveReasonContext);
+  const { maxCourseEntered, setMaxCourseEntered } =
+    useContext(MaxCourseContext);
 
   const PreferenceItems = [
     { value: "Not Willing", label: "Not Willing" },
     { value: "Willing", label: "Willing" },
     { value: "Very Willing", label: "Very Willing" },
   ];
+
+  useEffect(() => {
+    setMaxCourseEntered({
+      semester: selectedSemester,
+      courses: maxCourses,
+    });
+    console.log("EHRE");
+    console.log(maxCourseEntered);
+  }, [maxCourses]);
+
+  useEffect(() => {
+    setLeaveReason({
+      semester: selectedSemester,
+      leave: leaveReason,
+    });
+    console.log("EHRE");
+    console.log(leaveReason);
+  }, [leaveReason]);
 
   //hooks
   const { qualifications, setQualifications } = useContext(
@@ -163,8 +187,6 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
   ];
 
   const { prefDays, setPrefDays } = useContext(PrefDayContext);
-
-  // console.log(TimeIntervalHelper());
 
   return {
     Courses,
@@ -189,6 +211,8 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
     prefDays,
     setPrefDays,
     navigate,
+    maxCourseEntered,
+    setMaxCourseEntered,
   };
 }
 
@@ -311,6 +335,8 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
     selectedTimes,
     maxCourses,
     setMaxCourses,
+    maxCourseEntered,
+    setMaxCourseEntered,
   } = props;
 
   return (
@@ -460,16 +486,17 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                   <MaxCoursesInput
                     type="number"
                     value={maxCourses}
-                    onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                    onChange={(event: ChangeEvent<HTMLInputElement>) => {
                       setMaxCourses({
                         semester: selectedSemester,
                         text: event.target.value,
-                      })
-                    }
+                      });
+                    }}
                   />
                 </FieldContainerDiv>
+
                 <FieldContainerDiv>
-                  <FieldLabelP>Preferred teaching days</FieldLabelP>
+                  <FieldLabelP>Prefered teaching days</FieldLabelP>
                   <CheckboxContainerDiv>
                     {prefDays[selectedSemester].map(
                       (day: boolean, idx: number) => {
@@ -481,7 +508,7 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                                 dayIdx: idx,
                               })
                             }
-                            checked={day}
+                            active={day}
                             id={idx}
                           >
                             {weekdays[idx]}
@@ -523,7 +550,6 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
               if (Object.keys(qualifications).length !== AmountOfCourses) {
                 console.log(qualifications);
               } else {
-                console.log("ERROR HERE :(");
                 // setSelectedTimes(TimeIntervalHelper());
                 navigate(`/SelectProfessor/Summary`);
               }
