@@ -1,8 +1,19 @@
-export function PostLoginInfo(props) {
-  if (props.username === "Rich") {
-    return admin;
-  } else {
-    return professor;
+const axios = require("axios");
+
+export async function PostLoginInfo(props) {
+  try {
+    await axios.post(
+      "http://uvic.immortalmind.ca:5000/login", {
+        "username": props.username,
+        "password": props.password
+      }
+    ).then( response => {
+      return response.data;
+    });
+    console.log("response  ", response);
+    return response.data;
+  } catch (error) {
+    return [];
   }
 }
 export default PostLoginInfo;
