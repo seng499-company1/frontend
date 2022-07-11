@@ -3,7 +3,7 @@ const axios = require("axios");
 export async function PostLoginInfo(props) {
   try {
     await axios
-      .post("https://uvic.immortalmind.ca:5000/login", {
+      .post("http://uvic.immortalmind.ca:5000/login", {
         username: props.username,
         password: props.password,
       })

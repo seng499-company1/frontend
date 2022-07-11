@@ -5,7 +5,7 @@ const axios = require("axios");
 export async function GetCourseList() {
   try {
     const response = await axios.get(
-      "https://uvic.immortalmind.ca:5000/courses/"
+      "http://uvic.immortalmind.ca:5000/courses/"
     );
     console.log("response  ", response);
     return response.data;
