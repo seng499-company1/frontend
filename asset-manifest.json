@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/frontend/static/css/main.5d24050a.css",
-    "main.js": "/frontend/static/js/main.d54be488.js",
+    "main.js": "/frontend/static/js/main.49abab2f.js",
     "static/media/logo.svg": "/frontend/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "static/media/uvic-wordmark-colour.svg": "/frontend/static/media/uvic-wordmark-colour.5f13f205f7b6cf6e8b997bab0dfcd2f7.svg",
     "index.html": "/frontend/index.html",
     "main.5d24050a.css.map": "/frontend/static/css/main.5d24050a.css.map",
-    "main.d54be488.js.map": "/frontend/static/js/main.d54be488.js.map"
+    "main.49abab2f.js.map": "/frontend/static/js/main.49abab2f.js.map"
   },
   "entrypoints": [
     "static/css/main.5d24050a.css",
-    "static/js/main.d54be488.js"
+    "static/js/main.49abab2f.js"
   ]
 }
