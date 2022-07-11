@@ -57,7 +57,7 @@ export function LoginPage() {
 
   function onSubmit() {
     var resp = PostLoginInfo({ username: username, password: password });
-    if (resp.first_name != "Rich") {
+    if (resp.first_name === "Rich") {
       setProfessor(resp);
       navigate(`/SelectProfessor/TimeAvail`);
     } else {
