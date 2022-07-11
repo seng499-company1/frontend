@@ -23,15 +23,17 @@ import * as ProfPreferencesHelper from "../../Util/ProfPreferencesHelper.tsx";
 
 import {
   SelectableTableDivView,
-  SelectableTableHeaderDivView,
   SelectableTableLabelsView,
-  SelectableTableIconElementDivView,
   SelectableTableElementClosedDivView,
-  SelectableTableElementOpenedDivView,
-  SelectableTableInputDiv,
-  SelectableTableSingleInputDiv,
-  SelectableTableCheckboxDiv,
 } from "../../Components/SelectTable/SelectableTable.tsx";
+
+import {
+  noTimesMessage,
+  timesEnteredMessage,
+  semesterHeader,
+  maxCoursesMessage,
+  coursesMessage,
+} from "../../Components/Summary/SummaryElements.tsx";
 
 export interface SummaryProps {
   maxCourses: any;
@@ -46,57 +48,6 @@ const ResponseDiv = styled.div`
 
 const Header = styled.h1`
   text-align: center;
-`;
-const CheckboxContainerDiv = styled.div`
-  display: flex;
-  gap: var(--space-large);
-  align-items: center;
-  flex-wrap: wrap;
-`;
-
-const Header4 = styled.h4`
-  text-align: left;
-  text-indent: 40px;
-`;
-
-const TimeDiv = styled.div`
-  text-align: left;
-  padding-left: 24px;
-  padding-right: 24px;
-`;
-
-const TimeRow = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  padding-top: 2px;
-  ${DefaultShadow}
-  background-color: var(--grey-50);
-  padding-bottom: 4px;
-`;
-
-const DayText = styled.div`
-  padding-left: 32px;
-  font-weight: bold;
-  font-style: italic;
-  grid-column: 1 / 3;
-  grid-row: 1;
-`;
-
-const TimeText = styled.div`
-  grid-column: 2/3;
-  grid-row: 1;
-`;
-
-const WarningTextRow = styled.div`
-  padding-top: 2px;
-  ${DefaultShadow}
-  background-color: var(--grey-50);
-  padding-bottom: 4px;
-`;
-
-const WarningText = styled.div`
-  text-align: center;
-  grid-column
 `;
 
 const Space = styled.br`
@@ -132,7 +83,6 @@ export function Summary(props: SummaryProps) {
 
   //get data
   useEffect(() => {
-    console.log("Inside useEffect");
     CourseListHelper.GetCourseList()
       .then((resp) => {
         setCourses(resp);
@@ -174,11 +124,12 @@ export function Summary(props: SummaryProps) {
   };
 
   const weekdayArray = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-  console.log("TIMES");
-  console.log(Preferences);
+
   const timeSummer = Times.summer;
   const timeSpring = Times.spring;
   const timeFall = Times.fall;
+
+  //HTML TAGS
 
   return (
     <Background>
@@ -187,13 +138,7 @@ export function Summary(props: SummaryProps) {
       <h2>Course Teaching Preferences</h2>
       <TableDiv>
         <SelectableTableDivView columns={5}>
-          <SelectableTableHeaderDivView>
-            <SelectableTableLabelsView>Course ID</SelectableTableLabelsView>
-            <SelectableTableLabelsView></SelectableTableLabelsView>
-            <SelectableTableLabelsView></SelectableTableLabelsView>
-            <SelectableTableLabelsView>Qualification</SelectableTableLabelsView>
-            <SelectableTableLabelsView>Preference</SelectableTableLabelsView>
-          </SelectableTableHeaderDivView>
+          {coursesMessage}
           {Courses.map(function (Course, index) {
             let name = Course.course_code;
             let qual = qualifications[name];
@@ -226,28 +171,9 @@ export function Summary(props: SummaryProps) {
       <h2>Teaching Time Preferences</h2>
       <TableDiv>
         <SelectableTableDivView columns={5}>
-          <SelectableTableHeaderDivView>
-            <SelectableTableLabelsView>Summer</SelectableTableLabelsView>
-            <SelectableTableLabelsView></SelectableTableLabelsView>
-            <SelectableTableLabelsView></SelectableTableLabelsView>
-            <SelectableTableLabelsView></SelectableTableLabelsView>
-            <SelectableTableLabelsView></SelectableTableLabelsView>
-          </SelectableTableHeaderDivView>
+          {semesterHeader("Summer")}
 
-          <SelectableTableElementClosedDivView>
-            <SelectableTableLabelDivView>
-              <SelectableTableLabelsView>
-                {" "}
-                Maximum number of courses per semester:
-              </SelectableTableLabelsView>
-              <SelectableTableLabelsView>
-                {Preferences.num_summer_courses}
-              </SelectableTableLabelsView>
-              <SelectableTableLabelsView> </SelectableTableLabelsView>
-              <SelectableTableLabelsView> </SelectableTableLabelsView>
-              <SelectableTableLabelsView> </SelectableTableLabelsView>
-            </SelectableTableLabelDivView>
-          </SelectableTableElementClosedDivView>
+          {maxCoursesMessage(Preferences.num_summer_courses)}
 
           <SelectableTableElementClosedDivView>
             <SelectableTableLabelDivView>
@@ -277,38 +203,14 @@ export function Summary(props: SummaryProps) {
               timeSummer.Thursday.times.length === 0 &&
               timeSummer.Friday.times.length === 0
             ) {
-              return (
-                <SelectableTableElementClosedDivView>
-                  <SelectableTableLabelDivView>
-                    <SelectableTableLabelsView>
-                      No Times Entered For This Semester
-                    </SelectableTableLabelsView>
-                  </SelectableTableLabelDivView>
-                </SelectableTableElementClosedDivView>
-              );
+              return noTimesMessage;
             } else {
-              return (
-                <SelectableTableElementClosedDivView>
-                  <SelectableTableLabelDivView>
-                    <SelectableTableLabelsView>
-                      Times Entered:
-                    </SelectableTableLabelsView>
-                    <SelectableTableLabelsView></SelectableTableLabelsView>
-                    <SelectableTableLabelsView></SelectableTableLabelsView>
-                    <SelectableTableLabelsView></SelectableTableLabelsView>
-                    <SelectableTableLabelsView></SelectableTableLabelsView>
-                  </SelectableTableLabelDivView>
-                </SelectableTableElementClosedDivView>
-              );
+              return timesEnteredMessage;
             }
           })()}
           {Object.keys(timeSummer).map(function (Day, index) {
-            console.log("DAY");
-            console.log(Day);
-
             let times = stringToTime(timeSummer[Day].times);
-            console.log(times);
-            let loop = 0;
+
             if (times.length != 0) {
               return (
                 <SelectableTableElementClosedDivView>
@@ -340,28 +242,9 @@ export function Summary(props: SummaryProps) {
       </TableDiv>
       <TableDiv>
         <SelectableTableDivView columns={5}>
-          <SelectableTableHeaderDivView>
-            <SelectableTableLabelsView>Fall</SelectableTableLabelsView>
-            <SelectableTableLabelsView></SelectableTableLabelsView>
-            <SelectableTableLabelsView></SelectableTableLabelsView>
-            <SelectableTableLabelsView></SelectableTableLabelsView>
-            <SelectableTableLabelsView></SelectableTableLabelsView>
-          </SelectableTableHeaderDivView>
+          {semesterHeader("Fall")}
 
-          <SelectableTableElementClosedDivView>
-            <SelectableTableLabelDivView>
-              <SelectableTableLabelsView>
-                {" "}
-                Maximum number of courses per semester:{" "}
-              </SelectableTableLabelsView>
-              <SelectableTableLabelsView>
-                {Preferences.num_fall_courses}
-              </SelectableTableLabelsView>
-              <SelectableTableLabelsView> </SelectableTableLabelsView>
-              <SelectableTableLabelsView> </SelectableTableLabelsView>
-              <SelectableTableLabelsView> </SelectableTableLabelsView>
-            </SelectableTableLabelDivView>
-          </SelectableTableElementClosedDivView>
+          {maxCoursesMessage(Preferences.num_fall_courses)}
 
           <SelectableTableElementClosedDivView>
             <SelectableTableLabelDivView>
@@ -391,38 +274,14 @@ export function Summary(props: SummaryProps) {
               timeFall.Thursday.times.length === 0 &&
               timeFall.Friday.times.length === 0
             ) {
-              return (
-                <SelectableTableElementClosedDivView>
-                  <SelectableTableLabelDivView>
-                    <SelectableTableLabelsView>
-                      No Times Entered For This Semester
-                    </SelectableTableLabelsView>
-                  </SelectableTableLabelDivView>
-                </SelectableTableElementClosedDivView>
-              );
+              return noTimesMessage;
             } else {
-              return (
-                <SelectableTableElementClosedDivView>
-                  <SelectableTableLabelDivView>
-                    <SelectableTableLabelsView>
-                      Times Entered:
-                    </SelectableTableLabelsView>
-                    <SelectableTableLabelsView></SelectableTableLabelsView>
-                    <SelectableTableLabelsView></SelectableTableLabelsView>
-                    <SelectableTableLabelsView></SelectableTableLabelsView>
-                    <SelectableTableLabelsView></SelectableTableLabelsView>
-                  </SelectableTableLabelDivView>
-                </SelectableTableElementClosedDivView>
-              );
+              return timesEnteredMessage;
             }
           })()}
           {Object.keys(timeFall).map(function (Day, index) {
-            console.log("DAY");
-            console.log(Day);
-
             let times = stringToTime(timeFall[Day].times);
-            console.log(times);
-            let loop = 0;
+
             if (times.length != 0) {
               return (
                 <SelectableTableElementClosedDivView>
@@ -455,28 +314,9 @@ export function Summary(props: SummaryProps) {
 
       <TableDiv>
         <SelectableTableDivView columns={5}>
-          <SelectableTableHeaderDivView>
-            <SelectableTableLabelsView>Spring</SelectableTableLabelsView>
-            <SelectableTableLabelsView></SelectableTableLabelsView>
-            <SelectableTableLabelsView></SelectableTableLabelsView>
-            <SelectableTableLabelsView></SelectableTableLabelsView>
-            <SelectableTableLabelsView></SelectableTableLabelsView>
-          </SelectableTableHeaderDivView>
+          {semesterHeader("Spring")}
 
-          <SelectableTableElementClosedDivView>
-            <SelectableTableLabelDivView>
-              <SelectableTableLabelsView>
-                {" "}
-                Maximum number of courses per semester:{" "}
-              </SelectableTableLabelsView>
-              <SelectableTableLabelsView>
-                {Preferences.num_spring_courses}
-              </SelectableTableLabelsView>
-              <SelectableTableLabelsView> </SelectableTableLabelsView>
-              <SelectableTableLabelsView> </SelectableTableLabelsView>
-              <SelectableTableLabelsView> </SelectableTableLabelsView>
-            </SelectableTableLabelDivView>
-          </SelectableTableElementClosedDivView>
+          {maxCoursesMessage(Preferences.num_spring_courses)}
 
           <SelectableTableElementClosedDivView>
             <SelectableTableLabelDivView>
@@ -506,37 +346,14 @@ export function Summary(props: SummaryProps) {
               timeSpring.Thursday.times.length === 0 &&
               timeSpring.Friday.times.length === 0
             ) {
-              return (
-                <SelectableTableElementClosedDivView>
-                  <SelectableTableLabelDivView>
-                    <SelectableTableLabelsView>
-                      No Times Entered For This Semester
-                    </SelectableTableLabelsView>
-                  </SelectableTableLabelDivView>
-                </SelectableTableElementClosedDivView>
-              );
+              return noTimesMessage;
             } else {
-              return (
-                <SelectableTableElementClosedDivView>
-                  <SelectableTableLabelDivView>
-                    <SelectableTableLabelsView>
-                      Times Entered:
-                    </SelectableTableLabelsView>
-                    <SelectableTableLabelsView></SelectableTableLabelsView>
-                    <SelectableTableLabelsView></SelectableTableLabelsView>
-                    <SelectableTableLabelsView></SelectableTableLabelsView>
-                    <SelectableTableLabelsView></SelectableTableLabelsView>
-                  </SelectableTableLabelDivView>
-                </SelectableTableElementClosedDivView>
-              );
+              return timesEnteredMessage;
             }
           })()}
           {Object.keys(timeSpring).map(function (Day, index) {
-            console.log("DAY");
-            console.log(Day);
-
             let times = stringToTime(timeSpring[Day].times);
-            console.log(times);
+
             let loop = 0;
             if (times.length != 0) {
               return (

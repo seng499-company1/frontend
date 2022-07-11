@@ -76,7 +76,7 @@ const TestPreferenceList = {
   },
   course_preferences: [
     {
-      course_id: "61587323-6632-4dcf-bae8-2a51ed8585a0",
+      course_id: "015b0963-ff0a-11ec-896a-0242ac120002",
       will_to_teach: "VERY_WILLING",
       able_to_teach: "ABLE",
       time_stamp: "2022-06-21 09:30:26",
