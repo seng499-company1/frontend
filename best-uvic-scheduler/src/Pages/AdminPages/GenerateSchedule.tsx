@@ -5,7 +5,7 @@ import TabGroup from "../../Components/tab-group/tab-group.tsx";
 
 import { Background } from "../../Components/background/background.tsx";
 import Logo from "../../Images/Uvic-logo.png";
-import { GetSchedule } from "../../Util/ScheduleHelper.tsx";
+import { GetSchedule1 } from "../../Util/ScheduleHelper.tsx";
 import * as ScheduleHelper from "../../Util/ScheduleHelper.tsx";
 
 import {
@@ -244,7 +244,7 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
   const [Schedule, setSchedule] = useState([]);
 
   useEffect(() => {
-    GetSchedule().then((resp) => {
+    GetSchedule1().then((resp) => {
       setSchedule(resp);
     });
   }, []);

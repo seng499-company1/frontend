@@ -2679,7 +2679,20 @@ const ScheduleList = {
 };
 const axios = require("axios");
 
-export async function GetSchedule() {
+export async function GetSchedule1() {
+  try {
+    const response = await axios.get(
+      "http://uvic.immortalmind.ca:5000/schedules/company/1"
+    );
+    console.log("response  ", response);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+}
+
+export async function GetSchedule2() {
   try {
     const response = await axios.get(
       "http://uvic.immortalmind.ca:5000/schedules/company/2"
