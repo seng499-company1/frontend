@@ -357,7 +357,7 @@ export function Summary_RO() {
         <CustomButtonView
           {...{ Theme: "Secondary" }}
           customClickEvent={() => {
-            navigate(`/LandingPage`);
+            navigate(`/Admin`);
           }}
         >
           {" "}
