@@ -72,17 +72,19 @@ export function AdminCoursePage() {
         {Courses.map(function (Course, index) {
           let name = Course.course_code;
 
-          let TimesOffered = "";
+          const TimesOfferedArr = [];
 
           if (Course.fall_req === true) {
-            TimesOffered += "Fall";
+            TimesOfferedArr.push("Fall");
           }
           if (Course.spring_req === true) {
-            TimesOffered += "/Spring";
+            TimesOfferedArr.push("Spring");
           }
           if (Course.summer_req === true) {
-            TimesOffered += "/Summer";
+            TimesOfferedArr.push("Summer");
           }
+
+          const TimesOffered = TimesOfferedArr.join("/");
 
           if (OpenedCourse === Course) {
             return (
