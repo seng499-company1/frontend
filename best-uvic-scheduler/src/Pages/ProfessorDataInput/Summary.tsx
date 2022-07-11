@@ -149,8 +149,8 @@ export function Summary(props: SummaryProps) {
   const timesFromContext = TimeIntervalHelper();
 
   TimesTest.fall = timesFromContext["Fall 2022"];
-  TimesTest.summer = timesFromContext["Spring 2023"];
-  TimesTest.spring = timesFromContext["Summer 2023"];
+  TimesTest.summer = timesFromContext["Summer 2023"];
+  TimesTest.spring = timesFromContext["Spring 2023"];
 
   //hooks
   const { qualifications, setQualifications } = useContext(
@@ -182,9 +182,7 @@ export function Summary(props: SummaryProps) {
 
   return (
     <Background>
-      <Header>
-        Summary For {selectedProfessor.first_name} {selectedProfessor.last_name}
-      </Header>
+      <Header>Summary</Header>
 
       <h2>Course Teaching Preferences</h2>
       <TableDiv>
@@ -240,7 +238,7 @@ export function Summary(props: SummaryProps) {
             <SelectableTableLabelDivView>
               <SelectableTableLabelsView>
                 {" "}
-                Maximum number of courses per semester:{" "}
+                Maximum number of courses per semester:
               </SelectableTableLabelsView>
               <SelectableTableLabelsView>
                 {Preferences.num_summer_courses}
