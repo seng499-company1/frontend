@@ -203,7 +203,7 @@ function CreateListelement(scheduleElement) {
   );
 }
 
-export function GenerateScheduleView(props: GenerateScheduleViewProps) {
+export function GenerateScheduleView2(props: GenerateScheduleViewProps) {
   const {
     semesters,
     selectedSemester,
@@ -233,7 +233,7 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
   const [Schedule, setSchedule] = useState([]);
 
   useEffect(() => {
-    GetSchedule1().then((resp) => {
+    GetSchedule2().then((resp) => {
       setSchedule(resp);
     });
   }, []);
@@ -321,8 +321,8 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
   //})}
 }
 
-const GenerateSchedule = (props: GenerateScheduleProps) => {
-  return <GenerateScheduleView {...useGenerateScheudle(props)} />;
+const GenerateSchedule2 = (props: GenerateScheduleProps) => {
+  return <GenerateScheduleView2 {...useGenerateScheudle(props)} />;
 };
 
-export default GenerateSchedule;
+export default GenerateSchedule2;

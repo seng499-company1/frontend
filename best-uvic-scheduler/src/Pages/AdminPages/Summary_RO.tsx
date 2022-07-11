@@ -32,7 +32,6 @@ const SelectDivStyle = styled.div`
   padding-bottom: 0px;
   padding-right: 100px;
   box-shadow: 1px 1px;
-
   background-color: var(--grey-50);
 `;
 
@@ -62,7 +61,6 @@ const TimeRow = styled.div`
   grid-template-columns: repeat(3, 1fr);
   padding-top: 2px;
   box-shadow: 1px 1px;
-
   background-color: var(--grey-50);
   padding-bottom: 4px;
 `;

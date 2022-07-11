@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { PostLoginInfo } from "../Util/LoginHelper.tsx";
 import { ProfessorContext } from "./ProfessorDataInput/index.tsx";
-import React from "react";
+import React, { useEffect } from "react";
 import TextInputView from "../Components/Input/input.tsx";
 
 const InnerBox = styled.div`
@@ -50,20 +50,18 @@ const StyledForm = styled.form`
 `;
 
 export function LoginPage() {
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { selectedProfessor, setProfessor } = useContext(ProfessorContext);
   const navigate = useNavigate();
 
   function onSubmit() {
-    var resp = PostLoginInfo({ username: username, password: password });
-    if (resp.first_name != "Rich") {
-      setProfessor(resp);
-      navigate(`/SelectProfessor/TimeAvail`);
-    } else {
-      navigate("/LandingPage");
-    }
+    PostLoginInfo({ username: username, password: password }).then( response => {
+      console.log(response);
+    });
   }
+
   return (
     <Background centered={true}>
       <BoxDiv>

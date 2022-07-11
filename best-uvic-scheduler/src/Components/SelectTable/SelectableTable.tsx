@@ -125,7 +125,7 @@ export const SelectableTableInputDiv = styled.div`
   flex-direction: row;
   align-items: center;
   gap: var(--space-2x-large);
-  padding: var(--space-small) var(--space-med);
+  padding: var(--space-large) var(--space-med);
 `;
 
 export const SelectableTableCheckboxDiv = styled.div`
