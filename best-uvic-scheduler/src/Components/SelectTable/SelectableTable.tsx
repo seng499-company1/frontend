@@ -37,7 +37,7 @@ const SelectableTableDiv = styled.div<{ columns: number }>`
   display: grid;
   grid-template-columns: max-content repeat(
       ${(props) => props.columns - 1},
-      auto
+      minmax(0, auto)
     );
   border: 1px solid var(--primary);
   border-radius: 4px;
