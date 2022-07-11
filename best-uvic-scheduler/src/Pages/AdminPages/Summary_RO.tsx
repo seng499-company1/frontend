@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 
 import { useNavigate } from "react-router-dom";
@@ -8,19 +8,6 @@ import * as CourseListHelper from "../../Util/CourseListHelper.tsx";
 import * as ProfPreferencesHelper from "../../Util/ProfPreferencesHelper.tsx";
 import { ProfessorNameContext } from "./LandingPage.tsx";
 import { Background } from "../../Components/background/background.tsx";
-import LandingPage from "./LandingPage.tsx";
-import { array, number } from "prop-types";
-import { isConstructorDeclaration } from "typescript";
-
-const SelectDivStyle = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 0px;
-  padding-right: 100px;
-  box-shadow: 1px 1px;
-
-  background-color: var(--grey-50);
-`;
 
 const ResponseDiv = styled.div`
   text-indent: -40px;
@@ -89,11 +76,9 @@ export function Summary_RO() {
   const Times = Preferences.preferred_times;
 
   //   //hooks
-  const { selectedProfessorName, setProfessorName } =
-    useContext(ProfessorNameContext);
+  const { selectedProfessorName } = useContext(ProfessorNameContext);
   const navigate = useNavigate();
 
-  const terms = ["summer", "spring", "fall"];
   const weekdays = {
     mon: "Monday",
     tues: "Tuesday",
@@ -120,9 +105,8 @@ export function Summary_RO() {
 
       <h2>Classes</h2>
       <TimeDiv>
-        {Courses.map(function (Course, index) {
+        {Courses.map(function (Course) {
           let courseList = CourseListHelper.GetCourseList().Courses;
-          let courseName = "";
           const willing = avail[Course.will_to_teach];
           const qualified = avail[Course.able_to_teach];
 
@@ -158,13 +142,13 @@ export function Summary_RO() {
 
       <Header4>Summer</Header4>
 
-      {Object.keys(timeSummer).map(function (Day, index) {
+      {Object.keys(timeSummer).map(function (Day) {
         const day = weekdays[Day];
         let times = stringToTime(timeSummer[Day].times);
 
         return (
           <TimeDiv>
-            {times.map(function (time, timeIndex) {
+            {times.map(function (time) {
               const timeSplit = time.split(" ");
 
               return (
@@ -182,13 +166,13 @@ export function Summary_RO() {
       })}
 
       <Header4>Fall</Header4>
-      {Object.keys(timeFall).map(function (Day, index) {
+      {Object.keys(timeFall).map(function (Day) {
         const day = weekdays[Day];
         let times = stringToTime(timeFall[Day].times);
 
         return (
           <TimeDiv>
-            {times.map(function (time, timeIndex) {
+            {times.map(function (time) {
               const timeSplit = time.split(" ");
 
               return (
@@ -205,13 +189,13 @@ export function Summary_RO() {
         );
       })}
       <Header4>Spring</Header4>
-      {Object.keys(timeSpring).map(function (Day, index) {
+      {Object.keys(timeSpring).map(function (Day) {
         const day = weekdays[Day];
         let times = stringToTime(timeSpring[Day].times);
 
         return (
           <TimeDiv>
-            {times.map(function (time, timeIndex) {
+            {times.map(function (time) {
               const timeSplit = time.split(" ");
 
               return (

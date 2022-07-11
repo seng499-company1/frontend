@@ -1,25 +1,16 @@
-import React, { useEffect, useState, useContext, useReducer } from "react";
+import React, { useEffect, useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import TabGroup from "../../Components/tab-group/tab-group.tsx";
 
-import { Background } from "../../Components/background/background.tsx";
-import Logo from "../../Images/Uvic-logo.png";
-import { GetSchedule1, GetSchedule2 } from "../../Util/ScheduleHelper.tsx";
-import * as ScheduleHelper from "../../Util/ScheduleHelper.tsx";
+import { GetSchedule2 } from "../../Util/ScheduleHelper.tsx";
 
 import {
   SelectableTableDivView,
   SelectableTableHeaderDivView,
   SelectableTableLabelsView,
-  SelectableTableIconElementDivView,
   SelectableTableElementClosedDivView,
-  SelectableTableElementOpenedDivView,
-  SelectableTableInputDiv,
-  SelectableTableSingleInputDiv,
-  SelectableTableCheckboxDiv,
 } from "../../Components/SelectTable/SelectableTable.tsx";
-import { HeaderView } from "../../Components/Header/header.tsx";
 
 export interface GenerateScheduleProps {
   semesters: Array<string>;
@@ -153,11 +144,9 @@ const TableDiv = styled.div`
 `;
 
 function CreateListelement(scheduleElement) {
-
   const couseID = scheduleElement.course.code;
 
   const couseName = scheduleElement.course.title;
-
 
   const couseInstructor = scheduleElement.sections[0].professor.name;
 
@@ -191,11 +180,11 @@ function CreateListelement(scheduleElement) {
 
   let timeOffered;
   scheduleElement.sections.forEach((section) => {
-     if(section.timeSlots.length > 0){
-       const time = section.timeSlots[0].timeRange;
-       timeOffered = time[0] + " - " + time[1];
-     } else {
-      timeOffered = "Course not scheduled"
+    if (section.timeSlots.length > 0) {
+      const time = section.timeSlots[0].timeRange;
+      timeOffered = time[0] + " - " + time[1];
+    } else {
+      timeOffered = "Course not scheduled";
     }
   });
   //console.log(daysOffered);
@@ -272,9 +261,8 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
   }
 
   return (
-    <Background>
-      <HeaderView />
-      <TabGroup initialTabId="3">
+    <>
+      <TabGroup initialTabId="0">
         {semesters.map((sem: { label: string; value: string }, i: number) => {
           return (
             <TabGroup.Tab
@@ -305,7 +293,7 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
           })}
         </SelectableTableDivView>
       </TableDiv>
-    </Background>
+    </>
   );
   //{viewSchedule.map(function (Course, index) {
   //console.log(selectedSemester);

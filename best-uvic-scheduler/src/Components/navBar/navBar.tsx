@@ -1,6 +1,7 @@
 import TabGroup, { TabView } from "../tab-group/tab-group.tsx";
 import { useNavigate } from "react-router-dom";
 import { navigate } from "@storybook/addon-links";
+import React from "react";
 
 export interface NavBarProps {
   initialTabId: string;

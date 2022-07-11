@@ -32,14 +32,24 @@ const LogoImg = styled.img`
   display: block;
 `;
 
-export function HeaderView() {
+const pathList = {
+  "/frontend#/Admin": "1",
+  "/frontend#/Admin/Courses": "2",
+  "/frontend#/Admin/Professors": "3",
+  "/frontend#/Admin/Schedule": "4",
+};
+
+export function HeaderView(props: { currentPath: string }) {
   return (
     <HeaderDiv>
       <TitleDiv>
         <LogoImg src={Logo} width="auto" height="24px" />
         <Title>Course Scheduling</Title>
       </TitleDiv>
-      <NavBar style={{ width: "100%" }} initialTabId="1"></NavBar>
+      <NavBar
+        style={{ width: "100%" }}
+        initialTabId={pathList[props.currentPath] || 1}
+      ></NavBar>
       <div></div>
     </HeaderDiv>
   );
