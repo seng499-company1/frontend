@@ -245,11 +245,11 @@ export function GenerateScheduleView2(props: GenerateScheduleViewProps) {
   // **** first schedule output only
 
   console.log(Schedule.schedule.fall);
-  const scheduleFall = Schedule.schedule.fall;
+  const scheduleFall = Schedule.schedule[0].fall;
   console.log("Fall Scedule");
 
-  const scheduleSpring = Schedule.schedule.spring;
-  const scheduleSummer = Schedule.schedule.summer;
+  const scheduleSpring = Schedule.schedule[0].spring;
+  const scheduleSummer = Schedule.schedule[0].summer;
 
   let currentlyShownSchedule;
   if (selectedSemester == "Summer 2023") {
