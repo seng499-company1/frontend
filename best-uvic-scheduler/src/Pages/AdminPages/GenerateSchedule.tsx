@@ -1,9 +1,11 @@
-import React, { useState, useContext, useReducer } from "react";
+import React, { useEffect, useState, useContext, useReducer } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import TabGroup from "../../Components/tab-group/tab-group.tsx";
 
 import { Background } from "../../Components/background/background.tsx";
+import Logo from "../../Images/Uvic-logo.png";
+import { GetSchedule1 } from "../../Util/ScheduleHelper.tsx";
 import * as ScheduleHelper from "../../Util/ScheduleHelper.tsx";
 
 import {
@@ -48,6 +50,7 @@ export interface GenerateScheduleViewProps {
   }>;
   navigate: NavigateFunction;
   Courses: any;
+  Schedule: any;
   AmountOfCourses: any;
   preferences: any;
   setPreferences: any;
@@ -191,8 +194,8 @@ function CreateListelement(scheduleElement) {
   let timeOffered;
   scheduleElement.sections.forEach((section) => {
     console.log(section);
-    const time = section.timeSlots[0].timeRange;
-    timeOffered = time[0] + " - " + time[1];
+    // const time = section.timeSlots[0].timeRange;
+    // timeOffered = time[0] + " - " + time[1];
     console.log(timeOffered);
     //console.log(day.dayOfWeek + index);
   });
@@ -238,15 +241,26 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
     maxCourses,
     setMaxCourses,
   } = props;
+  const [Schedule, setSchedule] = useState([]);
+
+  useEffect(() => {
+    GetSchedule1().then((resp) => {
+      setSchedule(resp);
+    });
+  }, []);
+
+  if (Schedule.length === 0) {
+    return <></>;
+  }
+
   // **** first schedule output only
 
-  const returnValue = ScheduleHelper.GetSchedule();
-
-  const scheduleFall = returnValue.fall;
+  console.log(Schedule.schedule.fall);
+  const scheduleFall = Schedule.schedule.fall;
   console.log("Fall Scedule");
-  console.log(scheduleFall);
-  const scheduleSpring = returnValue.spring;
-  const scheduleSummer = returnValue.summer;
+
+  const scheduleSpring = Schedule.schedule.spring;
+  const scheduleSummer = Schedule.schedule.summer;
 
   let currentlyShownSchedule;
   if (selectedSemester == "Summer 2023") {
@@ -298,9 +312,10 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
   let timeOffered;
   currentlyShownSchedule[0].sections.forEach((section) => {
     console.log(section);
-    const time = section.timeSlots[0].timeRange;
-    timeOffered = time[0] + " - " + time[1];
-    console.log(timeOffered);
+
+    // const time = section.timeSlots[0].timeRange;
+    // timeOffered = time[0] + " - " + time[1];
+    // console.log(timeOffered);
     //console.log(day.dayOfWeek + index);
   });
   console.log(daysOffered);
