@@ -380,45 +380,48 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                       label="Not Willing"
                       value="Not Willing"
                       isChecked={
-                        preferences.value === "Not Willing" ?
+                        preferences[Course.course_code] === "Not Willing" ?
                         true :
                         false
                       }
-                      handleChange={(event) => {
+                      handleChange={() => {
                         setPreferences({
                           ...preferences,
-                          [Course.course_code]: event.value,
+                          [Course.course_code]: "Not Willing",
                         });
+                        console.log(preferences)
                       }}
                     />
                     <Radio
                       label="Willing"
                       value="Willing"
                       isChecked={
-                        preferences.value === "Willing" ?
+                        preferences[Course.course_code] === "Willing" ?
                         true :
                         false
                       }
-                      handleChange={(event) => {
+                      handleChange={() => {
                         setPreferences({
                           ...preferences,
-                          [Course.course_code]: event.value,
+                          [Course.course_code]: "Willing",
                         });
+                        console.log(preferences)
                       }}
                     />
                     <Radio
                       label="Very Willing"
                       value="Very Willing"
                       isChecked={
-                        preferences.value === "Very Willing" ?
+                        preferences[Course.course_code] === "Very Willing" ?
                         true :
                         false
                       }
-                      handleChange={(event) => {
+                      handleChange={() => {
                         setPreferences({
                           ...preferences,
-                          [Course.course_code]: event.value,
+                          [Course.course_code]: "Very Willing",
                         });
+                        console.log(preferences)
                       }}
                     />
                   </FieldContainerDiv>
@@ -440,6 +443,7 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                           ...qualifications,
                           [Course.course_code]: event.value,
                         });
+                        console.log(preferences)
                       }}
                     >
                       Select
