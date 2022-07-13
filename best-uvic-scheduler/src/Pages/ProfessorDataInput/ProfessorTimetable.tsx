@@ -5,6 +5,7 @@ import styled from "styled-components";
 import CustomButtonView from "../../Components/button/button.tsx";
 import CheckboxGroup from "../../Components/checkbox/checkbox.tsx";
 import Dropdown from "../../Components/dropdown/dropdown.tsx";
+import Radio from "../../Components/radio/radio.tsx"
 import TabGroup from "../../Components/tab-group/tab-group.tsx";
 import { Timetable } from "../../Components/Timetable/Timetable.tsx";
 import * as CourseListHelper from "../../Util/CourseListHelper.tsx";
@@ -375,29 +376,54 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                   </p>
                   <FieldContainerDiv>
                     <FieldLabelP>Desire to teach</FieldLabelP>
-                    <Dropdown
-                      placeholder={"Desirability"}
-                      startingValue={
-                        preferences.hasOwnProperty(name)
-                          ? {
-                              value: preferences[name],
-                              label: preferences[name],
-                            }
-                          : null
+                    <Radio
+                      label="Not Willing"
+                      value="Not Willing"
+                      isChecked={
+                        preferences.value === "Not Willing" ?
+                        true :
+                        false
                       }
-                      dropdownItems={PreferenceItems}
                       handleChange={(event) => {
                         setPreferences({
                           ...preferences,
                           [Course.course_code]: event.value,
                         });
                       }}
-                    >
-                      Select
-                    </Dropdown>
+                    />
+                    <Radio
+                      label="Willing"
+                      value="Willing"
+                      isChecked={
+                        preferences.value === "Willing" ?
+                        true :
+                        false
+                      }
+                      handleChange={(event) => {
+                        setPreferences({
+                          ...preferences,
+                          [Course.course_code]: event.value,
+                        });
+                      }}
+                    />
+                    <Radio
+                      label="Very Willing"
+                      value="Very Willing"
+                      isChecked={
+                        preferences.value === "Very Willing" ?
+                        true :
+                        false
+                      }
+                      handleChange={(event) => {
+                        setPreferences({
+                          ...preferences,
+                          [Course.course_code]: event.value,
+                        });
+                      }}
+                    />
                   </FieldContainerDiv>
                   <FieldContainerDiv>
-                    <FieldLabelP>Qualitfication level</FieldLabelP>
+                    <FieldLabelP>Qualification level</FieldLabelP>
                     <Dropdown
                       placeholder={"Qualification"}
                       startingValue={
