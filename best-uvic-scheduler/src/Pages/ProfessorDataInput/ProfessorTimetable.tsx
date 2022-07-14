@@ -389,7 +389,6 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                           ...preferences,
                           [Course.course_code]: "Not Willing",
                         });
-                        console.log(preferences)
                       }}
                     />
                     <Radio
@@ -405,7 +404,6 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                           ...preferences,
                           [Course.course_code]: "Willing",
                         });
-                        console.log(preferences)
                       }}
                     />
                     <Radio
@@ -421,33 +419,43 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                           ...preferences,
                           [Course.course_code]: "Very Willing",
                         });
-                        console.log(preferences)
                       }}
                     />
                   </FieldContainerDiv>
                   <FieldContainerDiv>
                     <FieldLabelP>Qualification level</FieldLabelP>
-                    <Dropdown
-                      placeholder={"Qualification"}
-                      startingValue={
-                        qualifications.hasOwnProperty(name)
-                          ? {
-                              value: qualifications[name],
-                              label: qualifications[name],
-                            }
-                          : null
+                    <Radio
+                      label="Not Qualified"
+                      value="Not Qualified"
+                      isChecked={
+                        qualifications[Course.course_code] === "Not Qualified" ?
+                        true :
+                        false
                       }
-                      dropdownItems={QualificationItems}
-                      handleChange={(event) => {
+                      handleChange={() => {
                         setQualifications({
                           ...qualifications,
-                          [Course.course_code]: event.value,
+                          [Course.course_code]: "Not Qualified",
                         });
-                        console.log(preferences)
                       }}
-                    >
-                      Select
-                    </Dropdown>
+                    />
+                    <Radio
+                      label="Qualified"
+                      value="Qualified"
+                      isChecked={
+                        qualifications[Course.course_code] === "Qualified" ?
+                        true :
+                        false
+                      }
+                      handleChange={() => {
+                        setQualifications({
+                          ...qualifications,
+                          [Course.course_code]: "Qualified",
+                        });
+                      }}
+
+                    />
+                    
                   </FieldContainerDiv>
                 </CourseInfoDiv>
               </div>

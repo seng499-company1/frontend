@@ -29,7 +29,7 @@ export interface RadioProps {
 function Radio(props: RadioProps) {
   return (
     <label>
-      <input type="radio" checked={props.isChecked} onChange={props.handleChange} />
+      <input type="radio" checked={props.isChecked} onChange={props.handleChange}/>
         {props.value}
     </label>
   );
