@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import '../../index.css';
+import "../../index.css";
 import { BiSearchAlt2 } from "react-icons/bi";
 
 export interface SearchBarProps {
@@ -13,9 +13,7 @@ export interface SearchBarDivProps {
   children: React.ReactNode;
 }
 
-export interface SearchBarInputProps {
-
-}
+export interface SearchBarInputProps {}
 
 const SearchBarDiv = styled.div`
   margin: 0;
@@ -24,49 +22,46 @@ const SearchBarDiv = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  justifyContent: start;
+  justifycontent: start;
   background-color: var(--primary-100);
   border: 2px solid #000000;
-  border-top-width: ${(props) => props.InList ? "0" : "2px"};
-  border-left-width: ${(props) => props.InList ? "0" : "2px"};
-  border-right-width: ${(props) => props.InList ? "0" : "2px"};
-  border-radius: ${(props) => props.InList ? "6px" : "8px"};
+  border-top-width: ${(props) => (props.InList ? "0" : "2px")};
+  border-left-width: ${(props) => (props.InList ? "0" : "2px")};
+  border-right-width: ${(props) => (props.InList ? "0" : "2px")};
+  border-radius: ${(props) => (props.InList ? "6px" : "8px")};
 `;
 
 const SearchBarInput = styled.input`
   padding: 0.5em;
   margin: 0 0.2em 0 0.2em;
-  width: 50%;
-  background-color: var(--primary-100);
+  width: 100%;
+  background-color: var(--primary-50);
   color: #000000;
   font-weight: bold;
-  border: 2px solid var(--primary-200);
+  border: 2px solid var(--primary-400);
   border-top-width: 0;
   border-bottom-width: 0;
   border-radius: 4px;
 `;
 
 SearchBarDiv.defaultProps = {
-  InList: false
+  InList: false,
 };
 
 export function SearchBarInputView(props: SearchBarInputProps) {
-  return (
-      <SearchBarInput placeholder="Search" ></SearchBarInput>
-  );
+  return <SearchBarInput placeholder="Search"></SearchBarInput>;
 }
 
 export function SearchBarDivView(props: SearchBarDivProps) {
-  return (
-    <SearchBarDiv InList={props.InList}>{props.children}</SearchBarDiv>
-  );
+  return <SearchBarDiv InList={props.InList}>{props.children}</SearchBarDiv>;
 }
 
 export function SearchBarView(props: SearchBarProps) {
   return (
     <SearchBarDivView InList={props.InList}>
-      <BiSearchAlt2 style={{ height: 30, width: 30 }}/>
-      <SearchBarInputView/>
+      <SearchBarInputView>
+        <BiSearchAlt2 style={{ height: 30, width: 30 }} />
+      </SearchBarInputView>
     </SearchBarDivView>
   );
 }

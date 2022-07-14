@@ -1,9 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import '../../index.css';
+import { DefaultShadow } from "../../GlobalStyles.tsx";
+import "../../index.css";
 
 export interface SelectableTableDivProps {
   children: React.ReactNode;
+  columns: number;
 }
 
 export interface SelectableTableHeaderDivProps {
@@ -28,51 +30,53 @@ export interface SelectableTableElementClosedDivProps {
 
 export interface SelectableTableElementOpenedDivProps {
   children: React.ReactNode;
-  Type: boolean;
-  //zero is for the professor table, 1 is for the course table
 }
 
-const SelectableTableDiv = styled.div`
-  margin: 0;
-  padding: 0;
-  height: 350px;
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  background-color: var(--grey-100);
-  border: 1px solid #000000;
-  border-radius: 8px;
-  box-shadow: 45px 45px 100px -80px;
+const SelectableTableDiv = styled.div<{ columns: number }>`
+  height: 100%;
+  display: grid;
+  grid-template-columns: max-content repeat(
+      ${(props) => props.columns - 1},
+      minmax(0, auto)
+    );
+  border: 1px solid var(--primary);
+  border-radius: 4px;
+  ${DefaultShadow};
+  box-sizing: border-box;
+
+  & p {
+    padding: var(--space-small) var(--space-med);
+    margin: 0;
+    text-align: left;
+    max-width: max-content;
+    min-width: 100%;
+  }
+
+  & * {
+    box-sizing: border-box;
+  }
+
+  & > *:nth-child(2n + 1) p {
+    background: var(--primary-50);
+  }
+
+  & > *:nth-child(1) p {
+    background: var(--primary-400);
+    font-weight: 600;
+    color: #fff;
+    position: sticky;
+    top: 0;
+  }
 `;
 
 const SelectableTableHeaderDiv = styled.div`
-  margin: 0;
-  padding: 0;
   top: 0;
   position: sticky;
-  height: 50px;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  background-color: var(--grey-200);
-  font-weight: 750;
-  border: 1px solid #000000;
-  border-top-width: ${(props) => props.InList ? "0" : "1px"};
-  border-left-width: ${(props) => props.InList ? "0" : "1px"};
-  border-right-width: ${(props) => props.InList ? "0" : "1px"};
-  border-radius: 8px 8px 0px 0px;
+  display: contents;
 `;
 
 const SelectableTableLabelDiv = styled.div`
-  margin: 0;
-  padding: 0;
-  height: 50px;
-  width: 90%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  display: contents;
 `;
 
 const SelectableTableLabelElementDiv = styled.div`
@@ -85,81 +89,65 @@ const SelectableTableLabelElementDiv = styled.div`
   justify-content: space-around;
 `;
 
-const SelectableTableIconElementDiv = styled.div`
-  margin-top: 10px;
+const SelectableTableIconElementDiv = styled.p`
   padding: 0;
-  height: 30px;
-  width: 10%;
   display: flex;
   flex-direction: row;
-  align-content: center;
-  justify-content: space-around;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  max-width: min-content;
+  padding: var(--space-small) !important;
+  width: fit-content !important;
+  &:hover {
+    background-color: var(--primary-100) !important;
+  }
 `;
 
 const SelectableTableElementClosedDiv = styled.div`
-  margin: 0;
-  padding: 0;
   height: 50px;
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  background-color: var(--grey-50);
-  border: 1px solid #000000;
-  border-top-width: ${(props) => props.InList ? "0" : "1px"};
-  border-left-width: ${(props) => props.InList ? "0" : "1px"};
-  border-right-width: ${(props) => props.InList ? "0" : "1px"};
+  display: contents;
 `;
 
 const SelectableTableElementOpenedDiv = styled.div`
-  margin: 0;
-  padding: 0;
-  height: ${(props) => props.Type ? "250px" : "200px"};
+  height: 250px;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--grey-50);
-  border: 1px solid #000000;
-  border-top-width: ${(props) => props.InList ? "0" : "1px"};
-  border-left-width: ${(props) => props.InList ? "0" : "1px"};
-  border-right-width: ${(props) => props.InList ? "0" : "1px"};
+  display: contents;
+  & p {
+    padding: 0 0 var(--space-small) !important;
+  }
 `;
 
 export const SelectableTableInputDiv = styled.div`
-  margin: 0;
-  padding: 0;
   width: 100%;
-  height: 100px;
   display: flex;
   flex-direction: row;
-  align-content: center;
-  justify-content: space-around;
+  align-items: center;
+  gap: var(--space-2x-large);
+  padding: var(--space-large) var(--space-med);
 `;
 
 export const SelectableTableCheckboxDiv = styled.div`
-  margin: 0;
-  padding: 0;
   display: flex;
   flex-direction: row;
-  align-content: center;
-  justify-content: space-around;
+  align-items: center;
+  gap: var(--space-small);
+  & p {
+    padding: var(--space-small) 0 !important;
+  }
 `;
 
 export const SelectableTableSingleInputDiv = styled.div`
-  margin: 0;
-  padding: 0;
-  width: 15%;
-  height: 100px;
   display: flex;
   flex-direction: column;
 `;
 
-const SelectableTableLabels = styled.p`
-  width: 20%;
-  text-align: center;
-`;
+const SelectableTableLabels = styled.p``;
 
-export function SelectableTableHeaderDivView(props: SelectableTableHeaderDivProps) {
+export function SelectableTableHeaderDivView(
+  props: SelectableTableHeaderDivProps
+) {
   return (
     <SelectableTableHeaderDiv {...{ InList: true }}>
       {props.children}
@@ -167,7 +155,9 @@ export function SelectableTableHeaderDivView(props: SelectableTableHeaderDivProp
   );
 }
 
-export function SelectableTableElementClosedDivView(props: SelectableTableElementClosedDivProps) {
+export function SelectableTableElementClosedDivView(
+  props: SelectableTableElementClosedDivProps
+) {
   return (
     <SelectableTableElementClosedDiv {...{ InList: true }}>
       {props.children}
@@ -175,23 +165,25 @@ export function SelectableTableElementClosedDivView(props: SelectableTableElemen
   );
 }
 
-export function SelectableTableElementOpenedDivView(props: SelectableTableElementOpenedDivProps) {
+export function SelectableTableElementOpenedDivView(
+  props: SelectableTableElementOpenedDivProps
+) {
   return (
-    <SelectableTableElementOpenedDiv Type={props.Type} {...{ InList: true }}>
+    <SelectableTableElementOpenedDiv {...{ InList: true }}>
       {props.children}
     </SelectableTableElementOpenedDiv>
   );
 }
 
-export function SelectableTableLabelDivView(props: SelectableTableLabelDivProps) {
-  return (
-    <SelectableTableLabelDiv>
-      {props.children}
-    </SelectableTableLabelDiv>
-  );
+export function SelectableTableLabelDivView(
+  props: SelectableTableLabelDivProps
+) {
+  return <SelectableTableLabelDiv>{props.children}</SelectableTableLabelDiv>;
 }
 
-export function SelectableTableIconElementDivView(props: SelectableTableIconElementDivProps) {
+export function SelectableTableIconElementDivView(
+  props: SelectableTableIconElementDivProps
+) {
   return (
     <SelectableTableIconElementDiv>
       {props.children}
@@ -200,17 +192,13 @@ export function SelectableTableIconElementDivView(props: SelectableTableIconElem
 }
 
 export function SelectableTableLabelsView(props: SelectableTableLabelsProps) {
-  return (
-    <SelectableTableLabels>
-      {props.children}
-    </SelectableTableLabels>
-  );
+  return <SelectableTableLabels>{props.children}</SelectableTableLabels>;
 }
 
 export function SelectableTableDivView(props: SelectableTableDivProps) {
   return (
-    <SelectableTableDiv>
-    {props.children}
+    <SelectableTableDiv columns={props.columns}>
+      {props.children}
     </SelectableTableDiv>
   );
 }

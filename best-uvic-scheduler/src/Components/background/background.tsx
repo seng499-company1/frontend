@@ -1,31 +1,34 @@
 import React from "react";
 import styled from "styled-components";
+import { DefaultShadowLarge } from "../../GlobalStyles.tsx";
 import "../../index.css";
 
-const InsideDivStyle = styled.div`
-  width: 55%;
-  margin-top: 40px;
-  margin-bottom: 40px;
-  padding: 36px;
-  border-radius: 8px;
-  background-color: #fefefe;
-  height: 100%;
+const InsideDivStyle = styled.div<{ centered: boolean }>`
+  width: 70%;
+  padding: var(--space-4x-large);
+  border-radius: 4px;
+  background-color: var(--surface);
+  height: ${(props) => (props.centered ? "100%" : "max(auto, 100%)")};
   position: relative;
-  box-shadow: 2px 12px 12px lightgray;
+  box-sizing: border-box;
+  ${DefaultShadowLarge}
 `;
 
-const OutsideDivStyle = styled.div`
+const OutsideDivStyle = styled.div<{ centered: boolean }>`
   display: flex;
   justify-content: center;
+  align-items: ${(props) => (props.centered ? "center" : "stretch")};
   background-color: var(--primary-50);
   min-height: 100vh;
   position: relative;
+  box-sizing: border-box;
+  padding: var(--space-4x-large);
 `;
 
-export function Background({ children }) {
+export function Background(props: { centered?: boolean; children: any }) {
   return (
-    <OutsideDivStyle>
-      <InsideDivStyle>{children}</InsideDivStyle>
+    <OutsideDivStyle centered={props.centered || false}>
+      <InsideDivStyle>{props.children}</InsideDivStyle>
     </OutsideDivStyle>
   );
 }

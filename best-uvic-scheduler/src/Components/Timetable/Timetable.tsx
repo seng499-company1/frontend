@@ -50,8 +50,8 @@ export interface TimetableProps {
 const TableDiv = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: 150px repeat(5, minmax(0, 1fr));
-  border-bottom: 1px solid var(--border);
+  grid-template-columns: 100px repeat(5, minmax(0, 1fr));
+  gap: var(--space-2x-small);
   background: #fff;
 `;
 

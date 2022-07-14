@@ -10,6 +10,7 @@ export interface TabProps {
   tabId: string;
   children: React.ReactNode;
   size: SizeType;
+  shrinkTab?: boolean;
   onClick?: (arg?: any) => void;
 }
 
@@ -17,6 +18,7 @@ export interface TabViewProps {
   children: React.ReactNode;
   setCurrentTab: () => void;
   onClick?: (arg?: any) => void;
+  shrinkTab?: boolean;
   active: boolean;
   size: SizeType;
 }
@@ -56,16 +58,26 @@ function useTab(props: TabProps): Omit<TabViewProps, "children"> {
 
   const active = props.tabId === activeTab;
 
-  return { active, setCurrentTab, onClick: props.onClick, size: props.size };
+  return {
+    active,
+    setCurrentTab,
+    onClick: props.onClick,
+    size: props.size,
+    shrinkTab: props.shrinkTab || false,
+  };
 }
 
 const paddingSize = {
-  small: "var(--space-2x-small) var(--space-small)",
-  medium: "var(--space-x-small) var(--space-med)",
-  large: "var(--space-med) var(--space-3x-large)",
+  small: "var(--space-small) var(--space-small)",
+  medium: "var(--space-med) var(--space-med)",
+  large: "var(--space-large) var(--space-3x-large)",
 };
 
-const TabDiv = styled.div<{ active: boolean; size: SizeType }>`
+const TabDiv = styled.div<{
+  active: boolean;
+  size: SizeType;
+  shrinkTab?: boolean;
+}>`
   padding: ${(props) => paddingSize[props.size]};
   min-width: min-content;
   box-sizing: border-box;
@@ -74,7 +86,8 @@ const TabDiv = styled.div<{ active: boolean; size: SizeType }>`
   align-items: center;
   cursor: pointer;
   transition: border-color 0.5s linear;
-  flex: 1 1 0px;
+  ${(props) => !props.shrinkTab && "flex: 1 1 0px;"}
+  width: max-content;
 
   ${(props) =>
     props.active
@@ -94,12 +107,12 @@ const fontSize = {
 
 const TabLabelP = styled.p<{ size: SizeType }>`
   font-size: ${(props) => fontSize[props.size]};
-  font-family: sans-serif;
   margin-bottom: 2px;
   width: 100%;
   text-align: center;
-  color: var(--text);
+  color: var(--font-color);
   margin: 0;
+  width: max-content;
 `;
 
 const GroupContainerDiv = styled.div`
@@ -129,6 +142,7 @@ export function TabView(props: TabViewProps) {
     <TabDiv
       active={props.active}
       size={props.size}
+      shrinkTab={props.shrinkTab || false}
       onClick={() => {
         props.setCurrentTab();
         props.onClick && props.onClick();

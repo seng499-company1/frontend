@@ -25,7 +25,7 @@ export interface EditCourseProps {
 export async function GetCourseList() {
   try {
     const response = await axios.get(
-      "http://com-one-tester.herokuapp.com/courses/"
+      "http://uvic.immortalmind.ca:5000/courses/"
     );
     console.log("response  ", response);
     return response.data;

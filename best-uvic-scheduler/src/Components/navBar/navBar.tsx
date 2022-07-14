@@ -1,6 +1,7 @@
 import TabGroup, { TabView } from "../tab-group/tab-group.tsx";
 import { useNavigate } from "react-router-dom";
 import { navigate } from "@storybook/addon-links";
+import React from "react";
 
 export interface NavBarProps {
   initialTabId: string;
@@ -12,17 +13,25 @@ export function NavBar(props: NavBarProps) {
   return (
     <TabGroup initialTabId={props.initialTabId}>
       <TabGroup.Tab size="medium" tabId="1" onClick={() => navigate(`/Admin`)}>
-        Landing Page
+        Home
       </TabGroup.Tab>
 
-      <TabGroup.Tab size="medium" tabId="2" onClick={() => navigate(`/Admin/Courses`)}>
-        Edit Courses
+      <TabGroup.Tab
+        size="medium"
+        tabId="2"
+        onClick={() => navigate(`/Admin/Courses`)}
+      >
+        Courses
       </TabGroup.Tab>
       <TabGroup.Tab size="medium" tabId="3">
-        Edit Professors
+        Professors
       </TabGroup.Tab>
 
-      <TabGroup.Tab size="medium" tabId="4">
+      <TabGroup.Tab
+        size="medium"
+        tabId="4"
+        onClick={() => navigate(`/Admin/Schedule`)}
+      >
         Generate Schedule
       </TabGroup.Tab>
     </TabGroup>

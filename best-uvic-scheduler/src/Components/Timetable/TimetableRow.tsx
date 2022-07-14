@@ -29,10 +29,8 @@ export interface TimetableRowViewProps {
 
 const CellDiv = styled.div<{ highlighted: boolean }>`
   width: 100%;
-  border: 1px solid var(--border);
-  border-bottom: none;
   min-width: 20px;
-  background-color: white;
+  background-color: var(--grey-50);
   cursor: pointer;
 
   &:hover {
@@ -42,7 +40,7 @@ const CellDiv = styled.div<{ highlighted: boolean }>`
 
   &:active {
     background-color: var(--primary-400);
-    ${(props) => props.highlighted && "background-color: white"}
+    ${(props) => props.highlighted && "background-color: var(--grey-50)"}
   }
 
   ${(props) => props.highlighted && "background-color: var(--primary-400)"}
@@ -50,9 +48,8 @@ const CellDiv = styled.div<{ highlighted: boolean }>`
 
 const TimeDiv = styled.div`
   width: 100%;
-  border-top: 1px solid var(--border);
   text-align: center;
-  padding: var(--space-x-small) var(--space-med);
+  padding: var(--space-3x-small) var(--space-med);
   box-sizing: border-box;
   user-select: none;
 `;

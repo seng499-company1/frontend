@@ -43,12 +43,16 @@ export function CheckboxGroupView(props: CheckboxGroupViewProps) {
   return <div></div>;
 }
 
-const CheckboxDiv = styled.p<{ checked: boolean }>`
-  border: 2px solid #000;
-  padding: 10px 10px 10px;
-  width: 10px;
+const CheckboxDiv = styled.div<{ checked: boolean }>`
+  border: 1px solid var(--grey-700);
+  border-radius: 4px;
+  padding: var(--space-x-small);
+  max-width: 14px;
+  max-height: 14px;
   ${(props) =>
-    props.checked ? "background-color: grey" : "background-color: white"};
+    props.checked
+      ? "background-color: var(--primary-400)"
+      : "background-color: white"};
 `;
 
 export function CheckboxView(props: CheckboxViewProps) {

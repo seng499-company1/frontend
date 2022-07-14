@@ -1,10 +1,5 @@
-import React, { useEffect, useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Background } from "../../Components/background/background.tsx";
-import Logo from "../../Images/Uvic-logo.png";
-import Alert from "../../Components/Alert/alert.tsx";
-import NavBar from "../../Components/navBar/navBar.tsx";
 import * as CourseListHelper from "../../Util/CourseListHelper.tsx";
 import {
   SelectableTableDivView,
@@ -19,36 +14,9 @@ import {
   SelectableTableCheckboxDiv,
 } from "../../Components/SelectTable/SelectableTable.tsx";
 import { TextInputView } from "../../Components/Input/input.tsx";
-import Dropdown from "../../Components/dropdown/dropdown.tsx";
 import { CheckboxView } from "../../Components/checkbox/checkbox.tsx";
 import { CustomButtonView } from "../../Components/button/button.tsx";
-import {
-  CustomButtonGroupView,
-  ButtonDiv,
-} from "../../Components/button/buttongroup.tsx";
 import { BiCaretDown, BiCaretUp } from "react-icons/bi";
-
-const Header = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0px;
-`;
-
-const Title = styled.h1`
-  text-align: center;
-  font-size: 24px;
-  padding-left: 0px;
-  padding-right: 0px;
-  grid-column: 2 / 3;
-  grid-row: 1;
-`;
-
-const LogoDiv = styled.div`
-  padding-left: 48px;
-  padding-right: 0px;
-  grid-column: 1 / 3;
-  grid-row: 1;
-`;
 
 const TableDiv = styled.div`
   padding-top: 48px;
@@ -112,183 +80,141 @@ export function AdminCoursePage() {
   const handleChange = (event) => {};
 
   return (
-    <Background>
-      <Header>
-        <LogoDiv>
-          <img src={Logo} width="50px" height="80px" />
-        </LogoDiv>
-        <Title>UVIC Course Scheduler</Title>
-      </Header>
+    <TableDiv>
+      <SelectableTableDivView columns={4}>
+        <SelectableTableHeaderDivView>
+          <SelectableTableIconElementDivView />
+          <SelectableTableLabelDivView>
+            <SelectableTableLabelsView>Course ID</SelectableTableLabelsView>
+            <SelectableTableLabelsView>Course Name</SelectableTableLabelsView>
+            <SelectableTableLabelsView>
+              Terms Available
+            </SelectableTableLabelsView>
+          </SelectableTableLabelDivView>
+        </SelectableTableHeaderDivView>
+        {Courses.map(function (Course, index) {
+          let name = Course.course_code;
 
-      <NavBar initialTabId="2"></NavBar>
+          const TimesOfferedArr = [];
 
-      <TableDiv>
-        <SelectableTableDivView>
-          <SelectableTableHeaderDivView>
-            <SelectableTableIconElementDivView />
-            <SelectableTableLabelDivView>
-              <SelectableTableLabelsView>Course ID</SelectableTableLabelsView>
-              <SelectableTableLabelsView>Course Name</SelectableTableLabelsView>
-              <SelectableTableLabelsView>
-                Terms Available
-              </SelectableTableLabelsView>
-            </SelectableTableLabelDivView>
-          </SelectableTableHeaderDivView>
-          {Courses.map(function (Course, index) {
-            let name = Course.course_code;
+          if (Course.fall_req === true) {
+            TimesOfferedArr.push("Fall");
+          }
+          if (Course.spring_req === true) {
+            TimesOfferedArr.push("Spring");
+          }
+          if (Course.summer_req === true) {
+            TimesOfferedArr.push("Summer");
+          }
 
-            let TimesOffered = "";
+          const TimesOffered = TimesOfferedArr.join("/");
 
-            if (Course.fall_req === true) {
-              TimesOffered += "Fall";
-            }
-            if (Course.spring_req === true) {
-              TimesOffered += "/Spring";
-            }
-            if (Course.summer_req === true) {
-              TimesOffered += "/Summer";
-            }
-
-            if (OpenedCourse === Course) {
-              return (
-                <SelectableTableElementOpenedDivView {...{ Type: 1 }}>
-                  <SelectableTableIconElementDivView>
-                    <BiCaretUp
-                      style={{ height: 30, width: 30 }}
-                      onClick={() => {
-                        setOpenCourse(0);
+          if (OpenedCourse === Course) {
+            return (
+              <SelectableTableElementOpenedDivView {...{ Type: 1 }}>
+                <SelectableTableIconElementDivView>
+                  <BiCaretUp
+                    style={{ height: 16, width: 16 }}
+                    onClick={() => {
+                      setOpenCourse(0);
+                    }}
+                  />
+                </SelectableTableIconElementDivView>
+                <SelectableTableInputDiv>
+                  <SelectableTableSingleInputDiv>
+                    <p> Course ID </p>
+                    <TextInputView {...{ DefaultValue: Course.course_code }} />
+                  </SelectableTableSingleInputDiv>
+                  <SelectableTableSingleInputDiv style={{ width: 300 }}>
+                    <p> Course Name </p>
+                    <TextInputView
+                      {...{
+                        DefaultValue: Course.course_name,
                       }}
                     />
-                  </SelectableTableIconElementDivView>
-                  <SelectableTableInputDiv>
-                    <SelectableTableSingleInputDiv>
-                      <p> Course ID </p>
-                      <TextInputView
-                        {...{ DefaultValue: Course.course_code }}
-                      />
-                    </SelectableTableSingleInputDiv>
-                    <SelectableTableSingleInputDiv style={{ width: 300 }}>
-                      <p> Course Name </p>
-                      <TextInputView
-                        {...{
-                          DefaultValue: Course.course_name,
-                        }}
-                      />
-                    </SelectableTableSingleInputDiv>
-                  </SelectableTableInputDiv>
-                  <SelectableTableInputDiv
-                    style={{
-                      paddingLeft: 32,
-                      justifyContent: "start",
+                  </SelectableTableSingleInputDiv>
+                </SelectableTableInputDiv>
+                <SelectableTableInputDiv>
+                  <SelectableTableCheckboxDiv>
+                    <CheckboxView
+                      {...{
+                        checked: Course.fall_req,
+                      }}
+                    >
+                      X
+                    </CheckboxView>
+                    <p>Fall</p>
+                  </SelectableTableCheckboxDiv>
+                  <SelectableTableCheckboxDiv>
+                    <CheckboxView
+                      {...{
+                        checked: Course.spring_req,
+                      }}
+                    >
+                      X
+                    </CheckboxView>
+                    <p>Spring</p>
+                  </SelectableTableCheckboxDiv>
+                  <SelectableTableCheckboxDiv>
+                    <CheckboxView
+                      {...{
+                        checked: Course.summer_req,
+                      }}
+                    >
+                      X
+                    </CheckboxView>
+                    <p>Summer</p>
+                  </SelectableTableCheckboxDiv>
+                </SelectableTableInputDiv>
+                <SelectableTableInputDiv>
+                  <CustomButtonView
+                    {...{ Theme: "Secondary" }}
+                    customClickEvent={() => {
+                      setOpenCourse(0);
                     }}
                   >
-                    <SelectableTableCheckboxDiv>
-                      <CheckboxView
-                        {...{
-                          checked: Course.fall_req,
-                        }}
-                      >
-                        X
-                      </CheckboxView>
-                      <p
-                        style={{
-                          paddingLeft: 8,
-                          paddingRight: 12,
-                          paddingTop: 4,
-                        }}
-                      >
-                        Fall
-                      </p>
-                    </SelectableTableCheckboxDiv>
-                    <SelectableTableCheckboxDiv>
-                      <CheckboxView
-                        {...{
-                          checked: Course.spring_req,
-                        }}
-                      >
-                        X
-                      </CheckboxView>
-                      <p
-                        style={{
-                          paddingLeft: 8,
-                          paddingRight: 12,
-                          paddingTop: 4,
-                        }}
-                      >
-                        Spring
-                      </p>
-                    </SelectableTableCheckboxDiv>
-                    <SelectableTableCheckboxDiv>
-                      <CheckboxView
-                        {...{
-                          checked: Course.summer_req,
-                        }}
-                      >
-                        X
-                      </CheckboxView>
-                      <p
-                        style={{
-                          paddingLeft: 8,
-                          paddingRight: 12,
-                          paddingTop: 4,
-                        }}
-                      >
-                        Summer
-                      </p>
-                    </SelectableTableCheckboxDiv>
-                  </SelectableTableInputDiv>
-                  <CustomButtonGroupView {...{ Amount: "Progession" }}>
-                    <ButtonDiv>
-                      <CustomButtonView
-                        {...{ Theme: "Secondary" }}
-                        customClickEvent={() => {
-                          setOpenCourse(0);
-                        }}
-                      >
-                        Cancel
-                      </CustomButtonView>
-                      <CustomButtonView
-                        {...{ Theme: "Primary" }}
-                        customClickEvent={() => {
-                          CourseData[index] = Course;
-                          setOpenCourse(0);
-                        }}
-                      >
-                        Save
-                      </CustomButtonView>
-                    </ButtonDiv>
-                  </CustomButtonGroupView>
-                </SelectableTableElementOpenedDivView>
-              );
-            } else {
-              return (
-                <SelectableTableElementClosedDivView>
-                  <SelectableTableIconElementDivView>
-                    <BiCaretDown
-                      style={{ height: 30, width: 30 }}
-                      onClick={() => {
-                        setOpenCourse(Course);
-                      }}
-                    />
-                  </SelectableTableIconElementDivView>
-                  <SelectableTableLabelDivView>
-                    <SelectableTableLabelsView>
-                      {Course.course_code}
-                    </SelectableTableLabelsView>
-                    <SelectableTableLabelsView>
-                      {Course.course_name}
-                    </SelectableTableLabelsView>
-                    <SelectableTableLabelsView>
-                      {TimesOffered}
-                    </SelectableTableLabelsView>
-                  </SelectableTableLabelDivView>
-                </SelectableTableElementClosedDivView>
-              );
-            }
-          })}
-        </SelectableTableDivView>
-      </TableDiv>
-    </Background>
+                    Cancel
+                  </CustomButtonView>
+                  <CustomButtonView
+                    {...{ Theme: "Primary" }}
+                    customClickEvent={() => {
+                      CourseData[index] = Course;
+                      setOpenCourse(0);
+                    }}
+                  >
+                    Save
+                  </CustomButtonView>
+                </SelectableTableInputDiv>
+              </SelectableTableElementOpenedDivView>
+            );
+          } else {
+            return (
+              <SelectableTableElementClosedDivView>
+                <SelectableTableIconElementDivView>
+                  <BiCaretDown
+                    style={{ height: 16, width: 16 }}
+                    onClick={() => {
+                      setOpenCourse(Course);
+                    }}
+                  />
+                </SelectableTableIconElementDivView>
+                <SelectableTableLabelDivView>
+                  <SelectableTableLabelsView>
+                    {Course.course_code}
+                  </SelectableTableLabelsView>
+                  <SelectableTableLabelsView>
+                    {Course.course_name}
+                  </SelectableTableLabelsView>
+                  <SelectableTableLabelsView>
+                    {TimesOffered}
+                  </SelectableTableLabelsView>
+                </SelectableTableLabelDivView>
+              </SelectableTableElementClosedDivView>
+            );
+          }
+        })}
+      </SelectableTableDivView>
+    </TableDiv>
   );
 }
 

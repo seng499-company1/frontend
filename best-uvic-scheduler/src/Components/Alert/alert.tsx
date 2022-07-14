@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { DefaultShadow } from "../../GlobalStyles.tsx";
 import "../../index.css";
 
 export interface AlertProps {
@@ -8,43 +9,39 @@ export interface AlertProps {
 
 const RedBox = styled.div`
   font-size: 0;
-  width: 500px;
-  border-radius: 10px;
-  box-shadow: 1px 1px;
-  display: grid;
+  border-radius: 4px;
+  border: 1px solid var(--danger-400);
+  ${DefaultShadow}
   display: flex;
   align-items: center;
-  justify-content: center;
-  height: 32px;
-  background-color: var(--danger-600);
-  grid-template-columns: repeat(3, 1fr);
+  background-color: var(--danger-50);
+  padding: var(--space-small) var(--space-large);
+  box-sizing: border-box;
+  margin: auto;
 `;
 
 const AlertText = styled.p`
-  text-shadow: 0.25px 0.5px black;
-  opacity: 1;
-  grid-column: 1 / 3;
-  color: black;
+  color: var(--font-color);
   font-size: 16px;
-  grid-row: 1;
-  font-style: bold;
+  font-weight: 600;
+  margin: 0;
+  padding-right: var(--space-med);
 `;
 
 const Message = styled.p`
   color: black;
-  grid-column: 2 / 3;
-  font-size: 12px;
-  font-style: italic;
-  font-style: bold;
-  grid-row: 1;
+  font-size: var(--font-size-normal);
+  margin: 0;
+  width: max-content;
 `;
 
 export function Alert(props: AlertProps) {
   return (
     <RedBox>
-      <AlertText>Alert:&emsp;&emsp;&emsp;</AlertText>
+      <AlertText>Alert:</AlertText>
       <Message>
-        *You have {props.new_entries} new professor data entries*
+        You have {props.new_entries} new professor data entr
+        {props.new_entries === 1 ? "y" : "ies"}
       </Message>
     </RedBox>
   );

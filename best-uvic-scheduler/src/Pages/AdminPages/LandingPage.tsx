@@ -1,71 +1,36 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { Background } from "../../Components/background/background.tsx";
-import Logo from "../../Images/Uvic-logo.png";
 import Alert from "../../Components/Alert/alert.tsx";
-import NavBar from "../../Components/navBar/navBar.tsx";
 import * as ProfessorImputHelper from "../../Util/ProfessorInputHelper.tsx";
+import CustomButtonView from "../../Components/button/button.tsx";
 
 export const ProfessorNameContext = React.createContext({
   selectedProfessorName: "",
   setProfessorName: () => {},
 });
-const Header = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0px;
-`;
-
-const Title = styled.h1`
-  text-align: center;
-  font-size: 24px;
-  padding-left: 0px;
-  padding-right: 0px;
-  grid-column: 2 / 3;
-  grid-row: 1;
-`;
-
-const LogoDiv = styled.div`
-  padding-left: 48px;
-  padding-right: 0px;
-  grid-column: 1 / 3;
-  grid-row: 1;
-`;
 
 const ProfListDiv = styled.div`
-    background-color: var(--grey-50);
-    box-shadow:1px 1px;
-    padding-top:0.5px;
-    padding-bottom: 14px;
-    border-color: var(--grey-700):
-    border-style: solid;
-  `;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4x-large);
+`;
+
 const DataEntryTitleDiv = styled.h4`
-  padding-left: 32px;
-  color: black;
+  color: var(--font-color);
+  font-weight: 500;
+  margin: 0;
 `;
 
-const ProfNameDiv = styled.button`
-  color: var(--grey-800);
-  text-color: black;
-  width: 60%;
-  margin: 2px 128px;
-  align: center;
-  text-align: left;
-  padding-left: 32px;
-  height: 24px;
-  padding-bottom: 12px;
-`;
-
-const BreakDiv = styled.br`
-  display: block;
-  content: "";
-  margin-top: 10px;
-`;
 const AlertDiv = styled.div`
   display: grid;
   place-items: center;
+`;
+
+const SectionDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-med);
 `;
 
 export function LandingPage() {
@@ -90,16 +55,7 @@ export function LandingPage() {
   const entries = newProf.length;
 
   return (
-    <Background>
-      <Header>
-        <LogoDiv>
-          <img src={Logo} width="50px" height="80px" />
-        </LogoDiv>
-        <Title>UVIC Course Scheduler</Title>
-      </Header>
-
-      <NavBar initialTabId="1"></NavBar>
-      <BreakDiv></BreakDiv>
+    <ProfListDiv>
       {(() => {
         if (entries != 0) {
           return (
@@ -111,13 +67,14 @@ export function LandingPage() {
           return <div></div>;
         }
       })()}
-
-      <BreakDiv></BreakDiv>
-      <ProfListDiv>
+      <SectionDiv>
         <DataEntryTitleDiv>New Data Entries:</DataEntryTitleDiv>
         {newProf.map((item, idx) => (
-          <ProfNameDiv
-            onClick={() => {
+          <CustomButtonView
+            Theme={"Secondary"}
+            Borderless={true}
+            LeftText={true}
+            customClickEvent={() => {
               console.log(newProf[idx]["firstName"]);
               setProfessorName(newProf[idx]["firstName"]);
               console.log(selectedProfessorName);
@@ -127,17 +84,23 @@ export function LandingPage() {
           >
             {newProf[idx]["firstName"]}&nbsp;
             {newProf[idx]["lastName"]}
-          </ProfNameDiv>
+          </CustomButtonView>
         ))}
+      </SectionDiv>
+      <SectionDiv>
         <DataEntryTitleDiv>Data Entires:</DataEntryTitleDiv>
         {oldProf.map((item, idx) => (
-          <ProfNameDiv>
+          <CustomButtonView
+            Theme={"Secondary"}
+            Borderless={true}
+            LeftText={true}
+          >
             {oldProf[idx]["firstName"]} &nbsp;
             {oldProf[idx]["lastName"]}
-          </ProfNameDiv>
+          </CustomButtonView>
         ))}
-      </ProfListDiv>
-    </Background>
+      </SectionDiv>
+    </ProfListDiv>
   );
 }
 
