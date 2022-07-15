@@ -5,7 +5,7 @@ import styled from "styled-components";
 import CustomButtonView from "../../Components/button/button.tsx";
 import CheckboxGroup from "../../Components/checkbox/checkbox.tsx";
 import Dropdown from "../../Components/dropdown/dropdown.tsx";
-import Radio from "../../Components/radio/radio.tsx"
+import Radio from "../../Components/radio/radio.tsx";
 import TabGroup from "../../Components/tab-group/tab-group.tsx";
 import { Timetable } from "../../Components/Timetable/Timetable.tsx";
 import * as CourseListHelper from "../../Util/CourseListHelper.tsx";
@@ -78,6 +78,17 @@ export const weekdays = [
   "Wednesday",
   "Thursday",
   "Friday",
+];
+
+export const QualificationItems = [
+  { value: "Not Qualified", label: "Not Qualified" },
+  { value: "Qualified", label: "Qualified" },
+];
+
+export const PreferenceItems = [
+  { value: "Not Willing", label: "Not Willing" },
+  { value: "Willing", label: "Willing" },
+  { value: "Very Willing", label: "Very Willing" },
 ];
 
 function updateCheckbox(state: Object, semester: string) {
@@ -153,12 +164,6 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
   const { maxCourseEntered, setMaxCourseEntered } =
     useContext(MaxCourseContext);
 
-  const PreferenceItems = [
-    { value: "Not Willing", label: "Not Willing" },
-    { value: "Willing", label: "Willing" },
-    { value: "Very Willing", label: "Very Willing" },
-  ];
-
   useEffect(() => {
     setMaxCourseEntered({
       [selectedSemester.value]: maxCourses[selectedSemester.value],
@@ -184,11 +189,6 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
   const { qualifications, setQualifications } = useContext(
     QualificationsContext
   );
-
-  const QualificationItems = [
-    { value: "Not Qualified", label: "Not Qualified" },
-    { value: "Qualified", label: "Qualified" },
-  ];
 
   const { prefDays, setPrefDays } = useContext(PrefDayContext);
 
@@ -343,6 +343,9 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
     setMaxCourseEntered,
   } = props;
 
+  console.log(preferences);
+  console.log(qualifications);
+
   return (
     <Background>
       <LayoutDiv>
@@ -380,9 +383,9 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                       label="Not Willing"
                       value="Not Willing"
                       isChecked={
-                        preferences[Course.course_code] === "Not Willing" ?
-                        true :
-                        false
+                        preferences[Course.course_code] === "Not Willing"
+                          ? true
+                          : false
                       }
                       handleChange={() => {
                         setPreferences({
@@ -395,9 +398,9 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                       label="Willing"
                       value="Willing"
                       isChecked={
-                        preferences[Course.course_code] === "Willing" ?
-                        true :
-                        false
+                        preferences[Course.course_code] === "Willing"
+                          ? true
+                          : false
                       }
                       handleChange={() => {
                         setPreferences({
@@ -410,9 +413,9 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                       label="Very Willing"
                       value="Very Willing"
                       isChecked={
-                        preferences[Course.course_code] === "Very Willing" ?
-                        true :
-                        false
+                        preferences[Course.course_code] === "Very Willing"
+                          ? true
+                          : false
                       }
                       handleChange={() => {
                         setPreferences({
@@ -428,9 +431,9 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                       label="Not Qualified"
                       value="Not Qualified"
                       isChecked={
-                        qualifications[Course.course_code] === "Not Qualified" ?
-                        true :
-                        false
+                        qualifications[Course.course_code] === "Not Qualified"
+                          ? true
+                          : false
                       }
                       handleChange={() => {
                         setQualifications({
@@ -443,9 +446,9 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                       label="Qualified"
                       value="Qualified"
                       isChecked={
-                        qualifications[Course.course_code] === "Qualified" ?
-                        true :
-                        false
+                        qualifications[Course.course_code] === "Qualified"
+                          ? true
+                          : false
                       }
                       handleChange={() => {
                         setQualifications({
@@ -453,9 +456,7 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                           [Course.course_code]: "Qualified",
                         });
                       }}
-
                     />
-                    
                   </FieldContainerDiv>
                 </CourseInfoDiv>
               </div>
