@@ -377,47 +377,47 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                   <FieldContainerDiv>
                     <FieldLabelP>Desire to teach</FieldLabelP>
                     <Radio
-                      label="Not Willing"
-                      value="Not Willing"
+                      label={PreferenceItems[0]['value']}
+                      value={PreferenceItems[0]['value']}
                       isChecked={
-                        preferences[Course.course_code] === "Not Willing" ?
+                        preferences[Course.course_code] === PreferenceItems[0]['value'] ?
                         true :
                         false
                       }
                       handleChange={() => {
                         setPreferences({
                           ...preferences,
-                          [Course.course_code]: "Not Willing",
+                          [Course.course_code]: PreferenceItems[0]['value'],
                         });
                       }}
                     />
                     <Radio
-                      label="Willing"
-                      value="Willing"
+                      label={PreferenceItems[1]['value']}
+                      value={PreferenceItems[1]['value']}
                       isChecked={
-                        preferences[Course.course_code] === "Willing" ?
+                        preferences[Course.course_code] === PreferenceItems[1]['value'] ?
                         true :
                         false
                       }
                       handleChange={() => {
                         setPreferences({
                           ...preferences,
-                          [Course.course_code]: "Willing",
+                          [Course.course_code]: PreferenceItems[1]['value'],
                         });
                       }}
                     />
                     <Radio
-                      label="Very Willing"
-                      value="Very Willing"
+                      label={PreferenceItems[2]['value']}
+                      value={PreferenceItems[2]['value']}
                       isChecked={
-                        preferences[Course.course_code] === "Very Willing" ?
+                        preferences[Course.course_code] === PreferenceItems[2]['value'] ?
                         true :
                         false
                       }
                       handleChange={() => {
                         setPreferences({
                           ...preferences,
-                          [Course.course_code]: "Very Willing",
+                          [Course.course_code]: PreferenceItems[2]['value'],
                         });
                       }}
                     />
@@ -425,32 +425,32 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                   <FieldContainerDiv>
                     <FieldLabelP>Qualification level</FieldLabelP>
                     <Radio
-                      label="Not Qualified"
-                      value="Not Qualified"
+                      label={QualificationItems[0]['value']}
+                      value={QualificationItems[0]['value']}
                       isChecked={
-                        qualifications[Course.course_code] === "Not Qualified" ?
+                        qualifications[Course.course_code] === QualificationItems[0]['value'] ?
                         true :
                         false
                       }
                       handleChange={() => {
                         setQualifications({
                           ...qualifications,
-                          [Course.course_code]: "Not Qualified",
+                          [Course.course_code]: QualificationItems[0]['value'],
                         });
                       }}
                     />
                     <Radio
-                      label="Qualified"
-                      value="Qualified"
+                      label={QualificationItems[1]['value']}
+                      value={QualificationItems[1]['value']}
                       isChecked={
-                        qualifications[Course.course_code] === "Qualified" ?
+                        qualifications[Course.course_code] === QualificationItems[1]['value'] ?
                         true :
                         false
                       }
                       handleChange={() => {
                         setQualifications({
                           ...qualifications,
-                          [Course.course_code]: "Qualified",
+                          [Course.course_code]: QualificationItems[0]['value'],
                         });
                       }}
 
