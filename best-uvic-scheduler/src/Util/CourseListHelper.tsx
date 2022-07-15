@@ -36,11 +36,16 @@ export async function GetCourseList() {
 
 export async function editCourse(props: EditCourseProps) {
   console.log("PROPS  ", props.json, props.id);
-
   try {
     const response = await axios.put(
-      "http://localhost:5000.com/courses/${props.id}",
-      props.json
+      `http://localhost:5000/courses/${props.id}`,
+      props.json,
+      { mode: "same-origin" },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
     );
     console.log("response  ", response);
   } catch (error) {
