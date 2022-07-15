@@ -7,6 +7,7 @@ import { PostLoginInfo } from "../Util/LoginHelper.tsx";
 import { ProfessorContext } from "./ProfessorDataInput/index.tsx";
 import React, { useEffect } from "react";
 import TextInputView from "../Components/Input/input.tsx";
+import { type } from "os";
 
 const InnerBox = styled.div`
   border-radius: 4px;
@@ -50,16 +51,15 @@ const StyledForm = styled.form`
 `;
 
 export function LoginPage() {
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { selectedProfessor, setProfessor } = useContext(ProfessorContext);
   const navigate = useNavigate();
 
-  function onSubmit() {
-    PostLoginInfo({ username: username, password: password }).then( response => {
-      console.log(response);
-    });
+  function onSubmit(event) {
+    event.preventDefault();
+    PostLoginInfo({ username: username, password: password });
+    return false;
   }
 
   return (
@@ -86,8 +86,8 @@ export function LoginPage() {
             <RightDiv>
               <CustomButtonView
                 {...{ Theme: "Primary" }}
-                customClickEvent={() => {
-                  onSubmit();
+                customClickEvent={(event) => {
+                  onSubmit(event);
                 }}
               >
                 Submit

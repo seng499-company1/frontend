@@ -1,18 +1,49 @@
 const axios = require("axios");
 
+// export async function PostLoginInfo(props) {
+//   try {
+//     await axios
+//       .post("http://localhost:5000/login/", {
+//         username: props.username,
+//         password: props.password,
+//       })
+//       .then((response) => {
+//         return response.data;
+//       });
+//     console.log("response  ", response);
+//     return response.data;
+//   } catch (error) {
+//     console.log(error);
+//     return [];
+//   }
+// }
+// export default PostLoginInfo;
+
 export async function PostLoginInfo(props) {
+  const json = {
+    username: "admin",
+    password: "password",
+  };
   try {
-    await axios
-      .post("http://uvic.immortalmind.ca:5000/login", {
-        username: props.username,
-        password: props.password,
-      })
+    const response = await axios
+      .post(
+        `http://localhost:5000/login/`,
+        {
+          username: "admin",
+          password: "password",
+        },
+        {
+          "Content-Type": "application/json",
+        }
+      )
       .then((response) => {
-        return response.data;
+        console.log("GOT RESPONSE");
+        console.log(response);
+        return response.json;
       });
-    console.log("response  ", response);
-    return response.data;
+    console.log("RESPONSE!!");
   } catch (error) {
+    console.log("Error!! " + error);
     return [];
   }
 }
