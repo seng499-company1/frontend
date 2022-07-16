@@ -22,7 +22,7 @@ export function TextInputView(props: TextInputProps) {
     <TextInput
       placeholder={props.placeholder}
       value={props.DefaultValue}
-      onchange={props.onChange}
+      onChange={props.onChange}
       type="text"
     >
       {props.children}
