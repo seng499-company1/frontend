@@ -17,6 +17,7 @@ import { TextInputView } from "../../Components/Input/input.tsx";
 import { CheckboxView } from "../../Components/checkbox/checkbox.tsx";
 import { CustomButtonView } from "../../Components/button/button.tsx";
 import { BiCaretDown, BiCaretUp } from "react-icons/bi";
+import { type } from "os";
 
 const TableDiv = styled.div`
   padding-top: 48px;
@@ -45,7 +46,7 @@ export function AdminCoursePage() {
   const Json = {
     course_code: "CSC111",
     course_name: "Fundamentals of Programming with Engineering Applications",
-    min_offering: "number",
+    min_offering: 2,
     spring_req: true,
     summer_req: false,
     fall_req: true,
@@ -58,12 +59,32 @@ export function AdminCoursePage() {
     year_req: 3,
   };
 
-  const EditCourseProps = {
+  type EditCourseJson = {
+    course_code: String;
+    course_name: String;
+    min_offering: Number;
+    spring_req: Boolean;
+    summer_req: Boolean;
+    fall_req: Boolean;
+    spring_peng_req: Boolean;
+    summer_peng_req: Boolean;
+    fall_peng_req: Boolean;
+    course_desc: String;
+    prof_prereq: String;
+    year_req: Number;
+  };
+
+  type EditCourseProps = {
+    id: String;
+    json: EditCourseJson;
+  };
+
+  //rn hard coded, add stuff to integrate
+  const data: EditCourseProps = {
     id: "d654c4f0-f7ea-11ec-85ed-0242ac130002",
     json: Json,
   };
-
-  CourseListHelper.editCourse(EditCourseProps);
+  CourseListHelper.editCourse(data);
 
   const Departments = [
     { value: "Computer Science", label: "Computer Science" },
@@ -94,7 +115,7 @@ export function AdminCoursePage() {
         </SelectableTableHeaderDivView>
         {Courses.map(function (Course, index) {
           let name = Course.course_code;
-
+          console.log(Course);
           const TimesOfferedArr = [];
 
           if (Course.fall_req === true) {

@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { PostLoginInfo } from "../Util/LoginHelper.tsx";
+import { GetProfessor } from "../Util/ProfessorHelper.tsx";
 import { ProfessorContext } from "./ProfessorDataInput/index.tsx";
 import React, { useEffect } from "react";
 import TextInputView from "../Components/Input/input.tsx";
@@ -58,8 +59,17 @@ export function LoginPage() {
 
   function onSubmit(event) {
     event.preventDefault();
-    PostLoginInfo({ username: username, password: password });
-    return false;
+    console.log(username, password);
+    const response = PostLoginInfo({ username: username, password: password });
+    const prof = GetProfessor(response.id);
+
+    if (response.permissions === "admin") {
+      console.log(prof);
+      setProfessor(prof);
+      navigate(`/SelectProfessor/TimeAvail`);
+    } else {
+      navigate("/LandingPage");
+    }
   }
 
   return (

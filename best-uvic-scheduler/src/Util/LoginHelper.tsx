@@ -20,17 +20,13 @@ const axios = require("axios");
 // export default PostLoginInfo;
 
 export async function PostLoginInfo(props) {
-  const json = {
-    username: "admin",
-    password: "password",
-  };
   try {
     const response = await axios
       .post(
         `http://localhost:5000/login/`,
         {
-          username: "admin",
-          password: "password",
+          username: props.username,
+          password: props.password,
         },
         {
           "Content-Type": "application/json",
