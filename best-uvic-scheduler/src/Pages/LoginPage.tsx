@@ -59,17 +59,23 @@ export function LoginPage() {
 
   function onSubmit(event) {
     event.preventDefault();
-    console.log(username, password);
-    const response = PostLoginInfo({ username: username, password: password });
-    const prof = GetProfessor(response.id);
 
-    if (response.permissions === "admin") {
-      console.log(prof);
-      setProfessor(prof);
-      navigate(`/SelectProfessor/TimeAvail`);
-    } else {
-      navigate("/LandingPage");
-    }
+    PostLoginInfo({
+      username: username,
+      password: password,
+    })
+      .then((response) => {
+        if (response.data.permissions === "admin") {
+          navigate("/LandingPage");
+        } else {
+          setProfessor(GetProfessor(response.data.id)).then(
+            navigate(`/SelectProfessor/TimeAvail`)
+          );
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   return (
