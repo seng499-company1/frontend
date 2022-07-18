@@ -43,49 +43,6 @@ export function AdminCoursePage() {
       });
   }, []);
 
-  const Json = {
-    course_code: "CSC111",
-    course_name: "Fundamentals of Programming with Engineering Applications",
-    min_offering: 2,
-    spring_req: true,
-    summer_req: false,
-    fall_req: true,
-    spring_peng_req: false,
-    summer_peng_req: false,
-    fall_peng_req: false,
-    course_desc:
-      '"Fundamentals of computer programming with real-world engineering examples using an imperative programming language. Topics include development, testing and debugging."',
-    prof_prereq: "Knowledge of the C programming language",
-    year_req: 3,
-  };
-
-  type EditCourseJson = {
-    course_code: String;
-    course_name: String;
-    min_offering: Number;
-    spring_req: Boolean;
-    summer_req: Boolean;
-    fall_req: Boolean;
-    spring_peng_req: Boolean;
-    summer_peng_req: Boolean;
-    fall_peng_req: Boolean;
-    course_desc: String;
-    prof_prereq: String;
-    year_req: Number;
-  };
-
-  type EditCourseProps = {
-    id: String;
-    json: EditCourseJson;
-  };
-
-  //rn hard coded, add stuff to integrate
-  const data: EditCourseProps = {
-    id: "d654c4f0-f7ea-11ec-85ed-0242ac130002",
-    json: Json,
-  };
-  CourseListHelper.editCourse(data);
-
   const Departments = [
     { value: "Computer Science", label: "Computer Science" },
     { value: "Software Engineering", label: "Software Engineering" },
