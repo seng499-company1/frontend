@@ -106,3 +106,11 @@ h1 {
   --font-size-normal: 14px;
   --font-size-label: 12px;
 }
+
+/* CSS hack to disable full day row in timetable */
+.rbc-allday-cell {
+  display: none;
+}
+.rbc-time-view .rbc-header {
+  border-bottom: none;
+}
