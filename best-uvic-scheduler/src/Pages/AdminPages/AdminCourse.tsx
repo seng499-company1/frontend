@@ -17,6 +17,7 @@ import { TextInputView } from "../../Components/Input/input.tsx";
 import { CheckboxView } from "../../Components/checkbox/checkbox.tsx";
 import { CustomButtonView } from "../../Components/button/button.tsx";
 import { BiCaretDown, BiCaretUp } from "react-icons/bi";
+import { type } from "os";
 
 const TableDiv = styled.div`
   padding-top: 48px;
@@ -71,7 +72,7 @@ export function AdminCoursePage() {
         </SelectableTableHeaderDivView>
         {Courses.map(function (Course, index) {
           let name = Course.course_code;
-
+          console.log(Course);
           const TimesOfferedArr = [];
 
           if (Course.fall_req === true) {
