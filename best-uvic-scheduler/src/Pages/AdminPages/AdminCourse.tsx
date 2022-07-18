@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import * as CourseListHelper from "../../Util/CourseListHelper.tsx";
 import {
@@ -16,6 +17,7 @@ import {
 import { TextInputView } from "../../Components/Input/input.tsx";
 import { CheckboxView } from "../../Components/checkbox/checkbox.tsx";
 import { CustomButtonView } from "../../Components/button/button.tsx";
+import { CustomButtonGroupView } from "../../Components/button/buttongroup.tsx";
 import { BiCaretDown, BiCaretUp } from "react-icons/bi";
 
 const TableDiv = styled.div`
@@ -26,38 +28,83 @@ export function AdminCoursePage() {
   const [Courses, setCourses] = useState([]);
   const [AmountOfCourses, setAmmount] = useState(0);
   const [OpenedCourse, setOpenCourse] = useState(0);
+  const [RemovedCourse, setRemovedCourse] = useState(0);
+  const [DisplayedName, setDisplayedName] = useState(0);
+  const [DisplayedCode, setDisplayedCode] = useState(0);
   const [FallNeeded, setFallNeeded] = useState(false);
   const [SpringNeeded, setSpringNeeded] = useState(false);
   const [SummerNeeded, setSummerNeeded] = useState(false);
 
+  const navigate = useNavigate();
+
   //get data
   useEffect(() => {
-    console.log("Inside useEffect");
     CourseListHelper.GetCourseList()
       .then((resp) => {
         setCourses(resp);
-      })
-      .then((resp) => {
-        setAmmount(resp.length());
       });
   }, []);
 
-  const Departments = [
-    { value: "Computer Science", label: "Computer Science" },
-    { value: "Software Engineering", label: "Software Engineering" },
-  ];
+  useEffect(() => {
+    if(OpenedCourse !== 0){
+      setDisplayedName(OpenedCourse.course_name);
+      setDisplayedCode(OpenedCourse.course_code);
+    }
+  }, [OpenedCourse]);
 
-  //Need to dynamically create Prerequisites :)
-  const Prerequisites = [
-    { value: "CSC 110", label: "CSC 110" },
-    { value: "CSC 230", label: "CSC 230" },
-    { value: "CSC 250", label: "CSC 250" },
-  ];
+  useEffect(() => {
+    if(OpenedCourse !== 0){
+      setFallNeeded(OpenedCourse.fall_req);
+      setSpringNeeded(OpenedCourse.spring_req);
+      setSummerNeeded(OpenedCourse.summer_req);
+    }
+  }, [OpenedCourse]);
 
-  const handleChange = (event) => {};
+  function SendEditedToBackend() {
+    const ID = OpenedCourse.id;
+    let Peng_needed = false;
+
+
+    if(OpenedCourse.spring_peng_req === true || OpenedCourse.summer_peng_req === true || OpenedCourse.fall_peng_req === true ){
+      Peng_needed = true;
+    }
+
+    console.log(OpenedCourse);
+
+    let New_value = {
+      course_code: DisplayedCode,
+      course_name: DisplayedName,
+      spring_req: SpringNeeded,
+      summer_req: SummerNeeded,
+      fall_req: FallNeeded,
+      spring_peng_req: (SpringNeeded && Peng_needed),
+      summer_peng_req: (SummerNeeded && Peng_needed),
+      fall_peng_req: (FallNeeded && Peng_needed),
+      course_desc: OpenedCourse.course_desc,
+      prof_prereq: OpenedCourse.prof_prereq,
+      year_req: OpenedCourse.year_req
+    };
+
+    console.log(New_value);
+  }
+
+  function DeleteCourse(index) {
+    setRemovedCourse(Courses.splice(index, 1));
+    console.log(RemovedCourse[0].id);
+  }
 
   return (
     <TableDiv>
+      <CustomButtonGroupView {...{ Amount: "Progession" }}>
+        <CustomButtonView
+        {...{ Theme: "Primary" }}
+        customClickEvent={() => {
+          navigate(`/Admin/Newcourse`);
+        }}
+        >
+      Add New Course
+      </CustomButtonView>
+      </CustomButtonGroupView>
       <SelectableTableDivView columns={4}>
         <SelectableTableHeaderDivView>
           <SelectableTableIconElementDivView />
@@ -100,23 +147,28 @@ export function AdminCoursePage() {
                 <SelectableTableInputDiv>
                   <SelectableTableSingleInputDiv>
                     <p> Course ID </p>
-                    <TextInputView {...{ DefaultValue: Course.course_code }} />
+                    <TextInputView
+                        DefaultValue={DisplayedCode}
+                        onChange={event => {
+                          setDisplayedCode(event.target.value);
+                        }}/>
                   </SelectableTableSingleInputDiv>
                   <SelectableTableSingleInputDiv style={{ width: 300 }}>
                     <p> Course Name </p>
                     <TextInputView
-                      {...{
-                        DefaultValue: Course.course_name,
-                      }}
-                    />
+                    DefaultValue={DisplayedName}
+                    onChange={event => {
+                      setDisplayedName(event.target.value);
+                    }}/>
                   </SelectableTableSingleInputDiv>
                 </SelectableTableInputDiv>
                 <SelectableTableInputDiv>
                   <SelectableTableCheckboxDiv>
                     <CheckboxView
-                      {...{
-                        checked: Course.fall_req,
-                      }}
+                        checked={FallNeeded}
+                        setChecked={() => {
+                          setFallNeeded(!FallNeeded);
+                        }}
                     >
                       X
                     </CheckboxView>
@@ -124,9 +176,10 @@ export function AdminCoursePage() {
                   </SelectableTableCheckboxDiv>
                   <SelectableTableCheckboxDiv>
                     <CheckboxView
-                      {...{
-                        checked: Course.spring_req,
-                      }}
+                    checked={SpringNeeded}
+                    setChecked={() => {
+                      setSpringNeeded(!SpringNeeded);
+                    }}
                     >
                       X
                     </CheckboxView>
@@ -134,9 +187,10 @@ export function AdminCoursePage() {
                   </SelectableTableCheckboxDiv>
                   <SelectableTableCheckboxDiv>
                     <CheckboxView
-                      {...{
-                        checked: Course.summer_req,
-                      }}
+                    checked={SummerNeeded}
+                    setChecked={() => {
+                      setSummerNeeded(!SummerNeeded);
+                    }}
                     >
                       X
                     </CheckboxView>
@@ -144,6 +198,14 @@ export function AdminCoursePage() {
                   </SelectableTableCheckboxDiv>
                 </SelectableTableInputDiv>
                 <SelectableTableInputDiv>
+                <CustomButtonView
+                    {...{ Theme: "Cancel" }}
+                    customClickEvent={() => {
+                      DeleteCourse(index)
+                    }}
+                  >
+                    Delete
+                  </CustomButtonView>
                   <CustomButtonView
                     {...{ Theme: "Secondary" }}
                     customClickEvent={() => {
@@ -155,8 +217,7 @@ export function AdminCoursePage() {
                   <CustomButtonView
                     {...{ Theme: "Primary" }}
                     customClickEvent={() => {
-                      CourseData[index] = Course;
-                      setOpenCourse(0);
+                      SendEditedToBackend();
                     }}
                   >
                     Save

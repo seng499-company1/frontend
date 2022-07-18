@@ -27,7 +27,7 @@ export default {
 
 export const SelectableTableEmptyThreeLabels = () => {
   return (
-    <SelectableTableDivView>
+    <SelectableTableDivView columns={4}>
     <SelectableTableHeaderDivView>
     <SelectableTableIconElementDivView>
     </SelectableTableIconElementDivView>
@@ -41,7 +41,7 @@ export const SelectableTableEmptyThreeLabels = () => {
 
 export const SelectableTableThreeLabels = () => {
   return (
-    <SelectableTableDivView>
+    <SelectableTableDivView columns={4}>
       <SelectableTableHeaderDivView>
         <SelectableTableIconElementDivView>
         </SelectableTableIconElementDivView>
@@ -55,7 +55,6 @@ export const SelectableTableThreeLabels = () => {
         <SelectableTableIconElementDivView>
           <BiCaretUp style={{ height: 30, width: 30 }}/>
           </SelectableTableIconElementDivView>
-          <SelectableTableInputDiv>
             <SelectableTableSingleInputDiv>
               <p> First Name </p>
               <TextInputView {...{ placeholder: "Bill" }}/>
@@ -68,7 +67,6 @@ export const SelectableTableThreeLabels = () => {
               <p> Department </p>
               <TextInputView {...{ placeholder: "CSC" }}/>
             </SelectableTableSingleInputDiv>
-          </SelectableTableInputDiv>
           <CustomButtonGroupView {...{ Amount: "Progession" }}>
             <ButtonDiv>
               <CustomButtonView {...{ Theme: "Secondary" }}>Cancel</CustomButtonView>
@@ -92,7 +90,7 @@ export const SelectableTableThreeLabels = () => {
 
 export const SelectableTableEmptyFourLabels = () => {
   return (
-    <SelectableTableDivView>
+    <SelectableTableDivView columns={5}>
     <SelectableTableHeaderDivView>
     <SelectableTableIconElementDivView>
     </SelectableTableIconElementDivView>
@@ -121,7 +119,7 @@ export const SelectableTableFourLabels = () => {
   const handleChange = (event) => {};
 
   return (
-    <SelectableTableDivView>
+    <SelectableTableDivView columns={5}>
     <SelectableTableHeaderDivView>
     <SelectableTableIconElementDivView>
     </SelectableTableIconElementDivView>
