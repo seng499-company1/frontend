@@ -345,19 +345,22 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
   return (
     <Background>
       <LayoutDiv>
-        <Header>Course teaching preferences</Header>
+        <Header>
+          Course Teaching Preferences
+          <h5 style={{'fontSize': 16, 'fontWeight': 600}}>
+            For more information about specific courses, view the <a href='https://www.uvic.ca/ecs/software/current-students/courses/index.php' target='__blank__'>UVic BSEng Course Calendar</a>
+          </h5>
+        </Header>
         {Courses.map(function (Course, index) {
           let name = Course.course_code;
           return (
             <>
               <div>
                 <h3 style={{ fontWeight: "500", margin: "0" }}>
-                  {" "}
-                  {Course.course_code}{" "}
+                  {Course.course_code}
                 </h3>
                 <CourseInfoDiv key={index}>
                   <p>
-                    {Course.course_desc}{" "}
                     {Course.course_qualifications && (
                       <>
                         <br />
