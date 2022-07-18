@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import LandingPage from "./LandingPage.tsx";
 import AdminCoursePage from "./AdminCourse.tsx";
+import NewCoursePage from "./NewCourse.tsx";
 import GenerateSchedule from "./GenerateSchedule.tsx";
 import GenerateSchedule1 from "./GenerateSchedule1.tsx";
 import GenerateSchedule2 from "./GenerateSchedule2.tsx";
@@ -24,6 +25,7 @@ export function AdminIndex() {
       <Routes>
         <Route path="" element={<LandingPage />} />
         <Route path="Courses" element={<AdminCoursePage />} />
+        <Route path="Newcourse" element={<NewCoursePage />} />
         <Route
           path="Schedule"
           element={
