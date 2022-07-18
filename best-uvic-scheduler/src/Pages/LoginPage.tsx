@@ -66,7 +66,7 @@ export function LoginPage() {
     })
       .then((response) => {
         if (response.data.permissions === "admin") {
-          navigate("/LandingPage");
+          navigate("/admin");
         } else {
           setProfessor(GetProfessor(response.data.id)).then(
             navigate(`/SelectProfessor/TimeAvail`)
