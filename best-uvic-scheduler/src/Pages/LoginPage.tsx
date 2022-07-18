@@ -68,9 +68,11 @@ export function LoginPage() {
         if (response.data.permissions === "admin") {
           navigate("/admin");
         } else {
-          setProfessor(GetProfessor(response.data.id)).then(
-            navigate(`/SelectProfessor/TimeAvail`)
-          );
+          const id = response.data.id;
+          GetProfessor(id).then((response) => {
+            setProfessor(response.data);
+            navigate(`/SelectProfessor/TimeAvail`);
+          });
         }
       })
       .catch((error) => {

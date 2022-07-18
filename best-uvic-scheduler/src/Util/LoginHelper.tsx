@@ -2,7 +2,7 @@ const axios = require("axios");
 
 export async function PostLoginInfo(props) {
   try {
-    return await axios.post(
+    const response = await axios.post(
       `http://uvic.immortalmind.ca:5000/login/`,
       {
         username: props.username,
@@ -12,6 +12,8 @@ export async function PostLoginInfo(props) {
         "Content-Type": "application/json",
       }
     );
+    console.log(response);
+    return response;
   } catch (error) {
     console.log("Error!! " + error);
     return [];

@@ -32,16 +32,13 @@ export function AdminCoursePage() {
   const [SummerNeeded, setSummerNeeded] = useState(false);
 
   //get data
-  useEffect(() => {
-    console.log("Inside useEffect");
-    CourseListHelper.GetCourseList()
-      .then((resp) => {
-        setCourses(resp);
-      })
-      .then((resp) => {
-        setAmmount(resp.length());
-      });
-  }, []);
+  CourseListHelper.GetCourseList()
+    .then((resp) => {
+      setCourses(resp);
+    })
+    .then((resp) => {
+      setAmmount(resp.length());
+    });
 
   const Departments = [
     { value: "Computer Science", label: "Computer Science" },
