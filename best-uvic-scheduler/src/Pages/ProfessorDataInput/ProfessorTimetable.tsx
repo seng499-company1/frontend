@@ -103,16 +103,13 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
   const [Courses, setCourses] = useState([]);
   const [AmountOfCourses, setAmount] = useState(0);
 
-  //get data
-  useEffect(() => {
-    CourseListHelper.GetCourseList()
-      .then((resp) => {
-        setCourses(resp);
-      })
-      .then((resp) => {
-        setAmount(resp.length());
-      });
-  }, []);
+  CourseListHelper.GetCourseList()
+    .then((resp) => {
+      setCourses(resp);
+    })
+    .then((resp) => {
+      setAmount(resp.length());
+    });
 
   const semestersItems = semesters.map((sem: string) => {
     return { value: sem, label: sem };

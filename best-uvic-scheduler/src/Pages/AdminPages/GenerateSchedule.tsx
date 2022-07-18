@@ -260,6 +260,8 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
     currentlyShownSchedule = scheduleFall;
   }
 
+  console.log(currentlyShownSchedule);
+
   return (
     <>
       <TabGroup initialTabId="0">
