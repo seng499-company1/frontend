@@ -17,7 +17,7 @@ export type Json = {
   year_req: Number;
 };
 
-export interface EditCourseProps {
+export interface CourseProps {
   id: number;
   json: Json;
 }
@@ -34,10 +34,8 @@ export async function GetCourseList() {
   }
 }
 
-export async function editCourse(props: EditCourseProps) {
-  console.log("PROPS  ", props.json, props.id);
+export async function editCourse(props: CourseProps) {
   const json = props.json;
-  console.log("TEST TEST " + test);
   try {
     const response = await axios.put(
       `http://uvic.immortalmind.ca:5000/courses/${props.id}`,
@@ -49,5 +47,38 @@ export async function editCourse(props: EditCourseProps) {
     console.log("response  ", response);
   } catch (error) {
     console.log("PUT COURSE FAILED! " + error);
+  }
+}
+
+export async function deleteCourse(props) {
+  console.log("ID  ", props);
+  const json = props.json;
+  try {
+    const response = await axios.delete(
+      `http://uvic.immortalmind.ca:5000/courses/${props.id}`,
+      json,
+      {
+        "Content-Type": "application/json",
+      }
+    );
+    console.log("response  ", response);
+  } catch (error) {
+    console.log("DELETE COURSE FAILED! " + error);
+  }
+}
+
+export async function addCourse(props: CourseProps) {
+  const json = props.json;
+  try {
+    const response = await axios.post(
+      `http://uvic.immortalmind.ca:5000/courses/${props.id}`,
+      json,
+      {
+        "Content-Type": "application/json",
+      }
+    );
+    console.log("response  ", response);
+  } catch (error) {
+    console.log("POST COURSE FAILED! " + error);
   }
 }
