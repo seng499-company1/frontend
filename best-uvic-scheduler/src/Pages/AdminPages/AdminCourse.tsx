@@ -119,7 +119,6 @@ export function AdminCoursePage() {
         </SelectableTableHeaderDivView>
         {Courses.map(function (Course, index) {
           let name = Course.course_code;
-          console.log(Course);
           const TimesOfferedArr = [];
 
           if (Course.fall_req === true) {
