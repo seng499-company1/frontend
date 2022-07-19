@@ -39,13 +39,15 @@ export function AdminCoursePage() {
   const navigate = useNavigate();
 
   //get data
-  CourseListHelper.GetCourseList()
-    .then((resp) => {
-      setCourses(resp);
-    })
-    .then((resp) => {
-      setAmmount(resp.length());
-    });
+  useEffect(() => {
+    CourseListHelper.GetCourseList()
+      .then((resp) => {
+        setCourses(resp);
+      })
+      .then((resp) => {
+        setAmmount(resp.length());
+      });
+    }, []);
 
   useEffect(() => {
     if(OpenedCourse !== 0){
