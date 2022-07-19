@@ -25,6 +25,12 @@ const TableDiv = styled.div`
   padding-top: 48px;
 `;
 
+const OpenEditablePartDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  grid-column: 2 / span 3;
+`;
+
 export function AdminCoursePage() {
   const [Courses, setCourses] = useState([]);
   const [AmountOfCourses, setAmmount] = useState(0);
@@ -148,6 +154,7 @@ export function AdminCoursePage() {
                     }}
                   />
                 </SelectableTableIconElementDivView>
+                <OpenEditablePartDiv>
                 <SelectableTableInputDiv>
                   <SelectableTableSingleInputDiv>
                     <p> Course ID </p>
@@ -201,7 +208,7 @@ export function AdminCoursePage() {
                     <p>Summer</p>
                   </SelectableTableCheckboxDiv>
                 </SelectableTableInputDiv>
-                <SelectableTableInputDiv>
+                <CustomButtonGroupView {...{ Amount: "Progession" }}>
                 <CustomButtonView
                     {...{ Theme: "Cancel" }}
                     customClickEvent={() => {
@@ -226,7 +233,8 @@ export function AdminCoursePage() {
                   >
                     Save
                   </CustomButtonView>
-                </SelectableTableInputDiv>
+                </CustomButtonGroupView>
+                </OpenEditablePartDiv>
               </SelectableTableElementOpenedDivView>
             );
           } else {
