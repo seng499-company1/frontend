@@ -20,6 +20,7 @@ import { CustomButtonView } from "../../Components/button/button.tsx";
 import { CustomButtonGroupView } from "../../Components/button/buttongroup.tsx";
 import { BiCaretDown, BiCaretUp } from "react-icons/bi";
 import { type } from "os";
+import { editCourse } from "../../Util/CourseListHelper";
 
 const TableDiv = styled.div`
   padding-top: 48px;
@@ -27,7 +28,6 @@ const TableDiv = styled.div`
 
 export function AdminCoursePage() {
   const [Courses, setCourses] = useState([]);
-  const [AmountOfCourses, setAmmount] = useState(0);
   const [OpenedCourse, setOpenCourse] = useState(0);
   const [RemovedCourse, setRemovedCourse] = useState(0);
   const [DisplayedName, setDisplayedName] = useState(0);
@@ -40,24 +40,20 @@ export function AdminCoursePage() {
 
   //get data
   useEffect(() => {
-    CourseListHelper.GetCourseList()
-      .then((resp) => {
-        setCourses(resp);
-      })
-      .then((resp) => {
-        setAmmount(resp.length());
-      });
-    }, []);
+    CourseListHelper.GetCourseList().then((resp) => {
+      setCourses(resp);
+    });
+  }, []);
 
   useEffect(() => {
-    if(OpenedCourse !== 0){
+    if (OpenedCourse !== 0) {
       setDisplayedName(OpenedCourse.course_name);
       setDisplayedCode(OpenedCourse.course_code);
     }
   }, [OpenedCourse]);
 
   useEffect(() => {
-    if(OpenedCourse !== 0){
+    if (OpenedCourse !== 0) {
       setFallNeeded(OpenedCourse.fall_req);
       setSpringNeeded(OpenedCourse.spring_req);
       setSummerNeeded(OpenedCourse.summer_req);
@@ -68,27 +64,32 @@ export function AdminCoursePage() {
     const ID = OpenedCourse.id;
     let Peng_needed = false;
 
-
-    if(OpenedCourse.spring_peng_req === true || OpenedCourse.summer_peng_req === true || OpenedCourse.fall_peng_req === true ){
+    if (
+      OpenedCourse.spring_peng_req === true ||
+      OpenedCourse.summer_peng_req === true ||
+      OpenedCourse.fall_peng_req === true
+    ) {
       Peng_needed = true;
     }
 
     console.log(OpenedCourse);
 
+    //note min offering is hardcoded
     let New_value = {
       course_code: DisplayedCode,
       course_name: DisplayedName,
+      min_offering: 1,
       spring_req: SpringNeeded,
       summer_req: SummerNeeded,
       fall_req: FallNeeded,
-      spring_peng_req: (SpringNeeded && Peng_needed),
-      summer_peng_req: (SummerNeeded && Peng_needed),
-      fall_peng_req: (FallNeeded && Peng_needed),
+      spring_peng_req: SpringNeeded && Peng_needed,
+      summer_peng_req: SummerNeeded && Peng_needed,
+      fall_peng_req: FallNeeded && Peng_needed,
       course_desc: OpenedCourse.course_desc,
       prof_prereq: OpenedCourse.prof_prereq,
-      year_req: OpenedCourse.year_req
+      year_req: OpenedCourse.year_req,
     };
-
+    CourseListHelper.editCourse({ id: ID, json: New_value });
     console.log(New_value);
   }
 
@@ -101,13 +102,13 @@ export function AdminCoursePage() {
     <TableDiv>
       <CustomButtonGroupView {...{ Amount: "Progession" }}>
         <CustomButtonView
-        {...{ Theme: "Primary" }}
-        customClickEvent={() => {
-          navigate(`/Admin/Newcourse`);
-        }}
+          {...{ Theme: "Primary" }}
+          customClickEvent={() => {
+            navigate(`/Admin/Newcourse`);
+          }}
         >
-      Add New Course
-      </CustomButtonView>
+          Add New Course
+        </CustomButtonView>
       </CustomButtonGroupView>
       <SelectableTableDivView columns={4}>
         <SelectableTableHeaderDivView>
@@ -152,27 +153,29 @@ export function AdminCoursePage() {
                   <SelectableTableSingleInputDiv>
                     <p> Course ID </p>
                     <TextInputView
-                        DefaultValue={DisplayedCode}
-                        onChange={event => {
-                          setDisplayedCode(event.target.value);
-                        }}/>
+                      DefaultValue={DisplayedCode}
+                      onChange={(event) => {
+                        setDisplayedCode(event.target.value);
+                      }}
+                    />
                   </SelectableTableSingleInputDiv>
                   <SelectableTableSingleInputDiv style={{ width: 300 }}>
                     <p> Course Name </p>
                     <TextInputView
-                    DefaultValue={DisplayedName}
-                    onChange={event => {
-                      setDisplayedName(event.target.value);
-                    }}/>
+                      DefaultValue={DisplayedName}
+                      onChange={(event) => {
+                        setDisplayedName(event.target.value);
+                      }}
+                    />
                   </SelectableTableSingleInputDiv>
                 </SelectableTableInputDiv>
                 <SelectableTableInputDiv>
                   <SelectableTableCheckboxDiv>
                     <CheckboxView
-                        checked={FallNeeded}
-                        setChecked={() => {
-                          setFallNeeded(!FallNeeded);
-                        }}
+                      checked={FallNeeded}
+                      setChecked={() => {
+                        setFallNeeded(!FallNeeded);
+                      }}
                     >
                       X
                     </CheckboxView>
@@ -180,10 +183,10 @@ export function AdminCoursePage() {
                   </SelectableTableCheckboxDiv>
                   <SelectableTableCheckboxDiv>
                     <CheckboxView
-                    checked={SpringNeeded}
-                    setChecked={() => {
-                      setSpringNeeded(!SpringNeeded);
-                    }}
+                      checked={SpringNeeded}
+                      setChecked={() => {
+                        setSpringNeeded(!SpringNeeded);
+                      }}
                     >
                       X
                     </CheckboxView>
@@ -191,10 +194,10 @@ export function AdminCoursePage() {
                   </SelectableTableCheckboxDiv>
                   <SelectableTableCheckboxDiv>
                     <CheckboxView
-                    checked={SummerNeeded}
-                    setChecked={() => {
-                      setSummerNeeded(!SummerNeeded);
-                    }}
+                      checked={SummerNeeded}
+                      setChecked={() => {
+                        setSummerNeeded(!SummerNeeded);
+                      }}
                     >
                       X
                     </CheckboxView>
@@ -202,10 +205,10 @@ export function AdminCoursePage() {
                   </SelectableTableCheckboxDiv>
                 </SelectableTableInputDiv>
                 <SelectableTableInputDiv>
-                <CustomButtonView
+                  <CustomButtonView
                     {...{ Theme: "Cancel" }}
                     customClickEvent={() => {
-                      DeleteCourse(index)
+                      DeleteCourse(index);
                     }}
                   >
                     Delete

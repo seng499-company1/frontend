@@ -24,7 +24,9 @@ export interface EditCourseProps {
 
 export async function GetCourseList() {
   try {
-    const response = await axios.get("http://uvic.immortalmind.ca:5000/courses/");
+    const response = await axios.get(
+      "http://uvic.immortalmind.ca:5000/courses/"
+    );
     console.log("response  ", response);
     return response.data;
   } catch (error) {
@@ -34,10 +36,12 @@ export async function GetCourseList() {
 
 export async function editCourse(props: EditCourseProps) {
   console.log("PROPS  ", props.json, props.id);
+  const json = props.json;
+  console.log("TEST TEST " + test);
   try {
     const response = await axios.put(
       `http://uvic.immortalmind.ca:5000/courses/${props.id}`,
-      props.json,
+      json,
       {
         "Content-Type": "application/json",
       }
