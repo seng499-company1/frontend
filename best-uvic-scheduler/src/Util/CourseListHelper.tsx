@@ -51,12 +51,10 @@ export async function editCourse(props: CourseProps) {
 }
 
 export async function deleteCourse(props) {
-  console.log("ID  ", props);
-  const json = props.json;
   try {
     const response = await axios.delete(
-      `http://uvic.immortalmind.ca:5000/courses/${props.id}`,
-      json,
+      `http://uvic.immortalmind.ca:5000/courses/${props}`,
+      props,
       {
         "Content-Type": "application/json",
       }

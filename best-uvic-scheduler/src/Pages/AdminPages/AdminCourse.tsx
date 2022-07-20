@@ -94,8 +94,8 @@ export function AdminCoursePage() {
   }
 
   function DeleteCourse(index) {
-    setRemovedCourse(Courses.splice(index, 1));
-    console.log(RemovedCourse[0].id);
+    const deleted = Courses.splice(index, 1);
+    CourseListHelper.deleteCourse(deleted[0].id);
   }
 
   return (
