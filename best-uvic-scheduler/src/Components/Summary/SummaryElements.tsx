@@ -28,10 +28,32 @@ export const noTimesMessage = (
       <SelectableTableLabelsView>
         No Times Entered For This Semester
       </SelectableTableLabelsView>
+      <SelectableTableLabelsView></SelectableTableLabelsView>
+      <SelectableTableLabelsView></SelectableTableLabelsView>
+      <SelectableTableLabelsView></SelectableTableLabelsView>
+      <SelectableTableLabelsView></SelectableTableLabelsView>
     </SelectableTableLabelDivView>
   </SelectableTableElementClosedDivView>
 );
 
+export const leaveReasonView = (semesterKey: string, leaveReason: any) => {
+  if (leaveReason[semesterKey] != "") {
+    return (
+      <SelectableTableLabelDivView>
+        <SelectableTableLabelsView>
+          Away this semester, Leave Reason:
+        </SelectableTableLabelsView>
+
+        <SelectableTableLabelsView>
+          {leaveReason[semesterKey]}
+        </SelectableTableLabelsView>
+        <SelectableTableLabelsView></SelectableTableLabelsView>
+        <SelectableTableLabelsView></SelectableTableLabelsView>
+        <SelectableTableLabelsView></SelectableTableLabelsView>
+      </SelectableTableLabelDivView>
+    );
+  }
+};
 export const timesEnteredMessage = (
   <SelectableTableElementClosedDivView>
     <SelectableTableLabelDivView>

@@ -10,6 +10,7 @@ import {
   LeaveReasonContext,
   MaxCourseContext,
 } from "./index.tsx";
+import { TimetableContext } from "../../Pages/ProfessorDataInput/index.tsx";
 import { DefaultShadow } from "../../GlobalStyles.tsx";
 
 import { useNavigate } from "react-router-dom";
@@ -33,12 +34,48 @@ import {
   semesterHeader,
   maxCoursesMessage,
   coursesMessage,
+  leaveReasonView,
 } from "../../Components/Summary/SummaryElements.tsx";
 
 export interface SummaryProps {
   maxCourses: any;
   absenceReason: any;
 }
+export interface DayProps {
+  times: string;
+  preferedDay: boolean;
+}
+export interface SemesterProps {
+  mon: DayProps;
+  tues: DayProps;
+  wed: DayProps;
+  thurs: DayProps;
+  fri: DayProps;
+}
+
+export interface PreferedTimesProps {
+  fall: SemesterProps;
+  spring: SemesterProps;
+  summer: SemesterProps;
+}
+
+export interface CoursePreferences {
+  course_id: string;
+  will_to_teach: string;
+  able_to_teach: string;
+}
+export interface SubmitInfoProps {
+  year: number;
+  semester_off: number;
+  num_relief: number;
+  num_summer_courses: number;
+  num_fall_courses: number;
+  num_spring_courses: number;
+  why_relief: string;
+  preferred_times: PreferedTimesProps;
+  course_preferences: Array<CoursePreferences>;
+}
+
 const ResponseDiv = styled.div`
   text-indent: -40px;
   display: flex;
@@ -72,11 +109,89 @@ function stringToTime(times: string) {
     times = times.trim().slice(0, -1);
     arrayTime[index] = times;
   });
-
   return arrayTime;
 }
 
 export function Summary(props: SummaryProps) {
+  var submitInfo: SubmitInfoProps = {
+    year: 2022,
+    semester_off: 0,
+    num_relief: 0,
+    num_summer_courses: 0,
+    num_fall_courses: 0,
+    num_spring_courses: 0,
+    why_relief: "",
+    preferred_times: {
+      fall: {
+        mon: {
+          times: "",
+          preferedDay: false,
+        },
+        tues: {
+          times: "",
+          preferedDay: false,
+        },
+        wed: {
+          times: "",
+          preferedDay: false,
+        },
+        thurs: {
+          times: "",
+          preferedDay: false,
+        },
+        fri: {
+          times: "",
+          preferedDay: false,
+        },
+      },
+      spring: {
+        mon: {
+          times: "",
+          preferedDay: false,
+        },
+        tues: {
+          times: "",
+          preferedDay: false,
+        },
+        wed: {
+          times: "",
+          preferedDay: false,
+        },
+        thurs: {
+          times: "",
+          preferedDay: false,
+        },
+        fri: {
+          times: "",
+          preferedDay: false,
+        },
+      },
+      summer: {
+        mon: {
+          times: "",
+          preferedDay: false,
+        },
+        tues: {
+          times: "",
+          preferedDay: false,
+        },
+        wed: {
+          times: "",
+          preferedDay: false,
+        },
+        thurs: {
+          times: "",
+          preferedDay: false,
+        },
+        fri: {
+          times: "",
+          preferedDay: false,
+        },
+      },
+    },
+    course_preferences: [],
+  };
+
   //get data
   const [Courses, setCourses] = useState([]);
   const [AmountOfCourses, setAmmount] = useState(0);
@@ -106,6 +221,8 @@ export function Summary(props: SummaryProps) {
   const { qualifications, setQualifications } = useContext(
     QualificationsContext
   );
+
+  const { timetables, setTimetables } = useContext(TimetableContext);
   const { preferences, setPreferences } = useContext(PreferencesContext);
   const { selectedProfessor, setProfessor } = useContext(ProfessorContext);
   const { prefDays, setPrefDays } = useContext(PrefDayContext);
@@ -116,11 +233,11 @@ export function Summary(props: SummaryProps) {
   const navigate = useNavigate();
 
   const weekdays = {
-    mon: "Monday",
-    tues: "Tuesday",
-    wed: "Wednesday",
-    thurs: "Thrusday",
-    fri: "Friday",
+    Monday: "mon",
+    Tuesday: "tues",
+    Wednesday: "wed",
+    Thursday: "thurs",
+    Friday: "fri",
   };
 
   const weekdayArray = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
@@ -134,7 +251,13 @@ export function Summary(props: SummaryProps) {
   return (
     <Background>
       <Header>Summary</Header>
-
+      {/* console.log("SUBMITTED FORM");
+            console.log(qualifications);
+            console.log(preferences);
+            console.log(prefDays);
+            console.log("TIMETABLE");
+            console.log(timetables);
+            console.log(selectedProfessor); */}
       <h2>Course Teaching Preferences</h2>
       <TableDiv>
         <SelectableTableDivView columns={5}>
@@ -143,6 +266,14 @@ export function Summary(props: SummaryProps) {
             let name = Course.course_code;
             let qual = qualifications[name];
             let pref = preferences[name];
+
+            let courseInfo: CoursePreferences = {
+              course_id: Course.course_code,
+              will_to_teach: qualifications[name],
+              able_to_teach: preferences[name],
+            };
+
+            submitInfo.course_preferences.push(courseInfo);
 
             if (qual == null) {
               qual = "N/A";
@@ -172,9 +303,10 @@ export function Summary(props: SummaryProps) {
       <TableDiv>
         <SelectableTableDivView columns={5}>
           {semesterHeader("Summer")}
+          {leaveReasonView("Summer 2023", leaveReason)}
 
-          {maxCoursesMessage(Preferences.num_summer_courses)}
-
+          {maxCoursesMessage(maxCourseEntered["Summer 2023"])}
+          {(submitInfo.num_summer_courses = maxCourseEntered["Summer 2023"])}
           <SelectableTableElementClosedDivView>
             <SelectableTableLabelDivView>
               <SelectableTableLabelsView>
@@ -182,6 +314,9 @@ export function Summary(props: SummaryProps) {
               </SelectableTableLabelsView>
               <SelectableTableLabelsView>
                 {prefDays["Summer 2023"].map((day: boolean, idx: number) => {
+                  submitInfo.preferred_times.summer[
+                    weekdays[weekdayArray[idx]]
+                  ].preferedDay = day;
                   return (
                     <ToggleView readOnly active={day} id={idx}>
                       {weekdayArray[idx]}
@@ -210,7 +345,8 @@ export function Summary(props: SummaryProps) {
           })()}
           {Object.keys(timeSummer).map(function (Day, index) {
             let times = stringToTime(timeSummer[Day].times);
-
+            submitInfo.preferred_times.summer[weekdays[Day]].times =
+              timeSummer[Day].times;
             if (times.length != 0) {
               return (
                 <SelectableTableElementClosedDivView>
@@ -244,7 +380,10 @@ export function Summary(props: SummaryProps) {
         <SelectableTableDivView columns={5}>
           {semesterHeader("Fall")}
 
-          {maxCoursesMessage(Preferences.num_fall_courses)}
+          {leaveReasonView("Fall 2022", leaveReason)}
+
+          {maxCoursesMessage(maxCourseEntered["Fall 2022"])}
+          {(submitInfo.num_summer_courses = maxCourseEntered["Fall 2022"])}
 
           <SelectableTableElementClosedDivView>
             <SelectableTableLabelDivView>
@@ -253,6 +392,9 @@ export function Summary(props: SummaryProps) {
               </SelectableTableLabelsView>
               <SelectableTableLabelsView>
                 {prefDays["Fall 2022"].map((day: boolean, idx: number) => {
+                  submitInfo.preferred_times.fall[
+                    weekdays[weekdayArray[idx]]
+                  ].preferedDay = day;
                   return (
                     <ToggleView readOnly active={day} id={idx}>
                       {weekdayArray[idx]}
@@ -281,6 +423,8 @@ export function Summary(props: SummaryProps) {
           })()}
           {Object.keys(timeFall).map(function (Day, index) {
             let times = stringToTime(timeFall[Day].times);
+            submitInfo.preferred_times.fall[weekdays[Day]].times =
+              timeFall[Day].times;
 
             if (times.length != 0) {
               return (
@@ -316,7 +460,9 @@ export function Summary(props: SummaryProps) {
         <SelectableTableDivView columns={5}>
           {semesterHeader("Spring")}
 
-          {maxCoursesMessage(Preferences.num_spring_courses)}
+          {leaveReasonView("Spring 2023", leaveReason)}
+          {maxCoursesMessage(maxCourseEntered["Spring 2023"])}
+          {(submitInfo.num_summer_courses = maxCourseEntered["Spring 2023"])}
 
           <SelectableTableElementClosedDivView>
             <SelectableTableLabelDivView>
@@ -325,6 +471,9 @@ export function Summary(props: SummaryProps) {
               </SelectableTableLabelsView>
               <SelectableTableLabelsView>
                 {prefDays["Spring 2023"].map((day: boolean, idx: number) => {
+                  submitInfo.preferred_times.spring[
+                    weekdays[weekdayArray[idx]]
+                  ].preferedDay = day;
                   return (
                     <ToggleView readOnly active={day} id={idx}>
                       {weekdayArray[idx]}
@@ -352,8 +501,11 @@ export function Summary(props: SummaryProps) {
             }
           })()}
           {Object.keys(timeSpring).map(function (Day, index) {
+            submitInfo.preferred_times.spring[weekdays[Day]].times =
+              timeSpring[Day].times;
             let times = stringToTime(timeSpring[Day].times);
-
+            console.log("SUBMIT");
+            console.log(submitInfo);
             let loop = 0;
             if (times.length != 0) {
               return (
@@ -399,6 +551,8 @@ export function Summary(props: SummaryProps) {
         <CustomButtonView
           {...{ Theme: "Primary" }}
           customClickEvent={() => {
+            console.log("SUBMIT INFO");
+            console.log(submitInfo);
             navigate(`/`);
           }}
         >

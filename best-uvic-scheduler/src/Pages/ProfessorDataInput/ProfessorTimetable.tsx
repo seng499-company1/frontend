@@ -159,25 +159,28 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
   ];
 
   useEffect(() => {
-    setMaxCourseEntered({
-      [selectedSemester.value]: maxCourses[selectedSemester.value],
-    });
-    console.log("HERE");
-    const val = selectedSemester.value;
+    console.log("In set Max Course");
+    const key = selectedSemester.value;
+    const val = maxCourses[key];
+    console.log(key);
     console.log(val);
-    console.log(qualifications);
-    console.log(maxCourses[val]);
     console.log(maxCourseEntered);
+    let addedVal = {};
+    addedVal[key] = val;
+    setMaxCourseEntered({
+      ...maxCourseEntered,
+      ...addedVal,
+    });
   }, [maxCourses]);
 
   useEffect(() => {
-    setLeaveReason({
-      semester: selectedSemester,
-      leave: leaveReason,
-    });
-    console.log("EHRE");
+    const key = selectedSemester.value;
+    const val = absenceReasons;
+    setLeaveReason(absenceReasons);
+    console.log("IN LEAVE");
+
     console.log(leaveReason);
-  }, [leaveReason]);
+  }, [absenceReasons]);
 
   //hooks
   const { qualifications, setQualifications } = useContext(
