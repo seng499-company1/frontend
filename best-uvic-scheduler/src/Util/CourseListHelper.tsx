@@ -36,15 +36,18 @@ export async function GetCourseList() {
 
 export async function editCourse(props: CourseProps) {
   const json = props.json;
+  console.log("JSON !! +  ", json);
   try {
     const response = await axios.put(
       `http://uvic.immortalmind.ca:5000/courses/${props.id}`,
+
       json,
       {
         "Content-Type": "application/json",
       }
     );
     console.log("response  ", response);
+    return response;
   } catch (error) {
     console.log("PUT COURSE FAILED! " + error);
   }

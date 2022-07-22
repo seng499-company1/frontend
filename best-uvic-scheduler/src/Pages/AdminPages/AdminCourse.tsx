@@ -37,7 +37,6 @@ export function AdminCoursePage() {
   const [SummerNeeded, setSummerNeeded] = useState(false);
 
   const navigate = useNavigate();
-
   //get data
   useEffect(() => {
     CourseListHelper.GetCourseList().then((resp) => {
@@ -74,7 +73,6 @@ export function AdminCoursePage() {
 
     console.log(OpenedCourse);
 
-    //note min offering is hardcoded
     let New_value = {
       course_code: DisplayedCode,
       course_name: DisplayedName,
