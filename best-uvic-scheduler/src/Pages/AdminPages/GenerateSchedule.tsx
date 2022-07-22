@@ -203,6 +203,54 @@ function CreateListelement(scheduleElement) {
   );
 }
 
+function GeneratEventList(currentlyShownSchedule) {
+  return currentlyShownSchedule.map((scheduleElement, i) => {
+    let capacity = 0;
+
+    scheduleElement.sections.forEach((section) => {
+      capacity = capacity + section.capacity;
+    });
+
+    let daysOffered;
+    scheduleElement.sections.forEach((section) => {
+      //console.log(section);
+      section.timeSlots.forEach((day, index) => {
+        if (index === 0) {
+          if (day === "THURSDAY") {
+            daysOffered = "Th";
+          } else {
+            daysOffered = day.dayOfWeek[0];
+          }
+        } else {
+          if (day.dayOfWeek === "THURSDAY") {
+            daysOffered = daysOffered + "/Th";
+          } else {
+            daysOffered = daysOffered + "/" + day.dayOfWeek[0];
+          }
+        }
+        //console.log(day.dayOfWeek + index);
+      });
+    });
+
+    // Proper date time setting
+    let timeOffered;
+    scheduleElement.sections.forEach((section) => {
+      if (section.timeSlots.length > 0) {
+        const time = section.timeSlots[0].timeRange;
+        timeOffered = time[0] + " - " + time[1];
+      } else {
+        return {};
+      }
+    });
+    return {
+      id: i,
+      title: scheduleElement.course.title,
+      desc: scheduleElement.sections[0].professor.name,
+      capacity,
+    };
+  });
+}
+
 export function GenerateScheduleView(props: GenerateScheduleViewProps) {
   const {
     semesters,
