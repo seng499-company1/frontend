@@ -247,6 +247,9 @@ export function Summary(props: SummaryProps) {
   const timeFall = Times.fall;
 
   //HTML TAGS
+  submitInfo.num_fall_courses = maxCourseEntered["Fall 2022"];
+  submitInfo.num_fall_courses = maxCourseEntered["Spring 2023"];
+  submitInfo.num_fall_courses = maxCourseEntered["Summer 2023"];
 
   return (
     <Background>
@@ -303,10 +306,11 @@ export function Summary(props: SummaryProps) {
       <TableDiv>
         <SelectableTableDivView columns={5}>
           {semesterHeader("Summer")}
-          {leaveReasonView("Summer 2023", leaveReason)}
 
           {maxCoursesMessage(maxCourseEntered["Summer 2023"])}
-          {(submitInfo.num_summer_courses = maxCourseEntered["Summer 2023"])}
+
+          {leaveReasonView("Summer 2023", leaveReason)}
+
           <SelectableTableElementClosedDivView>
             <SelectableTableLabelDivView>
               <SelectableTableLabelsView>
@@ -383,7 +387,6 @@ export function Summary(props: SummaryProps) {
           {leaveReasonView("Fall 2022", leaveReason)}
 
           {maxCoursesMessage(maxCourseEntered["Fall 2022"])}
-          {(submitInfo.num_summer_courses = maxCourseEntered["Fall 2022"])}
 
           <SelectableTableElementClosedDivView>
             <SelectableTableLabelDivView>
@@ -462,7 +465,6 @@ export function Summary(props: SummaryProps) {
 
           {leaveReasonView("Spring 2023", leaveReason)}
           {maxCoursesMessage(maxCourseEntered["Spring 2023"])}
-          {(submitInfo.num_summer_courses = maxCourseEntered["Spring 2023"])}
 
           <SelectableTableElementClosedDivView>
             <SelectableTableLabelDivView>
