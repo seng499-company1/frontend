@@ -221,9 +221,9 @@ function useTimetable(props: TimetableProps): TimetableViewProps {
       setMyEvents((prev) => {
         const existing = prev.find((ev) => ev.id === event.id) ?? {};
         const filtered = prev.filter((ev) => ev.id !== event.id);
+        props.eventUpdateCallback([...filtered, { ...existing, start, end }]);
         return [...filtered, { ...existing, start, end, allDay }];
       });
-      props.eventUpdateCallback(myEvents);
     },
     [setMyEvents]
   );
@@ -233,9 +233,9 @@ function useTimetable(props: TimetableProps): TimetableViewProps {
       setMyEvents((prev) => {
         const existing = prev.find((ev) => ev.id === event.id) ?? {};
         const filtered = prev.filter((ev) => ev.id !== event.id);
+        props.eventUpdateCallback([...filtered, { ...existing, start, end }]);
         return [...filtered, { ...existing, start, end }];
       });
-      props.eventUpdateCallback(myEvents);
     },
     [setMyEvents]
   );
@@ -243,6 +243,9 @@ function useTimetable(props: TimetableProps): TimetableViewProps {
   const formats = {
     dayFormat: (date, culture, localizer) =>
       localizer.format(date, "ddd", culture),
+    eventTimeRangeFormat: () => {
+      return "";
+    },
   };
 
   return {

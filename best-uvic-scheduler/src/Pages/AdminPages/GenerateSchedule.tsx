@@ -270,22 +270,31 @@ function GeneratEventList(currentlyShownSchedule) {
 }
 
 function RebuildEndpoint(props) {
-  console.log(props);
-  const newSchedule = props.Schedule.schedule;
+  const newSchedule = props.Schedule;
   const semester = props.selectedSemester.split(" ")[0].toLowerCase();
+  console.log(props);
+  console.log(semester);
   props.events.forEach((event) => {
     const weekday = DateDayMap.DayLookup[event.end.getDay()];
-    const start = `${event.start.getHour()}:${event.start.getMinute()}`;
-    const end = `${event.end.getHour()}:${event.end.getMinute()}`;
-    newSchedule[semester][event.courseIdx].section[event.sectionIdx].dayOfWeek =
-      weekday;
-    newSchedule[semester][event.courseIdx].section[event.sectionIdx].timeSlots[
-      event.timeSlotIdx
-    ].timeRange.start = start;
-    newSchedule[semester][event.courseIdx].section[event.sectionIdx].timeSlots[
-      event.timeSlotIdx
-    ].timeRange.end = end;
+    const start = `${event.start.getHours()}:${String(
+      event.end.getMinutes()
+    ).padStart(2, "0")}`;
+    const end = `${event.end.getHours()}:${String(
+      event.end.getMinutes()
+    ).padStart(2, "0")}`;
+    newSchedule.schedule[semester][event.courseIdx].sections[
+      event.sectionIdx
+    ].timeSlots[event.timeSlotIdx].dayOfWeek = weekday;
+
+    newSchedule.schedule[semester][event.courseIdx].sections[
+      event.sectionIdx
+    ].timeSlots[event.timeSlotIdx].timeRange[0] = start;
+
+    newSchedule.schedule[semester][event.courseIdx].sections[
+      event.sectionIdx
+    ].timeSlots[event.timeSlotIdx].timeRange[1] = end;
   });
+  console.log(newSchedule);
   return newSchedule;
 }
 
@@ -350,7 +359,7 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
   }
 
   const eventUpdateCallback = (events: any) => {
-    console.log(RebuildEndpoint({ events, Schedule, selectedSemester }));
+    setSchedule(RebuildEndpoint({ events, Schedule, selectedSemester }));
   };
 
   return (
