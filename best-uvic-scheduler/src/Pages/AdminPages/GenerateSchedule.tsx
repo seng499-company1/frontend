@@ -310,17 +310,17 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
   const scheduleSummer = Schedule.schedule.summer;
 
   let currentlyShownSchedule;
+  let calendarEventList;
   if (selectedSemester == "Summer 2023") {
     currentlyShownSchedule = scheduleSummer;
+    calendarEventList = GeneratEventList(scheduleSummer);
   } else if (selectedSemester == "Spring 2023") {
     currentlyShownSchedule = scheduleSpring;
+    calendarEventList = GeneratEventList(scheduleSpring);
   } else if (selectedSemester == "Fall 2022") {
     currentlyShownSchedule = scheduleFall;
+    calendarEventList = GeneratEventList(scheduleFall);
   }
-
-  console.log(currentlyShownSchedule);
-  const calendarEventList = GeneratEventList(currentlyShownSchedule);
-  console.log("TIMETABLE", calendarEventList);
 
   return (
     <>

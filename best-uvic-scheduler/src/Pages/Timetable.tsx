@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Calendar, Views, momentLocalizer } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
@@ -203,6 +203,10 @@ const DragAndDropCalendar = withDragAndDrop(Calendar);
 
 function useTimetable(props: TimetableProps): TimetableViewProps {
   const [myEvents, setMyEvents] = useState(props.events);
+
+  useEffect(() => {
+    setMyEvents(props.events);
+  }, [props]);
 
   const localizer = momentLocalizer(moment);
 
