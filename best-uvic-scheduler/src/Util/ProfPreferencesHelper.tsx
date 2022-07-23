@@ -10,7 +10,7 @@ const TestPreferenceList = {
     fall: {
       mon: {
         times: ["(“12:00” “13:20”) (“14:00” “15:20”)"],
-        preferredDay: true,
+        preferredDay: false,
       },
       tues: {
         times: ["(“12:00” “13:20”) (“14:00” “15:20”)"],
@@ -18,7 +18,7 @@ const TestPreferenceList = {
       },
       wed: {
         times: ["(“12:00” “13:20”) (“14:00” “15:20”)"],
-        preferredDay: true,
+        preferredDay: false,
       },
       thurs: {
         times: ["(“12:00” “13:20”) (“14:00” “15:20”)"],
@@ -32,7 +32,7 @@ const TestPreferenceList = {
     spring: {
       mon: {
         times: ["(“12:00” “13:20”) (“14:00” “15:20”)"],
-        preferredDay: true,
+        preferredDay: false,
       },
       tues: {
         times: ["(“12:00” “13:20”) (“14:00” “15:20”)"],
@@ -40,7 +40,7 @@ const TestPreferenceList = {
       },
       wed: {
         times: ["(“12:00” “13:20”) (“14:00” “15:20”)"],
-        preferredDay: true,
+        preferredDay: false,
       },
       thurs: {
         times: ["(“12:00” “13:20”) (“14:00” “15:20”)"],
@@ -58,7 +58,7 @@ const TestPreferenceList = {
       },
       tues: {
         times: ["(“12:00” “13:20”) (“14:00” “15:20”)"],
-        preferredDay: true,
+        preferredDay: false,
       },
       wed: {
         times: ["(“12:00” “13:20”) (“14:00” “15:20”)"],
@@ -66,7 +66,7 @@ const TestPreferenceList = {
       },
       thurs: {
         times: ["(“12:00” “13:20”) (“14:00” “15:20”)"],
-        preferredDay: true,
+        preferredDay: false,
       },
       fri: {
         times: ["(“12:00” “13:20”) (“14:00” “15:20”)"],

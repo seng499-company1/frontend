@@ -246,21 +246,24 @@ export function Summary(props: SummaryProps) {
   const timeSpring = Times.spring;
   const timeFall = Times.fall;
 
-  //HTML TAGS
+  //add to json
   submitInfo.num_fall_courses = maxCourseEntered["Fall 2022"];
   submitInfo.num_fall_courses = maxCourseEntered["Spring 2023"];
   submitInfo.num_fall_courses = maxCourseEntered["Summer 2023"];
 
+  submitInfo.why_relief = submitInfo.why_relief.concat(
+    "/$fall/",
+    leaveReason["Fall 2022"],
+    "/$spring",
+    leaveReason["Spring 2023"],
+    "/$summer/",
+    leaveReason["Summer 2023"]
+  );
+
   return (
     <Background>
       <Header>Summary</Header>
-      {/* console.log("SUBMITTED FORM");
-            console.log(qualifications);
-            console.log(preferences);
-            console.log(prefDays);
-            console.log("TIMETABLE");
-            console.log(timetables);
-            console.log(selectedProfessor); */}
+
       <h2>Course Teaching Preferences</h2>
       <TableDiv>
         <SelectableTableDivView columns={5}>
@@ -269,9 +272,11 @@ export function Summary(props: SummaryProps) {
             let name = Course.course_code;
             let qual = qualifications[name];
             let pref = preferences[name];
+            console.log("Courses");
+            console.log(Course);
 
             let courseInfo: CoursePreferences = {
-              course_id: Course.course_code,
+              course_id: Course.id,
               will_to_teach: qualifications[name],
               able_to_teach: preferences[name],
             };
@@ -303,83 +308,7 @@ export function Summary(props: SummaryProps) {
       </TableDiv>
 
       <h2>Teaching Time Preferences</h2>
-      <TableDiv>
-        <SelectableTableDivView columns={5}>
-          {semesterHeader("Summer")}
 
-          {maxCoursesMessage(maxCourseEntered["Summer 2023"])}
-
-          {leaveReasonView("Summer 2023", leaveReason)}
-
-          <SelectableTableElementClosedDivView>
-            <SelectableTableLabelDivView>
-              <SelectableTableLabelsView>
-                Prefered Days:
-              </SelectableTableLabelsView>
-              <SelectableTableLabelsView>
-                {prefDays["Summer 2023"].map((day: boolean, idx: number) => {
-                  submitInfo.preferred_times.summer[
-                    weekdays[weekdayArray[idx]]
-                  ].preferedDay = day;
-                  return (
-                    <ToggleView readOnly active={day} id={idx}>
-                      {weekdayArray[idx]}
-                    </ToggleView>
-                  );
-                })}{" "}
-              </SelectableTableLabelsView>
-              <SelectableTableLabelsView></SelectableTableLabelsView>
-              <SelectableTableLabelsView></SelectableTableLabelsView>
-              <SelectableTableLabelsView></SelectableTableLabelsView>
-            </SelectableTableLabelDivView>
-          </SelectableTableElementClosedDivView>
-
-          {(() => {
-            if (
-              timeSummer.Monday.times.length === 0 &&
-              timeSummer.Tuesday.times.length === 0 &&
-              timeSummer.Wednesday.times.length === 0 &&
-              timeSummer.Thursday.times.length === 0 &&
-              timeSummer.Friday.times.length === 0
-            ) {
-              return noTimesMessage;
-            } else {
-              return timesEnteredMessage;
-            }
-          })()}
-          {Object.keys(timeSummer).map(function (Day, index) {
-            let times = stringToTime(timeSummer[Day].times);
-            submitInfo.preferred_times.summer[weekdays[Day]].times =
-              timeSummer[Day].times;
-            if (times.length != 0) {
-              return (
-                <SelectableTableElementClosedDivView>
-                  {times.map(function (time, timeIndex) {
-                    const timeSplit = time.split(" ");
-
-                    return (
-                      <SelectableTableLabelDivView>
-                        <SelectableTableLabelsView></SelectableTableLabelsView>
-                        <SelectableTableLabelsView>
-                          {" "}
-                          {Day}
-                        </SelectableTableLabelsView>
-                        <SelectableTableLabelsView>
-                          {" "}
-                          {timeSplit[0].slice(1, -1)} -{" "}
-                          {timeSplit[1].slice(1, -1)}
-                        </SelectableTableLabelsView>
-                        <SelectableTableLabelsView></SelectableTableLabelsView>
-                        <SelectableTableLabelsView></SelectableTableLabelsView>
-                      </SelectableTableLabelDivView>
-                    );
-                  })}
-                </SelectableTableElementClosedDivView>
-              );
-            }
-          })}
-        </SelectableTableDivView>
-      </TableDiv>
       <TableDiv>
         <SelectableTableDivView columns={5}>
           {semesterHeader("Fall")}
@@ -506,8 +435,7 @@ export function Summary(props: SummaryProps) {
             submitInfo.preferred_times.spring[weekdays[Day]].times =
               timeSpring[Day].times;
             let times = stringToTime(timeSpring[Day].times);
-            console.log("SUBMIT");
-            console.log(submitInfo);
+
             let loop = 0;
             if (times.length != 0) {
               return (
@@ -538,6 +466,87 @@ export function Summary(props: SummaryProps) {
           })}
         </SelectableTableDivView>
       </TableDiv>
+
+      <TableDiv>
+        <SelectableTableDivView columns={5}>
+          {semesterHeader("Summer")}
+
+          {maxCoursesMessage(maxCourseEntered["Summer 2023"])}
+
+          {leaveReasonView("Summer 2023", leaveReason)}
+
+          <SelectableTableElementClosedDivView>
+            <SelectableTableLabelDivView>
+              <SelectableTableLabelsView>
+                Prefered Days:
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView>
+                {prefDays["Summer 2023"].map((day: boolean, idx: number) => {
+                  submitInfo.preferred_times.summer[
+                    weekdays[weekdayArray[idx]]
+                  ].preferedDay = day;
+                  return (
+                    <ToggleView readOnly active={day} id={idx}>
+                      {weekdayArray[idx]}
+                    </ToggleView>
+                  );
+                })}{" "}
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+            </SelectableTableLabelDivView>
+          </SelectableTableElementClosedDivView>
+
+          {(() => {
+            if (
+              timeSummer.Monday.times.length === 0 &&
+              timeSummer.Tuesday.times.length === 0 &&
+              timeSummer.Wednesday.times.length === 0 &&
+              timeSummer.Thursday.times.length === 0 &&
+              timeSummer.Friday.times.length === 0
+            ) {
+              return noTimesMessage;
+            } else {
+              return timesEnteredMessage;
+            }
+          })()}
+          {Object.keys(timeSummer).map(function (Day, index) {
+            let times = stringToTime(timeSummer[Day].times);
+            submitInfo.preferred_times.summer[weekdays[Day]].times =
+              timeSummer[Day].times;
+
+            console.log("SUBMIT");
+            console.log(submitInfo);
+            if (times.length != 0) {
+              return (
+                <SelectableTableElementClosedDivView>
+                  {times.map(function (time, timeIndex) {
+                    const timeSplit = time.split(" ");
+
+                    return (
+                      <SelectableTableLabelDivView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                        <SelectableTableLabelsView>
+                          {" "}
+                          {Day}
+                        </SelectableTableLabelsView>
+                        <SelectableTableLabelsView>
+                          {" "}
+                          {timeSplit[0].slice(1, -1)} -{" "}
+                          {timeSplit[1].slice(1, -1)}
+                        </SelectableTableLabelsView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                      </SelectableTableLabelDivView>
+                    );
+                  })}
+                </SelectableTableElementClosedDivView>
+              );
+            }
+          })}
+        </SelectableTableDivView>
+      </TableDiv>
       <Space></Space>
 
       <CustomButtonGroupView {...{ Amount: "Double" }}>
@@ -553,8 +562,6 @@ export function Summary(props: SummaryProps) {
         <CustomButtonView
           {...{ Theme: "Primary" }}
           customClickEvent={() => {
-            console.log("SUBMIT INFO");
-            console.log(submitInfo);
             navigate(`/`);
           }}
         >
