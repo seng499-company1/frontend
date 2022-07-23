@@ -197,6 +197,7 @@ export interface TimetableViewProps {
 }
 export interface TimetableProps {
   events: TimetableItemType[];
+  eventUpdateCallback: any;
 }
 
 const DragAndDropCalendar = withDragAndDrop(Calendar);
@@ -222,6 +223,7 @@ function useTimetable(props: TimetableProps): TimetableViewProps {
         const filtered = prev.filter((ev) => ev.id !== event.id);
         return [...filtered, { ...existing, start, end, allDay }];
       });
+      props.eventUpdateCallback(myEvents);
     },
     [setMyEvents]
   );
@@ -233,6 +235,7 @@ function useTimetable(props: TimetableProps): TimetableViewProps {
         const filtered = prev.filter((ev) => ev.id !== event.id);
         return [...filtered, { ...existing, start, end }];
       });
+      props.eventUpdateCallback(myEvents);
     },
     [setMyEvents]
   );

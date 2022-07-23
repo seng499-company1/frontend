@@ -213,11 +213,11 @@ const DateDayMap = {
     FRIDAY: "2022-07-29",
   },
   DayLookup: {
-    "2022-07-25": "MONDAY",
-    "2022-07-26": "TUESDAY",
-    "2022-07-27": "WEDNESDAY",
-    "2022-07-28": "THURSDAY",
-    "2022-07-29": "FRIDAY",
+    "1": "MONDAY",
+    "2": "TUESDAY",
+    "3": "WEDNESDAY",
+    "4": "THURSDAY",
+    "5": "FRIDAY",
   },
 };
 
@@ -251,7 +251,15 @@ function GeneratEventList(currentlyShownSchedule) {
           const dayOffered = timeSlot.dayOfWeek;
           start = new Date(`${DateDayMap.DateLookup[dayOffered]} ${time[0]}`);
           end = new Date(`${DateDayMap.DateLookup[dayOffered]} ${time[1]}`);
-          const instance = { id: i * 100 + j * 10 + k, title, start, end };
+          const instance = {
+            id: i * 100 + j * 10 + k,
+            title,
+            start,
+            end,
+            courseIdx: i,
+            sectionIdx: j,
+            timeSlotIdx: k,
+          };
           course_items.push(instance);
         });
       }
@@ -259,6 +267,26 @@ function GeneratEventList(currentlyShownSchedule) {
     items = items.concat(course_items);
   });
   return items;
+}
+
+function RebuildEndpoint(props) {
+  console.log(props);
+  const newSchedule = props.Schedule.schedule;
+  const semester = props.selectedSemester.split(" ")[0].toLowerCase();
+  props.events.forEach((event) => {
+    const weekday = DateDayMap.DayLookup[event.end.getDay()];
+    const start = `${event.start.getHour()}:${event.start.getMinute()}`;
+    const end = `${event.end.getHour()}:${event.end.getMinute()}`;
+    newSchedule[semester][event.courseIdx].section[event.sectionIdx].dayOfWeek =
+      weekday;
+    newSchedule[semester][event.courseIdx].section[event.sectionIdx].timeSlots[
+      event.timeSlotIdx
+    ].timeRange.start = start;
+    newSchedule[semester][event.courseIdx].section[event.sectionIdx].timeSlots[
+      event.timeSlotIdx
+    ].timeRange.end = end;
+  });
+  return newSchedule;
 }
 
 export function GenerateScheduleView(props: GenerateScheduleViewProps) {
@@ -288,6 +316,7 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
     maxCourses,
     setMaxCourses,
   } = props;
+
   const [Schedule, setSchedule] = useState([]);
 
   useEffect(() => {
@@ -302,9 +331,7 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
 
   // **** first schedule output only
 
-  console.log(Schedule.schedule.fall);
   const scheduleFall = Schedule.schedule.fall;
-  console.log("Fall Scedule");
 
   const scheduleSpring = Schedule.schedule.spring;
   const scheduleSummer = Schedule.schedule.summer;
@@ -321,6 +348,10 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
     currentlyShownSchedule = scheduleFall;
     calendarEventList = GeneratEventList(scheduleFall);
   }
+
+  const eventUpdateCallback = (events: any) => {
+    console.log(RebuildEndpoint({ events, Schedule, selectedSemester }));
+  };
 
   return (
     <>
@@ -341,7 +372,10 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
         })}
       </TabGroup>
       <div>
-        <Timetable events={calendarEventList} />
+        <Timetable
+          events={calendarEventList}
+          eventUpdateCallback={eventUpdateCallback}
+        />
       </div>
       <TableDiv>
         <SelectableTableDivView columns={6}>
