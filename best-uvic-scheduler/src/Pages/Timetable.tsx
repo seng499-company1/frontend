@@ -4,6 +4,7 @@ import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
+import { TimetableItemType } from "./AdminPages/GenerateSchedule.tsx";
 
 type event = {
   title: string;
@@ -194,12 +195,14 @@ export interface TimetableViewProps {
   localizer: any;
   formats: any;
 }
-export interface TimetableProps {}
+export interface TimetableProps {
+  events: TimetableItemType[];
+}
 
 const DragAndDropCalendar = withDragAndDrop(Calendar);
 
-function useTimetable(): TimetableViewProps {
-  const [myEvents, setMyEvents] = useState(events);
+function useTimetable(props: TimetableProps): TimetableViewProps {
+  const [myEvents, setMyEvents] = useState(props.events);
 
   const localizer = momentLocalizer(moment);
 
@@ -239,7 +242,7 @@ function useTimetable(): TimetableViewProps {
     myEvents,
     moveEvent,
     resizeEvent,
-    defaultDate: "07/07/2022",
+    defaultDate: "07/25/2022",
     localizer,
     formats,
   };
@@ -269,8 +272,8 @@ function TimetableView(props: TimetableViewProps) {
   );
 }
 
-const Timetable = () => {
-  return <TimetableView {...useTimetable()} />;
+const Timetable = (props: TimetableProps) => {
+  return <TimetableView {...useTimetable(props)} />;
 };
 
 export default Timetable;

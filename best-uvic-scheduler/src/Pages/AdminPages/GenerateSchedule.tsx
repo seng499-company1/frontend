@@ -11,6 +11,7 @@ import {
   SelectableTableLabelsView,
   SelectableTableElementClosedDivView,
 } from "../../Components/SelectTable/SelectableTable.tsx";
+import Timetable from "../Timetable.tsx";
 
 export interface GenerateScheduleProps {
   semesters: Array<string>;
@@ -203,52 +204,61 @@ function CreateListelement(scheduleElement) {
   );
 }
 
+const DateDayMap = {
+  DateLookup: {
+    MONDAY: "2022-07-25",
+    TUESDAY: "2022-07-26",
+    WEDNESDAY: "2022-07-27",
+    THURSDAY: "2022-07-28",
+    FRIDAY: "2022-07-29",
+  },
+  DayLookup: {
+    "2022-07-25": "MONDAY",
+    "2022-07-26": "TUESDAY",
+    "2022-07-27": "WEDNESDAY",
+    "2022-07-28": "THURSDAY",
+    "2022-07-29": "FRIDAY",
+  },
+};
+
+export type TimetableItemType = {
+  id: Number;
+  title: string;
+  start: any;
+  end: any;
+};
+
 function GeneratEventList(currentlyShownSchedule) {
-  return currentlyShownSchedule.map((scheduleElement, i) => {
-    let capacity = 0;
+  let items: TimetableItemType[] = [];
+  currentlyShownSchedule.forEach((scheduleElement, i) => {
+    // let capacity = 0;
 
-    scheduleElement.sections.forEach((section) => {
-      capacity = capacity + section.capacity;
-    });
-
-    let daysOffered;
-    scheduleElement.sections.forEach((section) => {
-      //console.log(section);
-      section.timeSlots.forEach((day, index) => {
-        if (index === 0) {
-          if (day === "THURSDAY") {
-            daysOffered = "Th";
-          } else {
-            daysOffered = day.dayOfWeek[0];
-          }
-        } else {
-          if (day.dayOfWeek === "THURSDAY") {
-            daysOffered = daysOffered + "/Th";
-          } else {
-            daysOffered = daysOffered + "/" + day.dayOfWeek[0];
-          }
-        }
-        //console.log(day.dayOfWeek + index);
-      });
-    });
+    // scheduleElement.sections.forEach((section) => {
+    //   capacity = capacity + section.capacity;
+    // });
 
     // Proper date time setting
-    let timeOffered;
-    scheduleElement.sections.forEach((section) => {
+    const title = scheduleElement.course.code;
+    // const desc = scheduleElement.sections[0].professor.name;
+    let course_items: TimetableItemType[] = [];
+    let start;
+    let end;
+
+    scheduleElement.sections.forEach((section, j) => {
       if (section.timeSlots.length > 0) {
-        const time = section.timeSlots[0].timeRange;
-        timeOffered = time[0] + " - " + time[1];
-      } else {
-        return {};
+        section.timeSlots.forEach((timeSlot, k) => {
+          const time = timeSlot.timeRange;
+          const dayOffered = timeSlot.dayOfWeek;
+          start = new Date(`${DateDayMap.DateLookup[dayOffered]} ${time[0]}`);
+          end = new Date(`${DateDayMap.DateLookup[dayOffered]} ${time[1]}`);
+          const instance = { id: i * 100 + j * 10 + k, title, start, end };
+          course_items.push(instance);
+        });
       }
     });
-    return {
-      id: i,
-      title: scheduleElement.course.title,
-      desc: scheduleElement.sections[0].professor.name,
-      capacity,
-    };
+    items = items.concat(course_items);
   });
+  return items;
 }
 
 export function GenerateScheduleView(props: GenerateScheduleViewProps) {
@@ -309,6 +319,8 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
   }
 
   console.log(currentlyShownSchedule);
+  const calendarEventList = GeneratEventList(currentlyShownSchedule);
+  console.log("TIMETABLE", calendarEventList);
 
   return (
     <>
@@ -328,6 +340,9 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
           );
         })}
       </TabGroup>
+      <div>
+        <Timetable events={calendarEventList} />
+      </div>
       <TableDiv>
         <SelectableTableDivView columns={6}>
           <SelectableTableHeaderDivView>
