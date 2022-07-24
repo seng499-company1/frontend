@@ -134,6 +134,7 @@ export function GetPreferences() {
 
 const axios = require("axios");
 
+//note : the id is hard coded for now!!!!
 export async function postPreferences(props: SubmitInfoProps) {
   console.log(props);
   try {
@@ -149,3 +150,15 @@ export async function postPreferences(props: SubmitInfoProps) {
     console.log("POST COURSE FAILED! " + error);
   }
 }
+// //note : this function will b here until front end fixes
+// export async function GetPreferences() {
+//   try {
+//     const response = await axios.get(
+//       "http://uvic.immortalmind.ca:5000/professors/61587323-6632-4dcf-bae8-2a51ed8585a0/preferences/2022"
+//     );
+//     //return response.data;
+//     return TestPreferenceList;
+//   } catch (error) {
+//     return [];
+//   }
+// }
