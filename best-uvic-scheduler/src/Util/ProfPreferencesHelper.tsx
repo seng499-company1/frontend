@@ -84,6 +84,68 @@ const TestPreferenceList = {
   ],
 };
 
+export interface SummaryProps {
+  maxCourses: any;
+  absenceReason: any;
+}
+export interface DayProps {
+  times: string;
+  preferedDay: boolean;
+}
+export interface SemesterProps {
+  mon: DayProps;
+  tues: DayProps;
+  wed: DayProps;
+  thurs: DayProps;
+  fri: DayProps;
+}
+
+export interface PreferedTimesProps {
+  fall: SemesterProps;
+  spring: SemesterProps;
+  summer: SemesterProps;
+}
+
+export interface CoursePreferences {
+  course_id: string;
+  will_to_teach: string;
+  able_to_teach: string;
+}
+export interface SubmitInfoProps {
+  year: number;
+  semester_off: number;
+  num_relief: number;
+  num_summer_courses: number;
+  num_fall_courses: number;
+  num_spring_courses: number;
+  why_relief: string;
+  preferred_times: PreferedTimesProps;
+  course_preferences: Array<CoursePreferences>;
+}
+
+export type PostCourseProps = {
+  json: SubmitInfoProps;
+  id: String;
+};
+
 export function GetPreferences() {
   return TestPreferenceList;
+}
+
+const axios = require("axios");
+
+export async function postPreferences(props: SubmitInfoProps) {
+  console.log(props);
+  try {
+    const response = await axios.post(
+      `http://uvic.immortalmind.ca:5000/professors/61587323-6632-4dcf-bae8-2a51ed8585a0/preferences/`,
+      props,
+      {
+        "Content-Type": "application/json",
+      }
+    );
+    console.log("response  ", response);
+  } catch (error) {
+    console.log("POST COURSE FAILED! " + error);
+  }
 }
