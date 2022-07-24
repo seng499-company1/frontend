@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
-
 import { ToggleView } from "../../Components/toggle/toggle.tsx";
 
 import { QualificationsContext, PreferencesContext } from "./index.tsx";
@@ -562,6 +561,7 @@ export function Summary(props: SummaryProps) {
         <CustomButtonView
           {...{ Theme: "Primary" }}
           customClickEvent={() => {
+            ProfPreferencesHelper.postPreferences(submitInfo);
             navigate(`/`);
           }}
         >
