@@ -159,12 +159,8 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
   ];
 
   useEffect(() => {
-    console.log("In set Max Course");
     const key = selectedSemester.value;
     const val = maxCourses[key];
-    console.log(key);
-    console.log(val);
-    console.log(maxCourseEntered);
     let addedVal = {};
     addedVal[key] = val;
     setMaxCourseEntered({
@@ -177,9 +173,6 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
     const key = selectedSemester.value;
     const val = absenceReasons;
     setLeaveReason(absenceReasons);
-    console.log("IN LEAVE");
-
-    console.log(leaveReason);
   }, [absenceReasons]);
 
   //hooks
@@ -390,9 +383,13 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                       }
                       dropdownItems={PreferenceItems}
                       handleChange={(event) => {
+                        let val = event.value;
+                        if (val === undefined) {
+                          val = "N/A";
+                        }
                         setPreferences({
                           ...preferences,
-                          [Course.course_code]: event.value,
+                          [Course.course_code]: val,
                         });
                       }}
                     >
@@ -554,7 +551,6 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
             Disabled={Object.keys(qualifications).length !== AmountOfCourses}
             customClickEvent={() => {
               if (Object.keys(qualifications).length !== AmountOfCourses) {
-                console.log(qualifications);
               } else {
                 // setSelectedTimes(TimeIntervalHelper());
                 navigate(`/SelectProfessor/Summary`);

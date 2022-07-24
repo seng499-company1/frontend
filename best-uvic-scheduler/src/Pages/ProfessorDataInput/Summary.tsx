@@ -231,7 +231,8 @@ export function Summary(props: SummaryProps) {
     useContext(MaxCourseContext);
 
   const navigate = useNavigate();
-
+  console.log("selected professor");
+  console.log(selectedProfessor);
   const weekdays = {
     Monday: "mon",
     Tuesday: "tues",
