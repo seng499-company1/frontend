@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import TabGroup from "../../Components/tab-group/tab-group.tsx";
-
+import * as ScheduleHelper from "../../Util/ScheduleHelper.tsx";
 import { GetSchedule1, GetSchedule2 } from "../../Util/ScheduleHelper.tsx";
 
 import {
@@ -359,7 +359,9 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
   }
 
   const eventUpdateCallback = (events: any) => {
-    setSchedule(RebuildEndpoint({ events, Schedule, selectedSemester }));
+    const newSchedule = RebuildEndpoint({ events, Schedule, selectedSemester });
+    setSchedule(newSchedule);
+    ScheduleHelper.putSchedule(newSchedule);
   };
 
   return (
