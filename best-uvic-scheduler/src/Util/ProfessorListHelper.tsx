@@ -1,3 +1,5 @@
+const axios = require("axios");
+
 const TestProfessorList = {
   Professors: [
     {
@@ -32,9 +34,9 @@ export async function GetProfessorList() {
     const response = await axios.get(
       `http://uvic.immortalmind.ca:5000/professors/`
     );
-    console.log("WE GOT RESPONSE  ", response);
     return response.data;
   } catch (error) {
+    console.log(error)
     return [];
   }
 }
