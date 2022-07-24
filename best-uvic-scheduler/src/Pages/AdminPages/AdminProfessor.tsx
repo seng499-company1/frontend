@@ -95,7 +95,7 @@ export function AdminProfessorPage() {
           navigate(`/Admin/Newprofessor`);
         }}
         >
-        Add New Course
+        Add New Professor
         </CustomButtonView>
       </CustomButtonGroupView>
       <SelectableTableDivView columns={5}>
