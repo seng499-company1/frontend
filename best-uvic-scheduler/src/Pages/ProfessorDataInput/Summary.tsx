@@ -41,8 +41,8 @@ export interface SummaryProps {
   absenceReason: any;
 }
 export interface DayProps {
-  times: string;
-  preferedDay: boolean;
+  times: Array<string>;
+  preferredDay: boolean;
 }
 export interface SemesterProps {
   mon: DayProps;
@@ -123,68 +123,68 @@ export function Summary(props: SummaryProps) {
     preferred_times: {
       fall: {
         mon: {
-          times: "",
-          preferedDay: false,
+          times: [""],
+          preferredDay: false,
         },
         tues: {
-          times: "",
-          preferedDay: false,
+          times: [""],
+          preferredDay: false,
         },
         wed: {
-          times: "",
-          preferedDay: false,
+          times: [""],
+          preferredDay: false,
         },
         thurs: {
-          times: "",
-          preferedDay: false,
+          times: [""],
+          preferredDay: false,
         },
         fri: {
-          times: "",
-          preferedDay: false,
+          times: [""],
+          preferredDay: false,
         },
       },
       spring: {
         mon: {
-          times: "",
-          preferedDay: false,
+          times: [""],
+          preferredDay: false,
         },
         tues: {
-          times: "",
-          preferedDay: false,
+          times: [""],
+          preferredDay: false,
         },
         wed: {
-          times: "",
-          preferedDay: false,
+          times: [""],
+          preferredDay: false,
         },
         thurs: {
-          times: "",
-          preferedDay: false,
+          times: [""],
+          preferredDay: false,
         },
         fri: {
-          times: "",
-          preferedDay: false,
+          times: [""],
+          preferredDay: false,
         },
       },
       summer: {
         mon: {
-          times: "",
-          preferedDay: false,
+          times: [""],
+          preferredDay: false,
         },
         tues: {
-          times: "",
-          preferedDay: false,
+          times: [""],
+          preferredDay: false,
         },
         wed: {
-          times: "",
-          preferedDay: false,
+          times: [""],
+          preferredDay: false,
         },
         thurs: {
-          times: "",
-          preferedDay: false,
+          times: [""],
+          preferredDay: false,
         },
         fri: {
-          times: "",
-          preferedDay: false,
+          times: [""],
+          preferredDay: false,
         },
       },
     },
@@ -230,8 +230,7 @@ export function Summary(props: SummaryProps) {
     useContext(MaxCourseContext);
 
   const navigate = useNavigate();
-  console.log("selected professor");
-  console.log(selectedProfessor);
+
   const weekdays = {
     Monday: "mon",
     Tuesday: "tues",
@@ -248,9 +247,19 @@ export function Summary(props: SummaryProps) {
 
   //add to json
   submitInfo.num_fall_courses = maxCourseEntered["Fall 2022"];
-  submitInfo.num_fall_courses = maxCourseEntered["Spring 2023"];
-  submitInfo.num_fall_courses = maxCourseEntered["Summer 2023"];
+  submitInfo.num_spring_courses = maxCourseEntered["Spring 2023"];
+  submitInfo.num_summer_courses = maxCourseEntered["Summer 2023"];
 
+  if (submitInfo.num_fall_courses === undefined) {
+    submitInfo.num_fall_courses = 0;
+  }
+  submitInfo.num_fall_courses = 0;
+  if (submitInfo.num_spring_courses === undefined) {
+    submitInfo.num_spring_courses = 0;
+  }
+  if (submitInfo.num_summer_courses === undefined) {
+    submitInfo.num_summer_courses = 0;
+  }
   submitInfo.why_relief = submitInfo.why_relief.concat(
     "/$fall/",
     leaveReason["Fall 2022"],
@@ -272,23 +281,21 @@ export function Summary(props: SummaryProps) {
             let name = Course.course_code;
             let qual = qualifications[name];
             let pref = preferences[name];
-            console.log("Courses");
-            console.log(Course);
+
+            if (qual == null) {
+              qual = "NO";
+            }
+            if (pref == null) {
+              pref = "NO";
+            }
 
             let courseInfo: CoursePreferences = {
               course_id: Course.id,
-              will_to_teach: qualifications[name],
-              able_to_teach: preferences[name],
+              will_to_teach: qual,
+              able_to_teach: pref,
             };
 
             submitInfo.course_preferences.push(courseInfo);
-
-            if (qual == null) {
-              qual = "N/A";
-            }
-            if (pref == null) {
-              pref = "N/A";
-            }
             return (
               <SelectableTableElementClosedDivView>
                 <SelectableTableLabelDivView>
@@ -326,7 +333,7 @@ export function Summary(props: SummaryProps) {
                 {prefDays["Fall 2022"].map((day: boolean, idx: number) => {
                   submitInfo.preferred_times.fall[
                     weekdays[weekdayArray[idx]]
-                  ].preferedDay = day;
+                  ].preferredDay = day;
                   return (
                     <ToggleView readOnly active={day} id={idx}>
                       {weekdayArray[idx]}
@@ -355,8 +362,9 @@ export function Summary(props: SummaryProps) {
           })()}
           {Object.keys(timeFall).map(function (Day, index) {
             let times = stringToTime(timeFall[Day].times);
-            submitInfo.preferred_times.fall[weekdays[Day]].times =
-              timeFall[Day].times;
+            submitInfo.preferred_times.fall[weekdays[Day]].times = [
+              timeFall[Day].times,
+            ];
 
             if (times.length != 0) {
               return (
@@ -404,7 +412,7 @@ export function Summary(props: SummaryProps) {
                 {prefDays["Spring 2023"].map((day: boolean, idx: number) => {
                   submitInfo.preferred_times.spring[
                     weekdays[weekdayArray[idx]]
-                  ].preferedDay = day;
+                  ].preferredDay = day;
                   return (
                     <ToggleView readOnly active={day} id={idx}>
                       {weekdayArray[idx]}
@@ -432,8 +440,9 @@ export function Summary(props: SummaryProps) {
             }
           })()}
           {Object.keys(timeSpring).map(function (Day, index) {
-            submitInfo.preferred_times.spring[weekdays[Day]].times =
-              timeSpring[Day].times;
+            submitInfo.preferred_times.spring[weekdays[Day]].times = [
+              timeSpring[Day].times,
+            ];
             let times = stringToTime(timeSpring[Day].times);
 
             let loop = 0;
@@ -484,7 +493,7 @@ export function Summary(props: SummaryProps) {
                 {prefDays["Summer 2023"].map((day: boolean, idx: number) => {
                   submitInfo.preferred_times.summer[
                     weekdays[weekdayArray[idx]]
-                  ].preferedDay = day;
+                  ].preferredDay = day;
                   return (
                     <ToggleView readOnly active={day} id={idx}>
                       {weekdayArray[idx]}
@@ -513,8 +522,9 @@ export function Summary(props: SummaryProps) {
           })()}
           {Object.keys(timeSummer).map(function (Day, index) {
             let times = stringToTime(timeSummer[Day].times);
-            submitInfo.preferred_times.summer[weekdays[Day]].times =
-              timeSummer[Day].times;
+            submitInfo.preferred_times.summer[weekdays[Day]].times = [
+              timeSummer[Day].times,
+            ];
 
             console.log("SUBMIT");
             console.log(submitInfo);

@@ -383,13 +383,9 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                       }
                       dropdownItems={PreferenceItems}
                       handleChange={(event) => {
-                        let val = event.value;
-                        if (val === undefined) {
-                          val = "N/A";
-                        }
                         setPreferences({
                           ...preferences,
-                          [Course.course_code]: val,
+                          [Course.course_code]: event.value,
                         });
                       }}
                     >

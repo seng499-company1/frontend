@@ -89,7 +89,7 @@ export interface SummaryProps {
   absenceReason: any;
 }
 export interface DayProps {
-  times: string;
+  times: Array<string>;
   preferedDay: boolean;
 }
 export interface SemesterProps {
@@ -138,7 +138,7 @@ export async function postPreferences(props: SubmitInfoProps) {
   console.log(props);
   try {
     const response = await axios.post(
-      `http://uvic.immortalmind.ca:5000/professors/61587323-6632-4dcf-bae8-2a51ed8585a0/preferences/`,
+      `http://uvic.immortalmind.ca:5000/professors/f02f45d0-0b79-11ed-84b5-0242ac120002/preferences/`,
       props,
       {
         "Content-Type": "application/json",
