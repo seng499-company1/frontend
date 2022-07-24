@@ -5,10 +5,7 @@ import Alert from "../../Components/Alert/alert.tsx";
 import * as ProfessorImputHelper from "../../Util/ProfessorInputHelper.tsx";
 import CustomButtonView from "../../Components/button/button.tsx";
 
-export const ProfessorNameContext = React.createContext({
-  selectedProfessorName: "",
-  setProfessorName: () => {},
-});
+import ProfessorNameContext from "./index.tsx";
 
 const ProfListDiv = styled.div`
   display: flex;
@@ -34,7 +31,7 @@ const SectionDiv = styled.div`
 `;
 
 export function LandingPage() {
-  const { selectedProfessorName, setProfessorName } =
+  const { selectedProfessorName, setSelectedProfessorName } =
     useContext(ProfessorNameContext);
 
   //get data
@@ -76,7 +73,7 @@ export function LandingPage() {
             LeftText={true}
             customClickEvent={() => {
               console.log(newProf[idx]["firstName"]);
-              setProfessorName(newProf[idx]["firstName"]);
+              setSelectedProfessorName(newProf[idx]);
               console.log(selectedProfessorName);
 
               navigate(`/LandingPage/Summary_RO`);

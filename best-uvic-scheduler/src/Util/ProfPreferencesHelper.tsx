@@ -5,7 +5,7 @@ const TestPreferenceList = {
   num_summer_courses: 1,
   num_fall_courses: 2,
   num_spring_courses: 1,
-  why_relief: "program advisor & TA manager",
+  why_relief: "/$fall/hello///fjhi/$spring/test/$summer/testingSummer",
   preferred_times: {
     fall: {
       mon: {

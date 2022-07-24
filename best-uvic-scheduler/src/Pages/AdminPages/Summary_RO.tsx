@@ -1,12 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
+import { ToggleView } from "../../Components/toggle/toggle.tsx";
 
 import { useNavigate } from "react-router-dom";
 import CustomButtonView from "../../Components/button/button.tsx";
 import CustomButtonGroupView from "../../Components/button/buttongroup.tsx";
 import * as CourseListHelper from "../../Util/CourseListHelper.tsx";
 import * as ProfPreferencesHelper from "../../Util/ProfPreferencesHelper.tsx";
-import { ProfessorNameContext } from "./LandingPage.tsx";
+import ProfessorNameContext from "./index.tsx";
 import { Background } from "../../Components/background/background.tsx";
 import LandingPage from "./LandingPage.tsx";
 import { array, number } from "prop-types";
@@ -133,6 +134,7 @@ export function Summary_RO() {
     thurs: "Thrusday",
     fri: "Friday",
   };
+  const weekNames = ["mon", "tues", "wed", "thurs", "fri"];
 
   const avail = {
     ABLE: "Able",
@@ -187,71 +189,45 @@ export function Summary_RO() {
         </SelectableTableDivView>
       </TableDiv>
       <Space></Space>
-      <CustomButtonGroupView {...{ Amount: "Progession" }}>
-        <CustomButtonView {...{ Theme: "Primary" }} customClickEvent={() => {}}>
-          {" "}
-          EDIT{" "}
-        </CustomButtonView>
-      </CustomButtonGroupView>
+      <CustomButtonGroupView
+        {...{ Amount: "Progession" }}
+      ></CustomButtonGroupView>
 
       <h2>Availibility</h2>
 
       <TableDiv>
         <SelectableTableDivView columns={5}>
-          {semesterHeader("Summer")}
-          {maxCoursesMessage(Preferences.num_summer_courses)}
-
-          {(() => {
-            if (
-              timeSummer.mon.times.length === 0 &&
-              timeSummer.tues.times.length === 0 &&
-              timeSummer.wed.times.length === 0 &&
-              timeSummer.thurs.times.length === 0 &&
-              timeSummer.fri.times.length === 0
-            ) {
-              return noTimesMessage;
-            } else {
-              return timesEnteredMessage;
-            }
-          })()}
-
-          {Object.keys(timeSummer).map(function (Day, index) {
-            const day = weekdays[Day];
-            let times = stringToTime(timeSummer[Day].times);
-            if (times.length != 0) {
-              return (
-                <SelectableTableElementClosedDivView>
-                  {times.map(function (time, timeIndex) {
-                    const timeSplit = time.split(" ");
-
-                    return (
-                      <SelectableTableLabelDivView>
-                        <SelectableTableLabelsView></SelectableTableLabelsView>
-                        <SelectableTableLabelsView>
-                          {" "}
-                          {day}
-                        </SelectableTableLabelsView>
-                        <SelectableTableLabelsView>
-                          {" "}
-                          {timeSplit[0].slice(1, -1)} -{" "}
-                          {timeSplit[1].slice(1, -1)}
-                        </SelectableTableLabelsView>
-                        <SelectableTableLabelsView></SelectableTableLabelsView>
-                        <SelectableTableLabelsView></SelectableTableLabelsView>
-                      </SelectableTableLabelDivView>
-                    );
-                  })}
-                </SelectableTableElementClosedDivView>
-              );
-            }
-          })}
-        </SelectableTableDivView>
-      </TableDiv>
-      <TableDiv>
-        <SelectableTableDivView columns={5}>
           {semesterHeader("Fall")}
           {maxCoursesMessage(Preferences.num_fall_courses)}
 
+          <SelectableTableElementClosedDivView>
+            <SelectableTableLabelDivView>
+              <SelectableTableLabelsView>
+                Prefered Days:
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView>
+                {console.log(Preferences)}
+                {weekNames.map((day: any, idx: number) => {
+                  console.log("IN MAP");
+                  console.log(day);
+                  return (
+                    <ToggleView
+                      readOnly
+                      active={
+                        Preferences.preferred_times.fall[day].preferredDay
+                      }
+                      id={idx}
+                    >
+                      {weekdays[day]}
+                    </ToggleView>
+                  );
+                })}{" "}
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+            </SelectableTableLabelDivView>
+          </SelectableTableElementClosedDivView>
           {(() => {
             if (
               timeFall.mon.times.length === 0 &&
@@ -304,6 +280,34 @@ export function Summary_RO() {
           {semesterHeader("Spring")}
 
           {maxCoursesMessage(Preferences.num_spring_courses)}
+
+          <SelectableTableElementClosedDivView>
+            <SelectableTableLabelDivView>
+              <SelectableTableLabelsView>
+                Prefered Days:
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView>
+                {console.log(Preferences)}
+                {weekNames.map((day: any, idx: number) => {
+                  return (
+                    <ToggleView
+                      readOnly
+                      active={
+                        Preferences.preferred_times.spring[day].preferredDay
+                      }
+                      id={idx}
+                    >
+                      {weekdays[day]}
+                    </ToggleView>
+                  );
+                })}{" "}
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+            </SelectableTableLabelDivView>
+          </SelectableTableElementClosedDivView>
+
           {(() => {
             if (
               timeSpring.mon.times.length === 0 &&
@@ -351,6 +355,82 @@ export function Summary_RO() {
           })}
         </SelectableTableDivView>
       </TableDiv>
+      <TableDiv>
+        <SelectableTableDivView columns={5}>
+          {semesterHeader("Summer")}
+          {maxCoursesMessage(Preferences.num_summer_courses)}
+          <SelectableTableElementClosedDivView>
+            <SelectableTableLabelDivView>
+              <SelectableTableLabelsView>
+                Prefered Days:
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView>
+                {console.log(Preferences)}
+                {weekNames.map((day: any, idx: number) => {
+                  return (
+                    <ToggleView
+                      readOnly
+                      active={
+                        Preferences.preferred_times.summer[day].preferredDay
+                      }
+                      id={idx}
+                    >
+                      {weekdays[day]}
+                    </ToggleView>
+                  );
+                })}{" "}
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+            </SelectableTableLabelDivView>
+          </SelectableTableElementClosedDivView>
+          {(() => {
+            if (
+              timeSummer.mon.times.length === 0 &&
+              timeSummer.tues.times.length === 0 &&
+              timeSummer.wed.times.length === 0 &&
+              timeSummer.thurs.times.length === 0 &&
+              timeSummer.fri.times.length === 0
+            ) {
+              return noTimesMessage;
+            } else {
+              return timesEnteredMessage;
+            }
+          })()}
+
+          {Object.keys(timeSummer).map(function (Day, index) {
+            const day = weekdays[Day];
+            let times = stringToTime(timeSummer[Day].times);
+            if (times.length != 0) {
+              return (
+                <SelectableTableElementClosedDivView>
+                  {times.map(function (time, timeIndex) {
+                    const timeSplit = time.split(" ");
+
+                    return (
+                      <SelectableTableLabelDivView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                        <SelectableTableLabelsView>
+                          {" "}
+                          {day}
+                        </SelectableTableLabelsView>
+                        <SelectableTableLabelsView>
+                          {" "}
+                          {timeSplit[0].slice(1, -1)} -{" "}
+                          {timeSplit[1].slice(1, -1)}
+                        </SelectableTableLabelsView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                      </SelectableTableLabelDivView>
+                    );
+                  })}
+                </SelectableTableElementClosedDivView>
+              );
+            }
+          })}
+        </SelectableTableDivView>
+      </TableDiv>
       <Space></Space>
 
       <CustomButtonGroupView {...{ Amount: "Double" }}>
@@ -362,10 +442,6 @@ export function Summary_RO() {
         >
           {" "}
           Back{" "}
-        </CustomButtonView>
-        <CustomButtonView {...{ Theme: "Primary" }} customClickEvent={() => {}}>
-          {" "}
-          EDIT{" "}
         </CustomButtonView>
       </CustomButtonGroupView>
     </Background>
