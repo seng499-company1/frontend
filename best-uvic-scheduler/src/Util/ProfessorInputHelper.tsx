@@ -1,26 +1,40 @@
-const TestProfessorList = {
-  profEntries: [
-    {
-      id: "0e90ab30-c380-4034-acdb-238856a88df3",
-      firstName: "Celina",
-      lastName: "Berg",
-      timeEntered: "new",
-    },
-    {
-      id: "8b8829ec-4615-4708-a0cd-5103f080ae56",
-      firstName: "Bill",
-      lastName: "Bird",
-      timeEntered: "new",
-    },
-    {
-      id: "6e46c60b-6709-4af5-ab4e-7a1c89c8ae0b",
-      firstName: "Anthony",
-      lastName: "Etsy",
-      timeEntered: "later",
-    },
-  ],
-};
+const axios = require("axios");
 
-export function GetProfessorInputList() {
-  return TestProfessorList;
+const TestProfessorList = [
+  {
+    pref_id: "8659fb03-0bd1-11ed-aba0-0242ac120002",
+    prof_id: "4a3569e0-0bd1-11ed-a735-0242ac120002",
+    first_name: "Celina",
+    last_name: "Berg",
+    time_stamp: "new",
+  },
+  {
+    pref_id: "8659fb03-0bd1-11ed-aba0-0242ac120002",
+    prof_id: "4a3569e0-0bd1-11ed-a735-0242ac120002",
+    first_name: "Bill",
+    last_name: "Bird",
+    time_stamp: "new",
+  },
+  {
+    pref_id: "8659fb03-0bd1-11ed-aba0-0242ac120002",
+    prof_id: "4a3569e0-0bd1-11ed-a735-0242ac120002",
+    first_name: "Anthony",
+    last_name: "Etsy",
+    time_stamp: "later",
+  },
+];
+
+// export function GetProfessorInputList() {
+//   return TestProfessorList;
+// }
+
+export async function GetProfessorInputList() {
+  try {
+    const response = await axios.get(
+      "http://uvic.immortalmind.ca:5000/professors/preferences/times/2022"
+    );
+    return response.data;
+  } catch (error) {
+    return [];
+  }
 }

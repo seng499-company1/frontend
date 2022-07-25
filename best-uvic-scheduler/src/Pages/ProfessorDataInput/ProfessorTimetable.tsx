@@ -159,25 +159,21 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
   ];
 
   useEffect(() => {
+    const key = selectedSemester.value;
+    const val = maxCourses[key];
+    let addedVal = {};
+    addedVal[key] = val;
     setMaxCourseEntered({
-      [selectedSemester.value]: maxCourses[selectedSemester.value],
+      ...maxCourseEntered,
+      ...addedVal,
     });
-    console.log("HERE");
-    const val = selectedSemester.value;
-    console.log(val);
-    console.log(qualifications);
-    console.log(maxCourses[val]);
-    console.log(maxCourseEntered);
   }, [maxCourses]);
 
   useEffect(() => {
-    setLeaveReason({
-      semester: selectedSemester,
-      leave: leaveReason,
-    });
-    console.log("EHRE");
-    console.log(leaveReason);
-  }, [leaveReason]);
+    const key = selectedSemester.value;
+    const val = absenceReasons;
+    setLeaveReason(absenceReasons);
+  }, [absenceReasons]);
 
   //hooks
   const { qualifications, setQualifications } = useContext(
@@ -551,7 +547,6 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
             Disabled={Object.keys(qualifications).length !== AmountOfCourses}
             customClickEvent={() => {
               if (Object.keys(qualifications).length !== AmountOfCourses) {
-                console.log(qualifications);
               } else {
                 // setSelectedTimes(TimeIntervalHelper());
                 navigate(`/SelectProfessor/Summary`);

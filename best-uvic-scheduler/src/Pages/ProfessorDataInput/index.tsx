@@ -36,13 +36,13 @@ export const PrefDayContext = React.createContext({
 });
 
 export const MaxCourseContext = React.createContext({
-  MaxCourseEntered: {},
+  maxCourseEntered: {},
   setMaxCourseEntered: (event) => {},
 });
 
 export const LeaveReasonContext = React.createContext({
   leaveReason: {},
-  setLeaveReason: (_leaveReason: {}) => {},
+  setLeaveReason: (event) => {},
 });
 
 export const semesters = ["Fall 2022", "Spring 2023", "Summer 2023"];
@@ -109,6 +109,8 @@ export function ProfessorDataInputIndex() {
     updateTimeslots,
     initTimeslots
   );
+  const [maxCourseEntered, setMaxCourseEntered] = useState({});
+  const [leaveReason, setLeaveReason] = useState({});
 
   return (
     <ProfessorContext.Provider value={{ selectedProfessor, setProfessor }}>
@@ -118,28 +120,36 @@ export function ProfessorDataInputIndex() {
         <PreferencesContext.Provider value={{ preferences, setPreferences }}>
           <PrefDayContext.Provider value={{ prefDays, setPrefDays }}>
             <TimetableContext.Provider value={{ timetables, setTimetables }}>
-              <Routes>
-                <Route path="" element={<PDISelectProfessorList />} />
-                <Route
-                  path="Qualifications"
-                  element={<PDISelectProfessorQualifications />}
-                />
-                <Route
-                  path="Preferences"
-                  element={<PDISelectProfessorPreferences />}
-                />
-                <Route
-                  path="TimeAvail"
-                  element={
-                    <ProfessorTimetable
-                      {...{
-                        semesters,
-                      }}
+              <MaxCourseContext.Provider
+                value={{ maxCourseEntered, setMaxCourseEntered }}
+              >
+                <LeaveReasonContext.Provider
+                  value={{ leaveReason, setLeaveReason }}
+                >
+                  <Routes>
+                    <Route path="" element={<PDISelectProfessorList />} />
+                    <Route
+                      path="Qualifications"
+                      element={<PDISelectProfessorQualifications />}
                     />
-                  }
-                />
-                <Route path="Summary" element={<Summary />} />
-              </Routes>
+                    <Route
+                      path="Preferences"
+                      element={<PDISelectProfessorPreferences />}
+                    />
+                    <Route
+                      path="TimeAvail"
+                      element={
+                        <ProfessorTimetable
+                          {...{
+                            semesters,
+                          }}
+                        />
+                      }
+                    />
+                    <Route path="Summary" element={<Summary />} />
+                  </Routes>
+                </LeaveReasonContext.Provider>
+              </MaxCourseContext.Provider>
             </TimetableContext.Provider>
           </PrefDayContext.Provider>
         </PreferencesContext.Provider>

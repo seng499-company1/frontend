@@ -1,9 +1,10 @@
-import React, { useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Alert from "../../Components/Alert/alert.tsx";
-import * as ProfessorImputHelper from "../../Util/ProfessorInputHelper.tsx";
+import * as ProfessorInputHelper from "../../Util/ProfessorInputHelper.tsx";
 import CustomButtonView from "../../Components/button/button.tsx";
+import * as ProfPreferencesHelper from "../../Util/ProfPreferencesHelper.tsx";
 
 export const ProfessorNameContext = React.createContext({
   selectedProfessorName: "",
@@ -37,26 +38,39 @@ export function LandingPage() {
   const { selectedProfessorName, setProfessorName } =
     useContext(ProfessorNameContext);
 
-  //get data
-  const professors = ProfessorImputHelper.GetProfessorInputList().profEntries;
+  const [Preferences, setPreferences] = useState([]);
+  const [AmountofPrefereces, setAmountPref] = useState(0);
 
-  const oldProf = [];
-  const newProf = [];
+  useEffect(() => {
+    ProfessorInputHelper.GetProfessorInputList()
+      .then((resp) => {
+        setPreferences(resp);
+      })
+      .then((resp) => {
+        setAmountPref(resp.length());
+      });
+  }, []);
+
+  //get data
+  const professors = Preferences;
+
+  // const oldProf = [];
+  // const newProf = [];
   const navigate = useNavigate();
 
-  for (const prof of professors) {
-    if (prof.timeEntered == "new") {
-      newProf.push(prof);
-    } else if (prof.timeEntered == "later") {
-      oldProf.push(prof);
-    }
-  }
+  // for (const prof of professors) {
+  //   if (prof.timeEntered == "new") {
+  //     newProf.push(prof);
+  //   } else if (prof.timeEntered == "later") {
+  //     oldProf.push(prof);
+  //   }
+  // }
 
-  const entries = newProf.length;
-
+  const entries = professors.length;
+  console.log(professors);
   return (
     <ProfListDiv>
-      {(() => {
+      {/* {(() => {
         if (entries != 0) {
           return (
             <AlertDiv>
@@ -66,29 +80,29 @@ export function LandingPage() {
         } else {
           return <div></div>;
         }
-      })()}
+      })()} */}
       <SectionDiv>
-        <DataEntryTitleDiv>New Data Entries:</DataEntryTitleDiv>
-        {newProf.map((item, idx) => (
+        <DataEntryTitleDiv>Data Entries:</DataEntryTitleDiv>
+        {professors.map((item, idx) => (
           <CustomButtonView
             Theme={"Secondary"}
             Borderless={true}
             LeftText={true}
             customClickEvent={() => {
-              console.log(newProf[idx]["firstName"]);
-              setProfessorName(newProf[idx]["firstName"]);
+              console.log(professors[idx]["first_name"]);
+              setProfessorName(professors[idx]["first_name"]);
               console.log(selectedProfessorName);
 
               navigate(`/LandingPage/Summary_RO`);
             }}
           >
-            {newProf[idx]["firstName"]}&nbsp;
-            {newProf[idx]["lastName"]}
+            {professors[idx]["first_name"]}&nbsp;
+            {professors[idx]["last_name"]}
           </CustomButtonView>
         ))}
       </SectionDiv>
       <SectionDiv>
-        <DataEntryTitleDiv>Data Entires:</DataEntryTitleDiv>
+        {/* <DataEntryTitleDiv>Data Entires:</DataEntryTitleDiv>
         {oldProf.map((item, idx) => (
           <CustomButtonView
             Theme={"Secondary"}
@@ -98,7 +112,7 @@ export function LandingPage() {
             {oldProf[idx]["firstName"]} &nbsp;
             {oldProf[idx]["lastName"]}
           </CustomButtonView>
-        ))}
+        ))} */}
       </SectionDiv>
     </ProfListDiv>
   );
