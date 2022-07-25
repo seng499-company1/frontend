@@ -596,7 +596,6 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
           </CustomButtonView>
           <CustomButtonView
             {...{ Theme: "Primary" }}
-            Disabled={Object.keys(qualifications).length !== AmountOfCourses}
             customClickEvent={() => {
               if (Object.keys(qualifications).length !== AmountOfCourses) {
               } else {
