@@ -57,6 +57,7 @@ export function NewCoursePage() {
   const [FallNeededPeng, setFallPeng] = useState(false);
   const [SpringNeededPeng, setSpringPeng] = useState(false);
   const [SummerNeededPeng, setSummerPeng] = useState(false);
+  const navigate = useNavigate();
 
   let New_Course = {
     course_code: CourseCode,
@@ -207,6 +208,7 @@ export function NewCoursePage() {
           {...{ Theme: "Primary" }}
           customClickEvent={() => {
             SendNewToBackend(New_Course);
+            navigate(`/Admin/Courses`);
           }}
         >
           Submit
