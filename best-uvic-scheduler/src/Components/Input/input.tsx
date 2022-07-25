@@ -7,6 +7,7 @@ export interface TextInputProps {
   placeholder?: String;
   DefaultValue?: String;
   onchange?: any;
+  type?: string;
 }
 
 const TextInput = styled.input`
@@ -23,7 +24,7 @@ export function TextInputView(props: TextInputProps) {
       placeholder={props.placeholder}
       value={props.DefaultValue}
       onChange={props.onChange}
-      type="text"
+      type={props.type}
     >
       {props.children}
     </TextInput>
