@@ -23,6 +23,7 @@ const CustomButtonGroup = styled.div`
   margin: 0;
   padding: 10px;
   display: flex;
+  gap: var(--space-2x-large);
   justify-content: ${(props) => AmountOfButton[props.Amount].justifyContent};
 `;
 

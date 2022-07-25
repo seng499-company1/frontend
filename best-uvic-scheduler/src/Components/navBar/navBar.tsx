@@ -23,7 +23,10 @@ export function NavBar(props: NavBarProps) {
       >
         Courses
       </TabGroup.Tab>
-      <TabGroup.Tab size="medium" tabId="3">
+      <TabGroup.Tab
+        size="medium"
+        tabId="3"
+        onClick={() => navigate(`/Admin/Professors`)}>
         Professors
       </TabGroup.Tab>
 

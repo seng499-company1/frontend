@@ -29,6 +29,14 @@ const TestProfessorList = {
   ],
 };
 
-export function GetProfessorList() {
-  return TestProfessorList;
+export async function GetProfessorList() {
+  try {
+    const response = await axios.get(
+      `http://uvic.immortalmind.ca:5000/professors/`
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error)
+    return [];
+  }
 }

@@ -60,6 +60,10 @@ const SelectableTableDiv = styled.div<{ columns: number }>`
     background: var(--primary-50);
   }
 
+  & > *:nth-child(2n + 1) div {
+    background: var(--primary-50);
+  }
+
   & > *:nth-child(1) p {
     background: var(--primary-400);
     font-weight: 600;

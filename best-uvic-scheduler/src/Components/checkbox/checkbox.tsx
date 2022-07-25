@@ -51,8 +51,8 @@ const CheckboxDiv = styled.div<{ checked: boolean }>`
   max-height: 14px;
   ${(props) =>
     props.checked
-      ? "background-color: var(--primary-400)"
-      : "background-color: white"};
+      ? "background-color: var(--primary-400) !important"
+      : "background-color: white !important"};
 `;
 
 export function CheckboxView(props: CheckboxViewProps) {
