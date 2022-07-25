@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import TabGroup from "../../Components/tab-group/tab-group.tsx";
-
+import * as ScheduleHelper from "../../Util/ScheduleHelper.tsx";
 import { GetSchedule1, GetSchedule2 } from "../../Util/ScheduleHelper.tsx";
 
 import {
@@ -11,6 +11,7 @@ import {
   SelectableTableLabelsView,
   SelectableTableElementClosedDivView,
 } from "../../Components/SelectTable/SelectableTable.tsx";
+import Timetable from "../Timetable.tsx";
 
 export interface GenerateScheduleProps {
   semesters: Array<string>;
@@ -203,6 +204,100 @@ function CreateListelement(scheduleElement) {
   );
 }
 
+const DateDayMap = {
+  DateLookup: {
+    MONDAY: "2022-07-25",
+    TUESDAY: "2022-07-26",
+    WEDNESDAY: "2022-07-27",
+    THURSDAY: "2022-07-28",
+    FRIDAY: "2022-07-29",
+  },
+  DayLookup: {
+    "1": "MONDAY",
+    "2": "TUESDAY",
+    "3": "WEDNESDAY",
+    "4": "THURSDAY",
+    "5": "FRIDAY",
+  },
+};
+
+export type TimetableItemType = {
+  id: Number;
+  title: string;
+  start: any;
+  end: any;
+};
+
+function GeneratEventList(currentlyShownSchedule) {
+  let items: TimetableItemType[] = [];
+  currentlyShownSchedule.forEach((scheduleElement, i) => {
+    // let capacity = 0;
+
+    // scheduleElement.sections.forEach((section) => {
+    //   capacity = capacity + section.capacity;
+    // });
+
+    // Proper date time setting
+    const title = scheduleElement.course.code;
+    // const desc = scheduleElement.sections[0].professor.name;
+    let course_items: TimetableItemType[] = [];
+    let start;
+    let end;
+
+    scheduleElement.sections.forEach((section, j) => {
+      if (section.timeSlots.length > 0) {
+        section.timeSlots.forEach((timeSlot, k) => {
+          const time = timeSlot.timeRange;
+          const dayOffered = timeSlot.dayOfWeek;
+          start = new Date(`${DateDayMap.DateLookup[dayOffered]} ${time[0]}`);
+          end = new Date(`${DateDayMap.DateLookup[dayOffered]} ${time[1]}`);
+          const instance = {
+            id: i * 100 + j * 10 + k,
+            title,
+            start,
+            end,
+            courseIdx: i,
+            sectionIdx: j,
+            timeSlotIdx: k,
+          };
+          course_items.push(instance);
+        });
+      }
+    });
+    items = items.concat(course_items);
+  });
+  return items;
+}
+
+function RebuildEndpoint(props) {
+  const newSchedule = props.Schedule;
+  const semester = props.selectedSemester.split(" ")[0].toLowerCase();
+  console.log(props);
+  console.log(semester);
+  props.events.forEach((event) => {
+    const weekday = DateDayMap.DayLookup[event.end.getDay()];
+    const start = `${event.start.getHours()}:${String(
+      event.end.getMinutes()
+    ).padStart(2, "0")}`;
+    const end = `${event.end.getHours()}:${String(
+      event.end.getMinutes()
+    ).padStart(2, "0")}`;
+    newSchedule.schedule[semester][event.courseIdx].sections[
+      event.sectionIdx
+    ].timeSlots[event.timeSlotIdx].dayOfWeek = weekday;
+
+    newSchedule.schedule[semester][event.courseIdx].sections[
+      event.sectionIdx
+    ].timeSlots[event.timeSlotIdx].timeRange[0] = start;
+
+    newSchedule.schedule[semester][event.courseIdx].sections[
+      event.sectionIdx
+    ].timeSlots[event.timeSlotIdx].timeRange[1] = end;
+  });
+  console.log(newSchedule);
+  return newSchedule;
+}
+
 export function GenerateScheduleView(props: GenerateScheduleViewProps) {
   const {
     semesters,
@@ -230,6 +325,7 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
     maxCourses,
     setMaxCourses,
   } = props;
+
   const [Schedule, setSchedule] = useState([]);
 
   useEffect(() => {
@@ -244,21 +340,29 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
 
   // **** first schedule output only
 
-  console.log(Schedule.schedule.fall);
   const scheduleFall = Schedule.schedule.fall;
-  console.log("Fall Scedule");
 
   const scheduleSpring = Schedule.schedule.spring;
   const scheduleSummer = Schedule.schedule.summer;
 
   let currentlyShownSchedule;
+  let calendarEventList;
   if (selectedSemester == "Summer 2023") {
     currentlyShownSchedule = scheduleSummer;
+    calendarEventList = GeneratEventList(scheduleSummer);
   } else if (selectedSemester == "Spring 2023") {
     currentlyShownSchedule = scheduleSpring;
+    calendarEventList = GeneratEventList(scheduleSpring);
   } else if (selectedSemester == "Fall 2022") {
     currentlyShownSchedule = scheduleFall;
+    calendarEventList = GeneratEventList(scheduleFall);
   }
+
+  const eventUpdateCallback = (events: any) => {
+    const newSchedule = RebuildEndpoint({ events, Schedule, selectedSemester });
+    setSchedule(newSchedule);
+    ScheduleHelper.putSchedule(newSchedule);
+  };
 
   return (
     <>
@@ -278,6 +382,12 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
           );
         })}
       </TabGroup>
+      <div>
+        <Timetable
+          events={calendarEventList}
+          eventUpdateCallback={eventUpdateCallback}
+        />
+      </div>
       <TableDiv>
         <SelectableTableDivView columns={6}>
           <SelectableTableHeaderDivView>
