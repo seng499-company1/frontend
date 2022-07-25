@@ -346,8 +346,14 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
       <LayoutDiv>
         <Header>
           Course Teaching Preferences
-          <h5 style={{'fontSize': 16, 'fontWeight': 600}}>
-            For more information about specific courses, view the <a href='https://www.uvic.ca/ecs/software/current-students/courses/index.php' target='__blank__'>UVic BSEng Course Calendar</a>
+          <h5 style={{ fontSize: 16, fontWeight: 600 }}>
+            For more information about specific courses, view the{" "}
+            <a
+              href="https://www.uvic.ca/ecs/software/current-students/courses/index.php"
+              target="__blank__"
+            >
+              UVic BSEng Course Calendar
+            </a>
           </h5>
         </Header>
         {Courses.map(function (Course, index) {
@@ -456,7 +462,7 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                       handleChange={() => {
                         setQualifications({
                           ...qualifications,
-                          [Course.course_code]: QualificationItems[0]["value"],
+                          [Course.course_code]: QualificationItems[1]["value"],
                         });
                       }}
                     />
