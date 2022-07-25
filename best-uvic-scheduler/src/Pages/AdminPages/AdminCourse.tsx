@@ -21,6 +21,7 @@ import { CustomButtonGroupView } from "../../Components/button/buttongroup.tsx";
 import { BiCaretDown, BiCaretUp } from "react-icons/bi";
 import { type } from "os";
 import { editCourse } from "../../Util/CourseListHelper";
+import { OperationCanceledException } from "typescript";
 
 const TableDiv = styled.div`
   padding-top: 48px;
@@ -92,6 +93,7 @@ export function AdminCoursePage() {
       course_desc: OpenedCourse.course_desc,
       prof_prereq: OpenedCourse.prof_prereq,
       year_req: OpenedCourse.year_req,
+      notes: "",
     };
     CourseListHelper.editCourse({ id: ID, json: New_value });
     console.log(New_value);
@@ -153,87 +155,87 @@ export function AdminCoursePage() {
                   />
                 </SelectableTableIconElementDivView>
                 <OpenEditablePartDiv>
-                <SelectableTableInputDiv>
-                  <SelectableTableSingleInputDiv>
-                    <p> Course ID </p>
-                    <TextInputView
-                      DefaultValue={DisplayedCode}
-                      onChange={(event) => {
-                        setDisplayedCode(event.target.value);
-                      }}
-                    />
-                  </SelectableTableSingleInputDiv>
-                  <SelectableTableSingleInputDiv style={{ width: 300 }}>
-                    <p> Course Name </p>
-                    <TextInputView
-                      DefaultValue={DisplayedName}
-                      onChange={(event) => {
-                        setDisplayedName(event.target.value);
-                      }}
-                    />
-                  </SelectableTableSingleInputDiv>
-                </SelectableTableInputDiv>
-                <SelectableTableInputDiv>
-                  <SelectableTableCheckboxDiv>
-                    <CheckboxView
-                      checked={FallNeeded}
-                      setChecked={() => {
-                        setFallNeeded(!FallNeeded);
+                  <SelectableTableInputDiv>
+                    <SelectableTableSingleInputDiv>
+                      <p> Course ID </p>
+                      <TextInputView
+                        DefaultValue={DisplayedCode}
+                        onChange={(event) => {
+                          setDisplayedCode(event.target.value);
+                        }}
+                      />
+                    </SelectableTableSingleInputDiv>
+                    <SelectableTableSingleInputDiv style={{ width: 300 }}>
+                      <p> Course Name </p>
+                      <TextInputView
+                        DefaultValue={DisplayedName}
+                        onChange={(event) => {
+                          setDisplayedName(event.target.value);
+                        }}
+                      />
+                    </SelectableTableSingleInputDiv>
+                  </SelectableTableInputDiv>
+                  <SelectableTableInputDiv>
+                    <SelectableTableCheckboxDiv>
+                      <CheckboxView
+                        checked={FallNeeded}
+                        setChecked={() => {
+                          setFallNeeded(!FallNeeded);
+                        }}
+                      >
+                        X
+                      </CheckboxView>
+                      <p>Fall</p>
+                    </SelectableTableCheckboxDiv>
+                    <SelectableTableCheckboxDiv>
+                      <CheckboxView
+                        checked={SpringNeeded}
+                        setChecked={() => {
+                          setSpringNeeded(!SpringNeeded);
+                        }}
+                      >
+                        X
+                      </CheckboxView>
+                      <p>Spring</p>
+                    </SelectableTableCheckboxDiv>
+                    <SelectableTableCheckboxDiv>
+                      <CheckboxView
+                        checked={SummerNeeded}
+                        setChecked={() => {
+                          setSummerNeeded(!SummerNeeded);
+                        }}
+                      >
+                        X
+                      </CheckboxView>
+                      <p>Summer</p>
+                    </SelectableTableCheckboxDiv>
+                  </SelectableTableInputDiv>
+                  <CustomButtonGroupView {...{ Amount: "Progession" }}>
+                    <CustomButtonView
+                      {...{ Theme: "Cancel" }}
+                      customClickEvent={() => {
+                        DeleteCourse(index);
                       }}
                     >
-                      X
-                    </CheckboxView>
-                    <p>Fall</p>
-                  </SelectableTableCheckboxDiv>
-                  <SelectableTableCheckboxDiv>
-                    <CheckboxView
-                      checked={SpringNeeded}
-                      setChecked={() => {
-                        setSpringNeeded(!SpringNeeded);
+                      Delete
+                    </CustomButtonView>
+                    <CustomButtonView
+                      {...{ Theme: "Secondary" }}
+                      customClickEvent={() => {
+                        setOpenCourse(0);
                       }}
                     >
-                      X
-                    </CheckboxView>
-                    <p>Spring</p>
-                  </SelectableTableCheckboxDiv>
-                  <SelectableTableCheckboxDiv>
-                    <CheckboxView
-                      checked={SummerNeeded}
-                      setChecked={() => {
-                        setSummerNeeded(!SummerNeeded);
+                      Cancel
+                    </CustomButtonView>
+                    <CustomButtonView
+                      {...{ Theme: "Primary" }}
+                      customClickEvent={() => {
+                        SendEditedToBackend();
                       }}
                     >
-                      X
-                    </CheckboxView>
-                    <p>Summer</p>
-                  </SelectableTableCheckboxDiv>
-                </SelectableTableInputDiv>
-                <CustomButtonGroupView {...{ Amount: "Progession" }}>
-                <CustomButtonView
-                    {...{ Theme: "Cancel" }}
-                    customClickEvent={() => {
-                      DeleteCourse(index);
-                    }}
-                  >
-                    Delete
-                  </CustomButtonView>
-                  <CustomButtonView
-                    {...{ Theme: "Secondary" }}
-                    customClickEvent={() => {
-                      setOpenCourse(0);
-                    }}
-                  >
-                    Cancel
-                  </CustomButtonView>
-                  <CustomButtonView
-                    {...{ Theme: "Primary" }}
-                    customClickEvent={() => {
-                      SendEditedToBackend();
-                    }}
-                  >
-                    Save
-                  </CustomButtonView>
-                </CustomButtonGroupView>
+                      Save
+                    </CustomButtonView>
+                  </CustomButtonGroupView>
                 </OpenEditablePartDiv>
               </SelectableTableElementOpenedDivView>
             );

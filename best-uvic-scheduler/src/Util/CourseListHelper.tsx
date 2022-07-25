@@ -69,11 +69,11 @@ export async function deleteCourse(props) {
 }
 
 export async function addCourse(props: CourseProps) {
-  const json = props.json;
+  console.log(props);
   try {
     const response = await axios.post(
-      `http://uvic.immortalmind.ca:5000/courses/${props.id}`,
-      json,
+      `http://uvic.immortalmind.ca:5000/courses/`,
+      props,
       {
         "Content-Type": "application/json",
       }
