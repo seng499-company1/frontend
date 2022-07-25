@@ -57,6 +57,11 @@ export function NewCoursePage() {
   const [SpringNeeded, setSpringNeeded] = useState(false);
   const [SummerNeeded, setSummerNeeded] = useState(false);
 
+  function SendNewToBackend() {
+    console.log("Testing");
+  }
+
+
   return (
     <FormDiv>
       <SelectableTableSingleInputDiv>
@@ -170,6 +175,16 @@ export function NewCoursePage() {
           onQualifications(event.target.value);
         }}
       />
+      <CustomButtonGroupView {...{ Amount: "Progession" }}>
+        <CustomButtonView
+        {...{ Theme: "Primary" }}
+        customClickEvent={() => {
+          SendNewToBackend();
+        }}
+        >
+        Submit
+        </CustomButtonView>
+      </CustomButtonGroupView>
     </FormDiv>
   );
 }
