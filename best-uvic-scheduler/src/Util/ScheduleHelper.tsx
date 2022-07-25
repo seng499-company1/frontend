@@ -2704,3 +2704,21 @@ export async function GetSchedule2() {
     return [];
   }
 }
+
+//year value is hard coded for now!!
+export async function putSchedule(props) {
+  console.log("JSON !! +  ", props);
+  try {
+    const response = await axios.put(
+      `http://uvic.immortalmind.ca:5000/schedules/2022`,
+      props,
+      {
+        "Content-Type": "application/json",
+      }
+    );
+    console.log("response  ", response);
+    return response;
+  } catch (error) {
+    console.log("PUT COURSE FAILED! " + error);
+  }
+}

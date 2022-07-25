@@ -5,6 +5,7 @@ import styled from "styled-components";
 import CustomButtonView from "../../Components/button/button.tsx";
 import CheckboxGroup from "../../Components/checkbox/checkbox.tsx";
 import Dropdown from "../../Components/dropdown/dropdown.tsx";
+import Radio from "../../Components/radio/radio.tsx";
 import TabGroup from "../../Components/tab-group/tab-group.tsx";
 import { Timetable } from "../../Components/Timetable/Timetable.tsx";
 import * as CourseListHelper from "../../Util/CourseListHelper.tsx";
@@ -79,6 +80,17 @@ export const weekdays = [
   "Friday",
 ];
 
+export const QualificationItems = [
+  { value: "Not Qualified", label: "Not Qualified" },
+  { value: "Qualified", label: "Qualified" },
+];
+
+export const PreferenceItems = [
+  { value: "Not Willing", label: "Not Willing" },
+  { value: "Willing", label: "Willing" },
+  { value: "Very Willing", label: "Very Willing" },
+];
+
 function updateCheckbox(state: Object, semester: string) {
   return { ...state, [semester]: !state[semester] };
 }
@@ -103,16 +115,13 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
   const [Courses, setCourses] = useState([]);
   const [AmountOfCourses, setAmount] = useState(0);
 
-  //get data
-  useEffect(() => {
-    CourseListHelper.GetCourseList()
-      .then((resp) => {
-        setCourses(resp);
-      })
-      .then((resp) => {
-        setAmount(resp.length());
-      });
-  }, []);
+  CourseListHelper.GetCourseList()
+    .then((resp) => {
+      setCourses(resp);
+    })
+    .then((resp) => {
+      setAmount(resp.length());
+    });
 
   const semestersItems = semesters.map((sem: string) => {
     return { value: sem, label: sem };
@@ -152,12 +161,6 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
   const { maxCourseEntered, setMaxCourseEntered } =
     useContext(MaxCourseContext);
 
-  const PreferenceItems = [
-    { value: "Not Willing", label: "Not Willing" },
-    { value: "Willing", label: "Willing" },
-    { value: "Very Willing", label: "Very Willing" },
-  ];
-
   useEffect(() => {
     const key = selectedSemester.value;
     const val = maxCourses[key];
@@ -179,11 +182,6 @@ function useProfessorTimetable(props: ProfessorTimetableProps) {
   const { qualifications, setQualifications } = useContext(
     QualificationsContext
   );
-
-  const QualificationItems = [
-    { value: "Not Qualified", label: "Not Qualified" },
-    { value: "Qualified", label: "Qualified" },
-  ];
 
   const { prefDays, setPrefDays } = useContext(PrefDayContext);
 
@@ -338,22 +336,28 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
     setMaxCourseEntered,
   } = props;
 
+  console.log(preferences);
+  console.log(qualifications);
+
   return (
     <Background>
       <LayoutDiv>
-        <Header>Course teaching preferences</Header>
+        <Header>
+          Course Teaching Preferences
+          <h5 style={{'fontSize': 16, 'fontWeight': 600}}>
+            For more information about specific courses, view the <a href='https://www.uvic.ca/ecs/software/current-students/courses/index.php' target='__blank__'>UVic BSEng Course Calendar</a>
+          </h5>
+        </Header>
         {Courses.map(function (Course, index) {
           let name = Course.course_code;
           return (
             <>
               <div>
                 <h3 style={{ fontWeight: "500", margin: "0" }}>
-                  {" "}
-                  {Course.course_code}{" "}
+                  {Course.course_code}
                 </h3>
                 <CourseInfoDiv key={index}>
                   <p>
-                    {Course.course_desc}{" "}
                     {Course.course_qualifications && (
                       <>
                         <br />
@@ -371,49 +375,89 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                   </p>
                   <FieldContainerDiv>
                     <FieldLabelP>Desire to teach</FieldLabelP>
-                    <Dropdown
-                      placeholder={"Desirability"}
-                      startingValue={
-                        preferences.hasOwnProperty(name)
-                          ? {
-                              value: preferences[name],
-                              label: preferences[name],
-                            }
-                          : null
+                    <Radio
+                      label={PreferenceItems[0]["value"]}
+                      value={PreferenceItems[0]["value"]}
+                      isChecked={
+                        preferences[Course.course_code] ===
+                        PreferenceItems[0]["value"]
+                          ? true
+                          : false
                       }
-                      dropdownItems={PreferenceItems}
-                      handleChange={(event) => {
+                      handleChange={() => {
                         setPreferences({
                           ...preferences,
-                          [Course.course_code]: event.value,
+                          [Course.course_code]: PreferenceItems[0]["value"],
                         });
                       }}
-                    >
-                      Select
-                    </Dropdown>
+                    />
+                    <Radio
+                      label={PreferenceItems[1]["value"]}
+                      value={PreferenceItems[1]["value"]}
+                      isChecked={
+                        preferences[Course.course_code] ===
+                        PreferenceItems[1]["value"]
+                          ? true
+                          : false
+                      }
+                      handleChange={() => {
+                        setPreferences({
+                          ...preferences,
+                          [Course.course_code]: PreferenceItems[1]["value"],
+                        });
+                      }}
+                    />
+                    <Radio
+                      label={PreferenceItems[2]["value"]}
+                      value={PreferenceItems[2]["value"]}
+                      isChecked={
+                        preferences[Course.course_code] ===
+                        PreferenceItems[2]["value"]
+                          ? true
+                          : false
+                      }
+                      handleChange={() => {
+                        setPreferences({
+                          ...preferences,
+                          [Course.course_code]: PreferenceItems[2]["value"],
+                        });
+                      }}
+                    />
                   </FieldContainerDiv>
                   <FieldContainerDiv>
-                    <FieldLabelP>Qualitfication level</FieldLabelP>
-                    <Dropdown
-                      placeholder={"Qualification"}
-                      startingValue={
-                        qualifications.hasOwnProperty(name)
-                          ? {
-                              value: qualifications[name],
-                              label: qualifications[name],
-                            }
-                          : null
+                    <FieldLabelP>Qualification level</FieldLabelP>
+                    <Radio
+                      label={QualificationItems[0]["value"]}
+                      value={QualificationItems[0]["value"]}
+                      isChecked={
+                        qualifications[Course.course_code] ===
+                        QualificationItems[0]["value"]
+                          ? true
+                          : false
                       }
-                      dropdownItems={QualificationItems}
-                      handleChange={(event) => {
+                      handleChange={() => {
                         setQualifications({
                           ...qualifications,
-                          [Course.course_code]: event.value,
+                          [Course.course_code]: QualificationItems[0]["value"],
                         });
                       }}
-                    >
-                      Select
-                    </Dropdown>
+                    />
+                    <Radio
+                      label={QualificationItems[1]["value"]}
+                      value={QualificationItems[1]["value"]}
+                      isChecked={
+                        qualifications[Course.course_code] ===
+                        QualificationItems[1]["value"]
+                          ? true
+                          : false
+                      }
+                      handleChange={() => {
+                        setQualifications({
+                          ...qualifications,
+                          [Course.course_code]: QualificationItems[0]["value"],
+                        });
+                      }}
+                    />
                   </FieldContainerDiv>
                 </CourseInfoDiv>
               </div>
