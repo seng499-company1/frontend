@@ -5,6 +5,8 @@ import PDISelectProfessorQualifications from "./ProfessorQualifications.tsx";
 import PDISelectProfessorPreferences from "./ProfessorPreferences.tsx";
 import Summary from "./Summary.tsx";
 import ProfessorTimetable from "./ProfessorTimetable.tsx";
+import * as CourseListHelper from "../../Util/CourseListHelper.tsx";
+import { PreferenceItems, QualificationItems } from "./ProfessorTimetable.tsx";
 
 export const ProfessorContext = React.createContext({
   selectedProfessor: 0,
@@ -111,6 +113,26 @@ export function ProfessorDataInputIndex() {
   );
   const [maxCourseEntered, setMaxCourseEntered] = useState({});
   const [leaveReason, setLeaveReason] = useState({});
+
+  CourseListHelper.GetCourseList().then((resp) => {
+    const defaultQualifications = {};
+    if (Object.keys(qualifications).length === 0) {
+      resp.forEach(
+        (course) =>
+          (defaultQualifications[course.course_code] =
+            QualificationItems[0].value)
+      );
+      setQualifications(defaultQualifications);
+    }
+    const defaultPreferences = {};
+    if (Object.keys(preferences).length === 0) {
+      resp.forEach(
+        (course) =>
+          (defaultPreferences[course.course_code] = PreferenceItems[0].value)
+      );
+      setPreferences(defaultPreferences);
+    }
+  });
 
   return (
     <ProfessorContext.Provider value={{ selectedProfessor, setProfessor }}>
