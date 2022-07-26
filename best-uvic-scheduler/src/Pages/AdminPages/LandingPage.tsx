@@ -34,6 +34,14 @@ const SectionDiv = styled.div`
   gap: var(--space-med);
 `;
 
+const ZebraListDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  & > *:nth-child(2n + 1) {
+    background: var(--primary-50);
+  }
+`;
+
 export function LandingPage() {
   const { selectedProfessorName, setProfessorName } =
     useContext(ProfessorNameContext);
@@ -83,23 +91,25 @@ export function LandingPage() {
       })()} */}
       <SectionDiv>
         <DataEntryTitleDiv>Data Entries:</DataEntryTitleDiv>
-        {professors.map((item, idx) => (
-          <CustomButtonView
-            Theme={"Secondary"}
-            Borderless={true}
-            LeftText={true}
-            customClickEvent={() => {
-              console.log(professors[idx]["first_name"]);
-              setProfessorName(professors[idx]["first_name"]);
-              console.log(selectedProfessorName);
+        <ZebraListDiv>
+          {professors.map((item, idx) => (
+            <CustomButtonView
+              Theme={"Secondary"}
+              Borderless={true}
+              LeftText={true}
+              customClickEvent={() => {
+                console.log(professors[idx]["first_name"]);
+                setProfessorName(professors[idx]["first_name"]);
+                console.log(selectedProfessorName);
 
-              navigate(`/LandingPage/Summary_RO`);
-            }}
-          >
-            {professors[idx]["first_name"]}&nbsp;
-            {professors[idx]["last_name"]}
-          </CustomButtonView>
-        ))}
+                navigate(`/LandingPage/Summary_RO`);
+              }}
+            >
+              {professors[idx]["first_name"]}&nbsp;
+              {professors[idx]["last_name"]}
+            </CustomButtonView>
+          ))}
+        </ZebraListDiv>
       </SectionDiv>
       <SectionDiv>
         {/* <DataEntryTitleDiv>Data Entires:</DataEntryTitleDiv>
