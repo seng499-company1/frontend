@@ -6,7 +6,7 @@ import CustomButtonView from "../../Components/button/button.tsx";
 import CustomButtonGroupView from "../../Components/button/buttongroup.tsx";
 import * as CourseListHelper from "../../Util/CourseListHelper.tsx";
 import * as ProfPreferencesHelper from "../../Util/ProfPreferencesHelper.tsx";
-import { ProfessorNameContext } from "./LandingPage.tsx";
+import { ProfessorNameContext } from "./index.tsx";
 import { Background } from "../../Components/background/background.tsx";
 import LandingPage from "./LandingPage.tsx";
 import { array, number } from "prop-types";
@@ -123,7 +123,9 @@ export function Summary_RO() {
   }, []);
 
   useEffect(() => {
-    ProfPreferencesHelper.GetPreferencesFromProf()
+    ProfPreferencesHelper.GetPreferencesFromProf(
+      selectedProfessorName["pref_id"]
+    )
       .then((resp) => {
         setProfPreference(resp);
       })
@@ -135,33 +137,27 @@ export function Summary_RO() {
   //setProfPreference(ProfPreferencesHelper.GetPreferencesFromProf());
   const Preferences = ProfPreferenes[0];
 
-  console.log(Preferences);
   //const CoursesPref = Preferences.course_preferences;
   const tempPreferences = {};
   //hooks
   const { selectedProfessorName, setProfessorName } =
     useContext(ProfessorNameContext);
+  console.log("SELECTED VAL");
+  console.log(selectedProfessorName);
   const navigate = useNavigate();
   //This is stupid I know... I couldn't access the elements of the json unless I did this, probs a better way but demo is tomorrow :)
   for (const key in Preferences) {
     tempPreferences[key] = Preferences[key];
   }
-  console.log("EHRE");
-  console.log(tempPreferences.course_preferences);
+
   if (tempPreferences.course_preferences === undefined) {
     return <p>Preferences are undefined, try to update the post request</p>;
   }
 
   let CoursesPref = JSON.parse(tempPreferences.course_preferences);
-  console.log(CoursesPref);
   const Times = tempPreferences.preferred_times;
 
   let timeTest = JSON.parse(Times);
-  console.log(timeTest);
-  console.log("TIMES");
-  console.log(Times);
-
-  console.log("temp times");
 
   const terms = ["summer", "spring", "fall"];
   const weekdays = {
@@ -180,17 +176,14 @@ export function Summary_RO() {
     NO: "N/A",
     VERY_WILLING: "Very Willing",
   };
-  //process time data
-  // const obj = JSON.parse(Times);
-  // console.log("JSON");
-  // console.log(obj);
+
   const timeSummer = timeTest.summer;
   const timeSpring = timeTest.spring;
   const timeFall = timeTest.fall;
 
   return (
-    <Background>
-      <Header>Entries For {selectedProfessorName}</Header>
+    <div>
+      <Header>Entries For {selectedProfessorName["first_name"]}</Header>
 
       <h2>Classes</h2>
       <TableDiv>
@@ -409,7 +402,7 @@ export function Summary_RO() {
           Back{" "}
         </CustomButtonView>
       </CustomButtonGroupView>
-    </Background>
+    </div>
   );
 }
 

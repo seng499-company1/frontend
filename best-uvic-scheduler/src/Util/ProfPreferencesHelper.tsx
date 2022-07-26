@@ -154,10 +154,10 @@ export async function postPreferences(props: SubmitInfoProps) {
   }
 }
 //note : this function will b here until front end fixes
-export async function GetPreferencesFromProf() {
+export async function GetPreferencesFromProf(pref_id) {
   try {
     const response = await axios.get(
-      "http://uvic.immortalmind.ca:5000/professors/preferences/6c45ae96-0c8d-11ed-bdda-0242ac130002"
+      `http://uvic.immortalmind.ca:5000/professors/preferences/${pref_id}`
     );
     return response.data;
   } catch (error) {

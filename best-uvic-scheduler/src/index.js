@@ -18,10 +18,10 @@ root.render(
     <Routes>
       <Route path="/" element={<LoginPage />} />
       <Route path="/SelectProfessor/*" element={<ProfessorDataInputIndex />} />
-      <Route path="/LandingPage" element={<LandingPage />} />
+      {/* <Route path="/LandingPage" element={<LandingPage />} /> */}
       <Route path="/IntegrationTest" element={<IntegrationTest />} />
       <Route path="/Admin/*" element={<AdminIndex />} />
-      <Route path="/LandingPage/Summary_RO" element={<Summary_RO />} />
+      {/* <Route path="/LandingPage/Summary_RO" element={<Summary_RO />} /> */}
       <Route path="/TimetableTest" element={<Timetable />} />
     </Routes>
   </HashRouter>
