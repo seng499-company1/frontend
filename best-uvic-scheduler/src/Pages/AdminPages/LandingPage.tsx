@@ -31,7 +31,14 @@ const SectionDiv = styled.div`
   gap: var(--space-med);
 `;
 
-<<<<<<< HEAD
+const ZebraListDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  & > *:nth-child(2n + 1) {
+    background: var(--primary-50);
+  }
+`;
+
 const NewSectionDiv = styled.div`
   display: flex;
   flex-direction: row;
@@ -43,16 +50,6 @@ function SendReminder(id) {
   ProfessorInputHelper.RemindProfessor(id);
 }
 
-=======
-const ZebraListDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  & > *:nth-child(2n + 1) {
-    background: var(--primary-50);
-  }
-`;
-
->>>>>>> a6ce6de62bac5a9e851499055d61a201d5e56d5f
 export function LandingPage() {
   const { selectedProfessorName, setProfessorName } =
     useContext(ProfessorNameContext);
@@ -95,7 +92,6 @@ export function LandingPage() {
   // }
 
   const entries = professors.length;
-<<<<<<< HEAD
 
   let ProfessorsWithResponses = professors.map( (Professor) => Professor.prof_id);
 
@@ -107,8 +103,6 @@ export function LandingPage() {
 
   console.log(ProfessorsWithNoResponse);
 
-=======
->>>>>>> a6ce6de62bac5a9e851499055d61a201d5e56d5f
   return (
     <ProfListDiv>
       <SectionDiv>
