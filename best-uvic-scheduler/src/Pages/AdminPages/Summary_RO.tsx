@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
+import { ToggleView } from "../../Components/toggle/toggle.tsx";
 
 import { useNavigate } from "react-router-dom";
 import CustomButtonView from "../../Components/button/button.tsx";
@@ -17,6 +18,7 @@ import {
   semesterHeader,
   maxCoursesMessage,
   coursesMessage,
+  leaveReasonView_RO,
 } from "../../Components/Summary/SummaryElements.tsx";
 
 import {
@@ -26,6 +28,7 @@ import {
   SelectableTableElementClosedDivView,
 } from "../../Components/SelectTable/SelectableTable.tsx";
 import { json } from "stream/consumers";
+import { monitorEventLoopDelay } from "perf_hooks";
 
 const SelectDivStyle = styled.div`
   display: flex;
@@ -157,6 +160,19 @@ export function Summary_RO() {
   let CoursesPref = JSON.parse(tempPreferences.course_preferences);
   const Times = tempPreferences.preferred_times;
 
+  console.log(tempPreferences);
+  let str: string = tempPreferences["why_relief"];
+  let summerRelief = "";
+  let springRelief = "";
+  let fallRelief = "";
+  if (str.includes("/$fall/")) {
+    let array = tempPreferences["why_relief"].split("/$fall/");
+    let array2 = array[1].split("/$spring/");
+    fallRelief = array2[0];
+    let array3 = array2[1].split("/$summer/");
+    springRelief = array3[0];
+    summerRelief = array3[1];
+  }
   let timeTest = JSON.parse(Times);
 
   const terms = ["summer", "spring", "fall"];
@@ -180,7 +196,7 @@ export function Summary_RO() {
   const timeSummer = timeTest.summer;
   const timeSpring = timeTest.spring;
   const timeFall = timeTest.fall;
-
+  console.log(timeSpring);
   return (
     <div>
       <Header>Entries For {selectedProfessorName["first_name"]}</Header>
@@ -237,7 +253,58 @@ export function Summary_RO() {
       <TableDiv>
         <SelectableTableDivView columns={5}>
           {semesterHeader("Summer")}
+          {leaveReasonView_RO("Summer 2023", summerRelief)}
+
           {maxCoursesMessage(tempPreferences.num_summer_courses)}
+
+          <SelectableTableElementClosedDivView>
+            <SelectableTableLabelDivView>
+              <SelectableTableLabelsView>
+                Prefered Days:
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView>
+                {/* yes I know this is dumb, but also demo soon :(  */}
+                <ToggleView
+                  readOnly
+                  active={timeSummer["mon"]["preferredDay"]}
+                  id={0}
+                >
+                  Monday
+                </ToggleView>
+                <ToggleView
+                  readOnly
+                  active={timeSummer["tues"]["preferredDay"]}
+                  id={1}
+                >
+                  Tuesday{" "}
+                </ToggleView>
+                <ToggleView
+                  readOnly
+                  active={timeSummer["wed"]["preferredDay"]}
+                  id={2}
+                >
+                  Wednesday
+                </ToggleView>
+                <ToggleView
+                  readOnly
+                  active={timeSummer["thurs"]["preferredDay"]}
+                  id={3}
+                >
+                  Thursday{" "}
+                </ToggleView>
+                <ToggleView
+                  readOnly
+                  active={timeSummer["fri"]["preferredDay"]}
+                  id={4}
+                >
+                  Friday
+                </ToggleView>
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+            </SelectableTableLabelDivView>
+          </SelectableTableElementClosedDivView>
 
           {(() => {
             if (
@@ -288,7 +355,58 @@ export function Summary_RO() {
       <TableDiv>
         <SelectableTableDivView columns={5}>
           {semesterHeader("Fall")}
+          {leaveReasonView_RO("Fall 2022", fallRelief)}
+
           {maxCoursesMessage(tempPreferences.num_fall_courses)}
+
+          <SelectableTableElementClosedDivView>
+            <SelectableTableLabelDivView>
+              <SelectableTableLabelsView>
+                Prefered Days:
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView>
+                {/* yes I know this is dumb, but also demo soon :(  */}
+                <ToggleView
+                  readOnly
+                  active={timeFall["mon"]["preferredDay"]}
+                  id={0}
+                >
+                  Monday
+                </ToggleView>
+                <ToggleView
+                  readOnly
+                  active={timeFall["tues"]["preferredDay"]}
+                  id={1}
+                >
+                  Tuesday{" "}
+                </ToggleView>
+                <ToggleView
+                  readOnly
+                  active={timeFall["wed"]["preferredDay"]}
+                  id={2}
+                >
+                  Wednesday
+                </ToggleView>
+                <ToggleView
+                  readOnly
+                  active={timeFall["thurs"]["preferredDay"]}
+                  id={3}
+                >
+                  Thursday{" "}
+                </ToggleView>
+                <ToggleView
+                  readOnly
+                  active={timeFall["fri"]["preferredDay"]}
+                  id={4}
+                >
+                  Friday
+                </ToggleView>
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+            </SelectableTableLabelDivView>
+          </SelectableTableElementClosedDivView>
 
           {(() => {
             if (
@@ -340,8 +458,58 @@ export function Summary_RO() {
       <TableDiv>
         <SelectableTableDivView columns={5}>
           {semesterHeader("Spring")}
+          {leaveReasonView_RO("Spring 2023", springRelief)}
 
           {maxCoursesMessage(tempPreferences.num_spring_courses)}
+
+          <SelectableTableElementClosedDivView>
+            <SelectableTableLabelDivView>
+              <SelectableTableLabelsView>
+                Prefered Days:
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView>
+                {/* yes I know this is dumb, but also demo soon :(  */}
+                <ToggleView
+                  readOnly
+                  active={timeSpring["mon"]["preferredDay"]}
+                  id={0}
+                >
+                  Monday
+                </ToggleView>
+                <ToggleView
+                  readOnly
+                  active={timeSpring["tues"]["preferredDay"]}
+                  id={1}
+                >
+                  Tuesday{" "}
+                </ToggleView>
+                <ToggleView
+                  readOnly
+                  active={timeSpring["wed"]["preferredDay"]}
+                  id={2}
+                >
+                  Wednesday
+                </ToggleView>
+                <ToggleView
+                  readOnly
+                  active={timeSpring["thurs"]["preferredDay"]}
+                  id={3}
+                >
+                  Thursday{" "}
+                </ToggleView>
+                <ToggleView
+                  readOnly
+                  active={timeSpring["fri"]["preferredDay"]}
+                  id={4}
+                >
+                  Friday
+                </ToggleView>
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+            </SelectableTableLabelDivView>
+          </SelectableTableElementClosedDivView>
           {(() => {
             if (
               timeSpring.mon.times.length === 0 &&

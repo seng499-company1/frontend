@@ -54,6 +54,23 @@ export const leaveReasonView = (semesterKey: string, leaveReason: any) => {
     );
   }
 };
+
+export const leaveReasonView_RO = (semesterKey: string, leaveReason: any) => {
+  if (leaveReason != "") {
+    return (
+      <SelectableTableLabelDivView>
+        <SelectableTableLabelsView>
+          Away this semester, Leave Reason:
+        </SelectableTableLabelsView>
+
+        <SelectableTableLabelsView>{leaveReason}</SelectableTableLabelsView>
+        <SelectableTableLabelsView></SelectableTableLabelsView>
+        <SelectableTableLabelsView></SelectableTableLabelsView>
+        <SelectableTableLabelsView></SelectableTableLabelsView>
+      </SelectableTableLabelDivView>
+    );
+  }
+};
 export const timesEnteredMessage = (
   <SelectableTableElementClosedDivView>
     <SelectableTableLabelDivView>
