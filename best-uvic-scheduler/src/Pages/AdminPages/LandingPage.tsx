@@ -5,11 +5,7 @@ import Alert from "../../Components/Alert/alert.tsx";
 import * as ProfessorInputHelper from "../../Util/ProfessorInputHelper.tsx";
 import CustomButtonView from "../../Components/button/button.tsx";
 import * as ProfPreferencesHelper from "../../Util/ProfPreferencesHelper.tsx";
-
-export const ProfessorNameContext = React.createContext({
-  selectedProfessorName: "",
-  setProfessorName: () => {},
-});
+import { ProfessorNameContext } from "./index.tsx";
 
 const ProfListDiv = styled.div`
   display: flex;
@@ -75,7 +71,6 @@ export function LandingPage() {
   // }
 
   const entries = professors.length;
-  console.log(professors);
   return (
     <ProfListDiv>
       {/* {(() => {
@@ -98,11 +93,11 @@ export function LandingPage() {
               Borderless={true}
               LeftText={true}
               customClickEvent={() => {
-                console.log(professors[idx]["first_name"]);
-                setProfessorName(professors[idx]["first_name"]);
+                console.log(professors[idx]);
+                setProfessorName(professors[idx]);
                 console.log(selectedProfessorName);
 
-                navigate(`/LandingPage/Summary_RO`);
+                navigate(`Summary_RO`);
               }}
             >
               {professors[idx]["first_name"]}&nbsp;

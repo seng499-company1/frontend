@@ -83,7 +83,6 @@ const TestPreferenceList = {
     },
   ],
 };
-
 export interface SummaryProps {
   maxCourses: any;
   absenceReason: any;
@@ -132,6 +131,10 @@ export function GetPreferences() {
   return TestPreferenceList;
 }
 
+// export function GetPreferencesFromProf() {
+//   return TestPreferenceList;
+// }
+
 const axios = require("axios");
 
 //note : the id is hard coded for now!!!!
@@ -139,7 +142,7 @@ export async function postPreferences(props: SubmitInfoProps) {
   console.log(props);
   try {
     const response = await axios.post(
-      `http://uvic.immortalmind.ca:5000/professors/f02f45d0-0b79-11ed-84b5-0242ac120002/preferences/`,
+      `http://uvic.immortalmind.ca:5000/professors/4a3569e0-0bd1-11ed-a735-0242ac120002/preferences/`,
       props,
       {
         "Content-Type": "application/json",
@@ -150,15 +153,14 @@ export async function postPreferences(props: SubmitInfoProps) {
     console.log("POST COURSE FAILED! " + error);
   }
 }
-// //note : this function will b here until front end fixes
-// export async function GetPreferences() {
-//   try {
-//     const response = await axios.get(
-//       "http://uvic.immortalmind.ca:5000/professors/61587323-6632-4dcf-bae8-2a51ed8585a0/preferences/2022"
-//     );
-//     //return response.data;
-//     return TestPreferenceList;
-//   } catch (error) {
-//     return [];
-//   }
-// }
+//note : this function will b here until front end fixes
+export async function GetPreferencesFromProf(pref_id) {
+  try {
+    const response = await axios.get(
+      `http://uvic.immortalmind.ca:5000/professors/preferences/${pref_id}`
+    );
+    return response.data;
+  } catch (error) {
+    return [];
+  }
+}
