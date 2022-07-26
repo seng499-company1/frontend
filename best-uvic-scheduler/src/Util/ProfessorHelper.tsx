@@ -13,3 +13,17 @@ export async function GetProfessor(props) {
 }
 
 export default GetProfessor;
+
+export async function deleteProfessor(props) {
+  try {
+    const response = await axios.delete(
+      `http://uvic.immortalmind.ca:5000/professors/${props}`,
+      {
+        "Content-Type": "application/json",
+      }
+    );
+    console.log("response  ", response);
+  } catch (error) {
+    console.log("DELETE COURSE FAILED! " + error);
+  }
+}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import * as CourseListHelper from "../../Util/CourseListHelper.tsx";
+import { addProfessor } from "../../Util/ProfessorListHelper.tsx";
 import { TextInputView } from "../../Components/Input/input.tsx";
 import { CheckboxView } from "../../Components/checkbox/checkbox.tsx";
 import { CustomButtonView } from "../../Components/button/button.tsx";
@@ -53,6 +54,7 @@ export function NewProfessorPage() {
   const [Department, setDepartment] = useState("ECE");
   const [HasPENG, setHasPENG] = useState(false);
   const [Teaching, setTeaching] = useState(true);
+  const navigate = useNavigate();
 
   function SendNewToBackend() {
 
@@ -65,7 +67,7 @@ export function NewProfessorPage() {
       last_name: LastName
     };
 
-    console.log(New_value);
+    addProfessor(New_value);
   }
 
   return (
@@ -162,6 +164,7 @@ export function NewProfessorPage() {
           {...{ Theme: "Primary" }}
           customClickEvent={() => {
             SendNewToBackend();
+            navigate(`/Admin/Professors`);
           }}
           >
           Submit

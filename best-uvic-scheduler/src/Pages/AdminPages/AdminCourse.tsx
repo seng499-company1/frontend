@@ -90,13 +90,15 @@ export function AdminCoursePage() {
       spring_peng_req: SpringNeeded && Peng_needed,
       summer_peng_req: SummerNeeded && Peng_needed,
       fall_peng_req: FallNeeded && Peng_needed,
-      course_desc: OpenedCourse.course_desc,
+      course_desc: "",
       prof_prereq: OpenedCourse.prof_prereq,
       year_req: OpenedCourse.year_req,
       notes: "",
     };
     CourseListHelper.editCourse({ id: ID, json: New_value });
+
     console.log(New_value);
+    setOpenCourse(0);
   }
 
   function DeleteCourse(index) {

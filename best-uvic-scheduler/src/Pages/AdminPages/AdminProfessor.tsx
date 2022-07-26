@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { GetProfessorList } from "../../Util/ProfessorListHelper.tsx";
+import { GetProfessorList, deleteProfessorBackend } from "../../Util/ProfessorListHelper.tsx";
 import {
   SelectableTableDivView,
   SelectableTableHeaderDivView,
@@ -82,8 +82,10 @@ export function AdminProfessorPage() {
   }
 
   function DeleteProfessor(index) {
-    setRemovedProfessor(Professors.splice(index, 1));
-    console.log(RemovedProfessor[0].id);
+    let ProfessorToDelete = Professors.splice(index, 1);
+    console.log(ProfessorToDelete);
+    deleteProfessorBackend(ProfessorToDelete[0].id);
+    navigate(`/Admin/Professors`);
   }
 
   return (
@@ -179,13 +181,6 @@ export function AdminProfessorPage() {
                 </CheckboxView>
                 <p>Research</p>
               </SelectableTableCheckboxDiv>
-              <CustomButtonView {...{ Theme: "Secondary" }}
-              customClickEvent={() => {
-                setOpenProfessorType(!OpenProfessorType)
-              }}
-              >
-                Change
-              </CustomButtonView>
               </SelectableTableInputDiv>
               <SelectableTableInputDiv>
               <SelectableTableCheckboxDiv>
@@ -204,13 +199,6 @@ export function AdminProfessorPage() {
                 </CheckboxView>
                 <p>Not PENG</p>
               </SelectableTableCheckboxDiv>
-              <CustomButtonView {...{ Theme: "Secondary" }}
-              customClickEvent={() => {
-                setOpenProfessorPENG(!OpenProfessorPENG)
-              }}
-              >
-                Change
-              </CustomButtonView>
               </SelectableTableInputDiv>
               <SelectableTableInputDiv>
               <CustomButtonView
@@ -228,14 +216,6 @@ export function AdminProfessorPage() {
                   }}
                 >
                   Cancel
-                </CustomButtonView>
-                <CustomButtonView
-                  {...{ Theme: "Primary" }}
-                  customClickEvent={() => {
-                    SendEditedToBackend();
-                  }}
-                >
-                  Save
                 </CustomButtonView>
               </SelectableTableInputDiv>
               </OpenEditablePartDiv>
