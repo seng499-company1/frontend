@@ -81,25 +81,15 @@ export const weekdays = [
 ];
 
 export const QualificationItems = [
-  { value: "Not Qualified", label: "Not Qualified" },
-  { value: "Qualified", label: "Qualified" },
+  { value: "WITH_EFFORT", label: "With Effort" },
+  { value: "ABLE", label: "Able" },
 ];
 
 export const PreferenceItems = [
-  { value: "Not Willing", label: "Not Willing" },
-  { value: "Willing", label: "Willing" },
-  { value: "Very Willing", label: "Very Willing" },
+  { value: "NOT_WILLING", label: "Not Willing" },
+  { value: "WILLING", label: "Willing" },
+  { value: "VERY_WILLING", label: "Very Willing" },
 ];
-
-export const preferenceLabel = {
-  "Not Willing": "NOT_WILLING",
-  Willing: "WILLING",
-  "Very Willing": "VERY_WILLING",
-};
-export const qualLabel = {
-  "Not Qualified": "NOT_QUALIFIED",
-  Qualified: "QUALIFIED",
-};
 
 function updateCheckbox(state: Object, semester: string) {
   return { ...state, [semester]: !state[semester] };
@@ -432,8 +422,7 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                         handleChange={() => {
                           setPreferences({
                             ...preferences,
-                            [Course.course_code]:
-                              preferenceLabel[PreferenceItems[0]["value"]],
+                            [Course.course_code]: PreferenceItems[0]["value"],
                           });
                         }}
                       />
@@ -487,7 +476,7 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                           setQualifications({
                             ...qualifications,
                             [Course.course_code]:
-                              qualLabel[QualificationItems[0]["value"]],
+                              QualificationItems[0]["value"],
                           });
                         }}
                       />

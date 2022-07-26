@@ -26,11 +26,24 @@ export interface RadioProps {
   value: string;
 }
 
+export const preferenceLabel = {
+  WILLING: "Willing",
+  NOT_WILLING: "Not Willing",
+  VERY_WILLING: "Very Willing",
+  WITH_EFFORT: "With Effort",
+  ABLE: "Able",
+  NO: "N/A",
+};
+
 function Radio(props: RadioProps) {
   return (
     <label>
-      <input type="radio" checked={props.isChecked} onChange={props.handleChange}/>
-        {props.value}
+      <input
+        type="radio"
+        checked={props.isChecked}
+        onChange={props.handleChange}
+      />
+      {preferenceLabel[props.value]}
     </label>
   );
 }

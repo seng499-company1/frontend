@@ -36,6 +36,9 @@ const ZebraListDiv = styled.div`
   flex-direction: column;
   & > *:nth-child(2n + 1) {
     background: var(--primary-50);
+    &:hover {
+      background: var(--primary-100);
+    }
   }
 `;
 
@@ -59,25 +62,23 @@ export function LandingPage() {
   const [AmountofPrefereces, setAmountPref] = useState(0);
 
   useEffect(() => {
-    ProfessorInputHelper.GetProfessorInputList()
-      .then((resp) => {
-        setPreferences(resp);
-      });
+    ProfessorInputHelper.GetProfessorInputList().then((resp) => {
+      setPreferences(resp);
+    });
   }, []);
 
   useEffect(() => {
-  GetProfessorList().then((response) => {
-    setListOfProfessors(response);
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+    GetProfessorList()
+      .then((response) => {
+        setListOfProfessors(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   //get data
   const professors = Preferences;
-
-
 
   // const oldProf = [];
   // const newProf = [];
@@ -93,13 +94,15 @@ export function LandingPage() {
 
   const entries = professors.length;
 
-  let ProfessorsWithResponses = professors.map( (Professor) => Professor.prof_id);
+  let ProfessorsWithResponses = professors.map(
+    (Professor) => Professor.prof_id
+  );
 
-  const ProfessorsWithNoResponse = ListOfProfessors.filter( (Professor) => {
-    if(!ProfessorsWithResponses.includes(Professor.id)){
+  const ProfessorsWithNoResponse = ListOfProfessors.filter((Professor) => {
+    if (!ProfessorsWithResponses.includes(Professor.id)) {
       return Professor;
     }
-  })
+  });
 
   console.log(ProfessorsWithNoResponse);
 
@@ -131,14 +134,18 @@ export function LandingPage() {
         <DataEntryTitleDiv>Professors without Data Entered:</DataEntryTitleDiv>
         {ProfessorsWithNoResponse.map((item, idx) => (
           <NewSectionDiv>
-          <p> {item.first_name} {item.last_name} </p>
-          <CustomButtonView {...{ Theme: "Primary" }}
-          customClickEvent={() => {
-            SendReminder(item.id);
-          }}
-          >
-          Send Reminder
-          </CustomButtonView>
+            <p>
+              {" "}
+              {item.first_name} {item.last_name}{" "}
+            </p>
+            <CustomButtonView
+              {...{ Theme: "Primary" }}
+              customClickEvent={() => {
+                SendReminder(item.id);
+              }}
+            >
+              Send Reminder
+            </CustomButtonView>
           </NewSectionDiv>
         ))}
       </SectionDiv>

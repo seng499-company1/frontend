@@ -263,7 +263,7 @@ export function Summary(props: SummaryProps) {
   submitInfo.why_relief = submitInfo.why_relief.concat(
     "/$fall/",
     leaveReason["Fall 2022"],
-    "/$spring",
+    "/$spring/",
     leaveReason["Spring 2023"],
     "/$summer/",
     leaveReason["Summer 2023"]
