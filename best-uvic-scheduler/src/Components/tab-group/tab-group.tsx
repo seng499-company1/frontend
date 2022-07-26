@@ -101,7 +101,7 @@ const TabDiv = styled.div<{
 
 const fontSize = {
   small: "var(--font-size-normal)",
-  medium: "var(--font-size-h3)",
+  medium: "16px",
   large: "var(--font-size-h2)",
 };
 
