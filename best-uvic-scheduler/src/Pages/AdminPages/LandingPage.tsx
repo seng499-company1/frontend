@@ -6,11 +6,7 @@ import * as ProfessorInputHelper from "../../Util/ProfessorInputHelper.tsx";
 import { GetProfessorList } from "../../Util/ProfessorListHelper.tsx";
 import CustomButtonView from "../../Components/button/button.tsx";
 import * as ProfPreferencesHelper from "../../Util/ProfPreferencesHelper.tsx";
-
-export const ProfessorNameContext = React.createContext({
-  selectedProfessorName: "",
-  setProfessorName: () => {},
-});
+import { ProfessorNameContext } from "./index.tsx";
 
 const ProfListDiv = styled.div`
   display: flex;
@@ -35,6 +31,7 @@ const SectionDiv = styled.div`
   gap: var(--space-med);
 `;
 
+<<<<<<< HEAD
 const NewSectionDiv = styled.div`
   display: flex;
   flex-direction: row;
@@ -46,6 +43,16 @@ function SendReminder(id) {
   ProfessorInputHelper.RemindProfessor(id);
 }
 
+=======
+const ZebraListDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  & > *:nth-child(2n + 1) {
+    background: var(--primary-50);
+  }
+`;
+
+>>>>>>> a6ce6de62bac5a9e851499055d61a201d5e56d5f
 export function LandingPage() {
   const { selectedProfessorName, setProfessorName } =
     useContext(ProfessorNameContext);
@@ -88,6 +95,7 @@ export function LandingPage() {
   // }
 
   const entries = professors.length;
+<<<<<<< HEAD
 
   let ProfessorsWithResponses = professors.map( (Professor) => Professor.prof_id);
 
@@ -99,27 +107,31 @@ export function LandingPage() {
 
   console.log(ProfessorsWithNoResponse);
 
+=======
+>>>>>>> a6ce6de62bac5a9e851499055d61a201d5e56d5f
   return (
     <ProfListDiv>
       <SectionDiv>
         <DataEntryTitleDiv>Data Entries:</DataEntryTitleDiv>
-        {professors.map((item, idx) => (
-          <CustomButtonView
-            Theme={"Secondary"}
-            Borderless={true}
-            LeftText={true}
-            customClickEvent={() => {
-              console.log(professors[idx]["first_name"]);
-              setProfessorName(professors[idx]["first_name"]);
-              console.log(selectedProfessorName);
+        <ZebraListDiv>
+          {professors.map((item, idx) => (
+            <CustomButtonView
+              Theme={"Secondary"}
+              Borderless={true}
+              LeftText={true}
+              customClickEvent={() => {
+                console.log(professors[idx]);
+                setProfessorName(professors[idx]);
+                console.log(selectedProfessorName);
 
-              navigate(`/LandingPage/Summary_RO`);
-            }}
-          >
-            {professors[idx]["first_name"]}&nbsp;
-            {professors[idx]["last_name"]}
-          </CustomButtonView>
-        ))}
+                navigate(`Summary_RO`);
+              }}
+            >
+              {professors[idx]["first_name"]}&nbsp;
+              {professors[idx]["last_name"]}
+            </CustomButtonView>
+          ))}
+        </ZebraListDiv>
       </SectionDiv>
       <SectionDiv>
         <DataEntryTitleDiv>Professors without Data Entered:</DataEntryTitleDiv>

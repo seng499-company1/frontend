@@ -4,7 +4,7 @@ import styled from "styled-components";
 import TabGroup from "../../Components/tab-group/tab-group.tsx";
 import * as ScheduleHelper from "../../Util/ScheduleHelper.tsx";
 import { GetSchedule1, GetSchedule2 } from "../../Util/ScheduleHelper.tsx";
-
+import { DefaultShadow } from "../../GlobalStyles.tsx";
 import {
   SelectableTableDivView,
   SelectableTableHeaderDivView,
@@ -144,6 +144,29 @@ const TableDiv = styled.div`
   padding-top: 4px;
 `;
 
+const CalendarContianerDiv = styled.div`
+  height: 800px;
+  padding: 48px 0px;
+
+  & .rbc-day-slot .rbc-event-content {
+    font-size: var(--font-size-normal);
+  }
+`;
+
+const RedBox = styled.div`
+  font-size: 14px;
+  color: var(--text);
+  border-radius: 4px;
+  border: 1px solid var(--danger-400);
+  ${DefaultShadow}
+  display: flex;
+  align-items: center;
+  background-color: var(--danger-50);
+  padding: var(--space-small) var(--space-large);
+  box-sizing: border-box;
+  margin: 48px auto 0;
+`;
+
 function CreateListelement(scheduleElement) {
   const couseID = scheduleElement.course.code;
 
@@ -277,11 +300,9 @@ function RebuildEndpoint(props) {
   props.events.forEach((event) => {
     const weekday = DateDayMap.DayLookup[event.end.getDay()];
     const start = `${event.start.getHours()}:${String(
-      event.end.getMinutes()
-    ).padStart(2, "0")}`;
-    const end = `${event.end.getHours()}:${String(
-      event.end.getMinutes()
-    ).padStart(2, "0")}`;
+      event.start.getMinutes()
+    )}`;
+    const end = `${event.end.getHours()}:${String(event.end.getMinutes())}`;
     newSchedule.schedule[semester][event.courseIdx].sections[
       event.sectionIdx
     ].timeSlots[event.timeSlotIdx].dayOfWeek = weekday;
@@ -327,12 +348,20 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
   } = props;
 
   const [Schedule, setSchedule] = useState([]);
+  const [initErrors, setInitErrors] = useState([]);
+  const [errors, setErrors] = useState([]);
 
   useEffect(() => {
     GetSchedule1().then((resp) => {
       setSchedule(resp);
     });
   }, []);
+
+  useEffect(() => {
+    if (initErrors.length === 0) {
+      setInitErrors(errors);
+    }
+  }, [errors]);
 
   if (Schedule.length === 0) {
     return <></>;
@@ -361,8 +390,14 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
   const eventUpdateCallback = (events: any) => {
     const newSchedule = RebuildEndpoint({ events, Schedule, selectedSemester });
     setSchedule(newSchedule);
-    ScheduleHelper.putSchedule(newSchedule);
+    ScheduleHelper.putSchedule(newSchedule).then((resp) => {
+      setErrors(resp.data.errors);
+    });
   };
+
+  console.log(errors.filter((x) => !initErrors.includes(x)));
+
+  const realErrors = errors.filter((x) => !initErrors.includes(x));
 
   return (
     <>
@@ -382,12 +417,23 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
           );
         })}
       </TabGroup>
-      <div>
+      {initErrors.length && realErrors.length ? (
+        <RedBox>
+          <ul>
+            {realErrors.map((error, i) => {
+              return <li>{error}</li>;
+            })}
+          </ul>
+        </RedBox>
+      ) : (
+        <></>
+      )}
+      <CalendarContianerDiv>
         <Timetable
           events={calendarEventList}
           eventUpdateCallback={eventUpdateCallback}
         />
-      </div>
+      </CalendarContianerDiv>
       <TableDiv>
         <SelectableTableDivView columns={6}>
           <SelectableTableHeaderDivView>

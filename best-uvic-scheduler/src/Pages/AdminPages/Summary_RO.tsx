@@ -1,12 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
+import { ToggleView } from "../../Components/toggle/toggle.tsx";
 
 import { useNavigate } from "react-router-dom";
 import CustomButtonView from "../../Components/button/button.tsx";
 import CustomButtonGroupView from "../../Components/button/buttongroup.tsx";
 import * as CourseListHelper from "../../Util/CourseListHelper.tsx";
 import * as ProfPreferencesHelper from "../../Util/ProfPreferencesHelper.tsx";
-import { ProfessorNameContext } from "./LandingPage.tsx";
+import { ProfessorNameContext } from "./index.tsx";
 import { Background } from "../../Components/background/background.tsx";
 import LandingPage from "./LandingPage.tsx";
 import { array, number } from "prop-types";
@@ -17,6 +18,7 @@ import {
   semesterHeader,
   maxCoursesMessage,
   coursesMessage,
+  leaveReasonView_RO,
 } from "../../Components/Summary/SummaryElements.tsx";
 
 import {
@@ -25,6 +27,8 @@ import {
   SelectableTableLabelsView,
   SelectableTableElementClosedDivView,
 } from "../../Components/SelectTable/SelectableTable.tsx";
+import { json } from "stream/consumers";
+import { monitorEventLoopDelay } from "perf_hooks";
 
 const SelectDivStyle = styled.div`
   display: flex;
@@ -104,11 +108,12 @@ function stringToTime(times: string) {
 
 export function Summary_RO() {
   //get data, call get professor entry endpoint using professor uuid
-  const Preferences = ProfPreferencesHelper.GetPreferences();
-  const CoursesPref = Preferences.course_preferences;
-  const Times = Preferences.preferred_times;
+
   const [Courses, setCourses] = useState([]);
   const [AmountOfCourses, setAmmount] = useState(0);
+
+  const [ProfPreferenes, setProfPreference] = useState([]);
+  const [AmountOfPref, setPrefAmount] = useState(0);
 
   useEffect(() => {
     CourseListHelper.GetCourseList()
@@ -120,10 +125,55 @@ export function Summary_RO() {
       });
   }, []);
 
-  //   //hooks
+  useEffect(() => {
+    ProfPreferencesHelper.GetPreferencesFromProf(
+      selectedProfessorName["pref_id"]
+    )
+      .then((resp) => {
+        setProfPreference(resp);
+      })
+      .then((resp) => {
+        setPrefAmount(resp.length());
+      });
+  }, []);
+
+  //setProfPreference(ProfPreferencesHelper.GetPreferencesFromProf());
+  const Preferences = ProfPreferenes[0];
+
+  //const CoursesPref = Preferences.course_preferences;
+  const tempPreferences = {};
+  //hooks
   const { selectedProfessorName, setProfessorName } =
     useContext(ProfessorNameContext);
+  console.log("SELECTED VAL");
+  console.log(selectedProfessorName);
   const navigate = useNavigate();
+  //This is stupid I know... I couldn't access the elements of the json unless I did this, probs a better way but demo is tomorrow :)
+  for (const key in Preferences) {
+    tempPreferences[key] = Preferences[key];
+  }
+
+  if (tempPreferences.course_preferences === undefined) {
+    return <p>Preferences are undefined, try to update the post request</p>;
+  }
+
+  let CoursesPref = JSON.parse(tempPreferences.course_preferences);
+  const Times = tempPreferences.preferred_times;
+
+  console.log(tempPreferences);
+  let str: string = tempPreferences["why_relief"];
+  let summerRelief = "";
+  let springRelief = "";
+  let fallRelief = "";
+  if (str.includes("/$fall/")) {
+    let array = tempPreferences["why_relief"].split("/$fall/");
+    let array2 = array[1].split("/$spring/");
+    fallRelief = array2[0];
+    let array3 = array2[1].split("/$summer/");
+    springRelief = array3[0];
+    summerRelief = array3[1];
+  }
+  let timeTest = JSON.parse(Times);
 
   const terms = ["summer", "spring", "fall"];
   const weekdays = {
@@ -136,19 +186,20 @@ export function Summary_RO() {
 
   const avail = {
     ABLE: "Able",
+    WITH_EFFORT: "With Effort",
     UNWILLING: "Unwilling",
+    WILLING: "Willing",
+    NO: "N/A",
     VERY_WILLING: "Very Willing",
-    NO: "Not Qualified",
   };
-  //process time data
 
-  const timeSummer = Times.summer;
-  const timeSpring = Times.spring;
-  const timeFall = Times.fall;
-
+  const timeSummer = timeTest.summer;
+  const timeSpring = timeTest.spring;
+  const timeFall = timeTest.fall;
+  console.log(timeSpring);
   return (
-    <Background>
-      <Header>Entries For {selectedProfessorName}</Header>
+    <div>
+      <Header>Entries For {selectedProfessorName["first_name"]}</Header>
 
       <h2>Classes</h2>
       <TableDiv>
@@ -156,8 +207,14 @@ export function Summary_RO() {
           {coursesMessage}
           {CoursesPref.map(function (Course, index) {
             let courseName = "";
-            const willing = avail[Course.will_to_teach];
-            const qualified = avail[Course.able_to_teach];
+            let willing = avail[Course.will_to_teach];
+            let qualified = avail[Course.able_to_teach];
+            if (willing === "") {
+              willing = "N/A";
+            }
+            if (qualified === "") {
+              qualified = "N/A";
+            }
             var indexCourseList = Courses.findIndex(
               (p) => p.id === Course.course_id
             );
@@ -173,11 +230,10 @@ export function Summary_RO() {
 
                     <SelectableTableLabelsView>
                       {" "}
-                      {willing}
+                      {qualified}
                     </SelectableTableLabelsView>
                     <SelectableTableLabelsView>
-                      {" "}
-                      {qualified}
+                      {willing}
                     </SelectableTableLabelsView>
                   </SelectableTableLabelDivView>
                 </SelectableTableElementClosedDivView>
@@ -187,70 +243,67 @@ export function Summary_RO() {
         </SelectableTableDivView>
       </TableDiv>
       <Space></Space>
-      <CustomButtonGroupView {...{ Amount: "Progession" }}>
-        <CustomButtonView {...{ Theme: "Primary" }} customClickEvent={() => {}}>
-          {" "}
-          EDIT{" "}
-        </CustomButtonView>
-      </CustomButtonGroupView>
+      <CustomButtonGroupView
+        {...{ Amount: "Progession" }}
+      ></CustomButtonGroupView>
 
       <h2>Availibility</h2>
 
       <TableDiv>
         <SelectableTableDivView columns={5}>
-          {semesterHeader("Summer")}
-          {maxCoursesMessage(Preferences.num_summer_courses)}
-
-          {(() => {
-            if (
-              timeSummer.mon.times.length === 0 &&
-              timeSummer.tues.times.length === 0 &&
-              timeSummer.wed.times.length === 0 &&
-              timeSummer.thurs.times.length === 0 &&
-              timeSummer.fri.times.length === 0
-            ) {
-              return noTimesMessage;
-            } else {
-              return timesEnteredMessage;
-            }
-          })()}
-
-          {Object.keys(timeSummer).map(function (Day, index) {
-            const day = weekdays[Day];
-            let times = stringToTime(timeSummer[Day].times);
-            if (times.length != 0) {
-              return (
-                <SelectableTableElementClosedDivView>
-                  {times.map(function (time, timeIndex) {
-                    const timeSplit = time.split(" ");
-
-                    return (
-                      <SelectableTableLabelDivView>
-                        <SelectableTableLabelsView></SelectableTableLabelsView>
-                        <SelectableTableLabelsView>
-                          {" "}
-                          {day}
-                        </SelectableTableLabelsView>
-                        <SelectableTableLabelsView>
-                          {" "}
-                          {timeSplit[0].slice(1, -1)} -{" "}
-                          {timeSplit[1].slice(1, -1)}
-                        </SelectableTableLabelsView>
-                        <SelectableTableLabelsView></SelectableTableLabelsView>
-                        <SelectableTableLabelsView></SelectableTableLabelsView>
-                      </SelectableTableLabelDivView>
-                    );
-                  })}
-                </SelectableTableElementClosedDivView>
-              );
-            }
-          })}
-        </SelectableTableDivView>
-      </TableDiv>
-      <TableDiv>
-        <SelectableTableDivView columns={5}>
           {semesterHeader("Fall")}
-          {maxCoursesMessage(Preferences.num_fall_courses)}
+          {leaveReasonView_RO("Fall 2022", fallRelief)}
+
+          {maxCoursesMessage(tempPreferences.num_fall_courses)}
+
+          <SelectableTableElementClosedDivView>
+            <SelectableTableLabelDivView>
+              <SelectableTableLabelsView>
+                Prefered Days:
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView>
+                {/* yes I know this is dumb, but also demo soon :(  */}
+                <ToggleView
+                  readOnly
+                  active={timeFall["mon"]["preferredDay"]}
+                  id={0}
+                >
+                  Monday
+                </ToggleView>
+                <ToggleView
+                  readOnly
+                  active={timeFall["tues"]["preferredDay"]}
+                  id={1}
+                >
+                  Tuesday{" "}
+                </ToggleView>
+                <ToggleView
+                  readOnly
+                  active={timeFall["wed"]["preferredDay"]}
+                  id={2}
+                >
+                  Wednesday
+                </ToggleView>
+                <ToggleView
+                  readOnly
+                  active={timeFall["thurs"]["preferredDay"]}
+                  id={3}
+                >
+                  Thursday{" "}
+                </ToggleView>
+                <ToggleView
+                  readOnly
+                  active={timeFall["fri"]["preferredDay"]}
+                  id={4}
+                >
+                  Friday
+                </ToggleView>
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+            </SelectableTableLabelDivView>
+          </SelectableTableElementClosedDivView>
 
           {(() => {
             if (
@@ -302,8 +355,58 @@ export function Summary_RO() {
       <TableDiv>
         <SelectableTableDivView columns={5}>
           {semesterHeader("Spring")}
+          {leaveReasonView_RO("Spring 2023", springRelief)}
 
-          {maxCoursesMessage(Preferences.num_spring_courses)}
+          {maxCoursesMessage(tempPreferences.num_spring_courses)}
+
+          <SelectableTableElementClosedDivView>
+            <SelectableTableLabelDivView>
+              <SelectableTableLabelsView>
+                Prefered Days:
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView>
+                {/* yes I know this is dumb, but also demo soon :(  */}
+                <ToggleView
+                  readOnly
+                  active={timeSpring["mon"]["preferredDay"]}
+                  id={0}
+                >
+                  Monday
+                </ToggleView>
+                <ToggleView
+                  readOnly
+                  active={timeSpring["tues"]["preferredDay"]}
+                  id={1}
+                >
+                  Tuesday{" "}
+                </ToggleView>
+                <ToggleView
+                  readOnly
+                  active={timeSpring["wed"]["preferredDay"]}
+                  id={2}
+                >
+                  Wednesday
+                </ToggleView>
+                <ToggleView
+                  readOnly
+                  active={timeSpring["thurs"]["preferredDay"]}
+                  id={3}
+                >
+                  Thursday{" "}
+                </ToggleView>
+                <ToggleView
+                  readOnly
+                  active={timeSpring["fri"]["preferredDay"]}
+                  id={4}
+                >
+                  Friday
+                </ToggleView>
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+            </SelectableTableLabelDivView>
+          </SelectableTableElementClosedDivView>
           {(() => {
             if (
               timeSpring.mon.times.length === 0 &&
@@ -351,6 +454,109 @@ export function Summary_RO() {
           })}
         </SelectableTableDivView>
       </TableDiv>
+
+      <TableDiv>
+        <SelectableTableDivView columns={5}>
+          {semesterHeader("Summer")}
+          {leaveReasonView_RO("Summer 2023", summerRelief)}
+
+          {maxCoursesMessage(tempPreferences.num_summer_courses)}
+
+          <SelectableTableElementClosedDivView>
+            <SelectableTableLabelDivView>
+              <SelectableTableLabelsView>
+                Prefered Days:
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView>
+                {/* yes I know this is dumb, but also demo soon :(  */}
+                <ToggleView
+                  readOnly
+                  active={timeSummer["mon"]["preferredDay"]}
+                  id={0}
+                >
+                  Monday
+                </ToggleView>
+                <ToggleView
+                  readOnly
+                  active={timeSummer["tues"]["preferredDay"]}
+                  id={1}
+                >
+                  Tuesday{" "}
+                </ToggleView>
+                <ToggleView
+                  readOnly
+                  active={timeSummer["wed"]["preferredDay"]}
+                  id={2}
+                >
+                  Wednesday
+                </ToggleView>
+                <ToggleView
+                  readOnly
+                  active={timeSummer["thurs"]["preferredDay"]}
+                  id={3}
+                >
+                  Thursday{" "}
+                </ToggleView>
+                <ToggleView
+                  readOnly
+                  active={timeSummer["fri"]["preferredDay"]}
+                  id={4}
+                >
+                  Friday
+                </ToggleView>
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+            </SelectableTableLabelDivView>
+          </SelectableTableElementClosedDivView>
+
+          {(() => {
+            if (
+              timeSummer.mon.times.length === 0 &&
+              timeSummer.tues.times.length === 0 &&
+              timeSummer.wed.times.length === 0 &&
+              timeSummer.thurs.times.length === 0 &&
+              timeSummer.fri.times.length === 0
+            ) {
+              return noTimesMessage;
+            } else {
+              return timesEnteredMessage;
+            }
+          })()}
+
+          {Object.keys(timeSummer).map(function (Day, index) {
+            const day = weekdays[Day];
+            let times = stringToTime(timeSummer[Day].times);
+            if (times.length != 0) {
+              return (
+                <SelectableTableElementClosedDivView>
+                  {times.map(function (time, timeIndex) {
+                    const timeSplit = time.split(" ");
+
+                    return (
+                      <SelectableTableLabelDivView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                        <SelectableTableLabelsView>
+                          {" "}
+                          {day}
+                        </SelectableTableLabelsView>
+                        <SelectableTableLabelsView>
+                          {" "}
+                          {timeSplit[0].slice(1, -1)} -{" "}
+                          {timeSplit[1].slice(1, -1)}
+                        </SelectableTableLabelsView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                      </SelectableTableLabelDivView>
+                    );
+                  })}
+                </SelectableTableElementClosedDivView>
+              );
+            }
+          })}
+        </SelectableTableDivView>
+      </TableDiv>
       <Space></Space>
 
       <CustomButtonGroupView {...{ Amount: "Double" }}>
@@ -363,12 +569,8 @@ export function Summary_RO() {
           {" "}
           Back{" "}
         </CustomButtonView>
-        <CustomButtonView {...{ Theme: "Primary" }} customClickEvent={() => {}}>
-          {" "}
-          EDIT{" "}
-        </CustomButtonView>
       </CustomButtonGroupView>
-    </Background>
+    </div>
   );
 }
 

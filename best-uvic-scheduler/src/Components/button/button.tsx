@@ -13,7 +13,7 @@ const ButtonTheme = {
   },
   Secondary: {
     default: "var(--surface)",
-    hover: "var(--primary-50)",
+    hover: "var(--primary-100)",
     borderColor: "var(--primary)",
     borderHover: "var(--primary-700)",
     textcolor: "var(--primary)",
