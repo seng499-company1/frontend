@@ -25,6 +25,7 @@ import {
   SelectableTableLabelsView,
   SelectableTableElementClosedDivView,
 } from "../../Components/SelectTable/SelectableTable.tsx";
+import { json } from "stream/consumers";
 
 const SelectDivStyle = styled.div`
   display: flex;
@@ -104,11 +105,12 @@ function stringToTime(times: string) {
 
 export function Summary_RO() {
   //get data, call get professor entry endpoint using professor uuid
-  const Preferences = ProfPreferencesHelper.GetPreferences();
-  const CoursesPref = Preferences.course_preferences;
-  const Times = Preferences.preferred_times;
+
   const [Courses, setCourses] = useState([]);
   const [AmountOfCourses, setAmmount] = useState(0);
+
+  const [ProfPreferenes, setProfPreference] = useState([]);
+  const [AmountOfPref, setPrefAmount] = useState(0);
 
   useEffect(() => {
     CourseListHelper.GetCourseList()
@@ -120,10 +122,44 @@ export function Summary_RO() {
       });
   }, []);
 
-  //   //hooks
+  useEffect(() => {
+    ProfPreferencesHelper.GetPreferencesFromProf()
+      .then((resp) => {
+        setProfPreference(resp);
+      })
+      .then((resp) => {
+        setPrefAmount(resp.length());
+      });
+  }, []);
+
+  //setProfPreference(ProfPreferencesHelper.GetPreferencesFromProf());
+  const Preferences = ProfPreferenes[0];
+
+  console.log(Preferences);
+  //const CoursesPref = Preferences.course_preferences;
+  const tempPreferences = {};
+  //hooks
   const { selectedProfessorName, setProfessorName } =
     useContext(ProfessorNameContext);
   const navigate = useNavigate();
+  //This is stupid I know... I couldn't access the elements of the json unless I did this, probs a better way but demo is tomorrow :)
+  for (const key in Preferences) {
+    tempPreferences[key] = Preferences[key];
+  }
+  console.log("EHRE");
+  console.log(tempPreferences.course_preferences);
+  // JSON.parse(tempPreferences.course_preferences);
+  if (tempPreferences.course_preferences === undefined) {
+    return <p>Preferences are undefined, try to update the post request</p>;
+  }
+
+  let CoursesPref = JSON.parse(tempPreferences.course_preferences);
+  console.log(CoursesPref);
+  const Times = tempPreferences.preferred_times;
+  console.log("TIMES");
+  console.log(Times);
+
+  console.log("temp times");
 
   const terms = ["summer", "spring", "fall"];
   const weekdays = {
@@ -136,15 +172,19 @@ export function Summary_RO() {
 
   const avail = {
     ABLE: "Able",
+    WITH_EFFORT: "With Effort",
     UNWILLING: "Unwilling",
+    WILLING: "Willing",
+    NO: "N/A",
     VERY_WILLING: "Very Willing",
-    NO: "Not Qualified",
   };
   //process time data
-
-  const timeSummer = Times.summer;
-  const timeSpring = Times.spring;
-  const timeFall = Times.fall;
+  // const obj = JSON.parse(Times);
+  // console.log("JSON");
+  // console.log(obj);
+  // const timeSummer = Times.summer;
+  // const timeSpring = Times.spring;
+  // const timeFall = Times.fall;
 
   return (
     <Background>
@@ -156,8 +196,14 @@ export function Summary_RO() {
           {coursesMessage}
           {CoursesPref.map(function (Course, index) {
             let courseName = "";
-            const willing = avail[Course.will_to_teach];
-            const qualified = avail[Course.able_to_teach];
+            let willing = avail[Course.will_to_teach];
+            let qualified = avail[Course.able_to_teach];
+            if (willing === "") {
+              willing = "N/A";
+            }
+            if (qualified === "") {
+              qualified = "N/A";
+            }
             var indexCourseList = Courses.findIndex(
               (p) => p.id === Course.course_id
             );
@@ -187,19 +233,16 @@ export function Summary_RO() {
         </SelectableTableDivView>
       </TableDiv>
       <Space></Space>
-      <CustomButtonGroupView {...{ Amount: "Progession" }}>
-        <CustomButtonView {...{ Theme: "Primary" }} customClickEvent={() => {}}>
-          {" "}
-          EDIT{" "}
-        </CustomButtonView>
-      </CustomButtonGroupView>
+      <CustomButtonGroupView
+        {...{ Amount: "Progession" }}
+      ></CustomButtonGroupView>
 
       <h2>Availibility</h2>
-
+      {/* 
       <TableDiv>
         <SelectableTableDivView columns={5}>
           {semesterHeader("Summer")}
-          {maxCoursesMessage(Preferences.num_summer_courses)}
+          {maxCoursesMessage(tempPreferences.num_summer_courses)}
 
           {(() => {
             if (
@@ -250,7 +293,7 @@ export function Summary_RO() {
       <TableDiv>
         <SelectableTableDivView columns={5}>
           {semesterHeader("Fall")}
-          {maxCoursesMessage(Preferences.num_fall_courses)}
+          {maxCoursesMessage(tempPreferences.num_fall_courses)}
 
           {(() => {
             if (
@@ -303,7 +346,7 @@ export function Summary_RO() {
         <SelectableTableDivView columns={5}>
           {semesterHeader("Spring")}
 
-          {maxCoursesMessage(Preferences.num_spring_courses)}
+          {maxCoursesMessage(tempPreferences.num_spring_courses)}
           {(() => {
             if (
               timeSpring.mon.times.length === 0 &&
@@ -351,7 +394,7 @@ export function Summary_RO() {
           })}
         </SelectableTableDivView>
       </TableDiv>
-      <Space></Space>
+      <Space></Space> */}
 
       <CustomButtonGroupView {...{ Amount: "Double" }}>
         <CustomButtonView
@@ -362,10 +405,6 @@ export function Summary_RO() {
         >
           {" "}
           Back{" "}
-        </CustomButtonView>
-        <CustomButtonView {...{ Theme: "Primary" }} customClickEvent={() => {}}>
-          {" "}
-          EDIT{" "}
         </CustomButtonView>
       </CustomButtonGroupView>
     </Background>
