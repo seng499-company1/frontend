@@ -81,25 +81,15 @@ export const weekdays = [
 ];
 
 export const QualificationItems = [
-  { value: "Not Qualified", label: "Not Qualified" },
-  { value: "Qualified", label: "Qualified" },
+  { value: "WITH_EFFORT", label: "WITH_EFFORT" },
+  { value: "ABLE", label: "ABLE" },
 ];
 
 export const PreferenceItems = [
-  { value: "Not Willing", label: "Not Willing" },
-  { value: "Willing", label: "Willing" },
-  { value: "Very Willing", label: "Very Willing" },
+  { value: "NOT_WILLING", label: "Not Willing" },
+  { value: "WILLING", label: "Willing" },
+  { value: "VERY_WILLING", label: "Very Willing" },
 ];
-
-export const preferenceLabel = {
-  "Not Willing": "NOT_WILLING",
-  Willing: "WILLING",
-  "Very Willing": "VERY_WILLING",
-};
-export const qualLabel = {
-  "Not Qualified": "NOT_QUALIFIED",
-  Qualified: "QUALIFIED",
-};
 
 function updateCheckbox(state: Object, semester: string) {
   return { ...state, [semester]: !state[semester] };
@@ -368,6 +358,7 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
         </Header>
         {Courses.map(function (Course, index) {
           let name = Course.course_code;
+
           return (
             <>
               <div>
@@ -394,11 +385,11 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                   <FieldContainerDiv>
                     <FieldLabelP>Desire to teach</FieldLabelP>
                     <Radio
-                      label={PreferenceItems[0]["value"]}
+                      label={PreferenceItems[0]["label"]}
                       value={PreferenceItems[0]["value"]}
                       isChecked={
                         preferences[Course.course_code] ===
-                        PreferenceItems[0]["value"]
+                        PreferenceItems[0]["label"]
                           ? true
                           : false
                       }
@@ -411,7 +402,7 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                       }}
                     />
                     <Radio
-                      label={PreferenceItems[1]["value"]}
+                      label={PreferenceItems[1]["label"]}
                       value={PreferenceItems[1]["value"]}
                       isChecked={
                         preferences[Course.course_code] ===
@@ -422,12 +413,13 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                       handleChange={() => {
                         setPreferences({
                           ...preferences,
-                          [Course.course_code]: PreferenceItems[1]["value"],
+                          [Course.course_code]:
+                            preferenceLabel[PreferenceItems[1]["value"]],
                         });
                       }}
                     />
                     <Radio
-                      label={PreferenceItems[2]["value"]}
+                      label={PreferenceItems[2]["label"]}
                       value={PreferenceItems[2]["value"]}
                       isChecked={
                         preferences[Course.course_code] ===
@@ -438,7 +430,8 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                       handleChange={() => {
                         setPreferences({
                           ...preferences,
-                          [Course.course_code]: PreferenceItems[2]["value"],
+                          [Course.course_code]:
+                            preferenceLabel[PreferenceItems[2]["value"]],
                         });
                       }}
                     />
@@ -474,7 +467,8 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
                       handleChange={() => {
                         setQualifications({
                           ...qualifications,
-                          [Course.course_code]: QualificationItems[1]["value"],
+                          [Course.course_code]:
+                            qualLabel[QualificationItems[1]["value"]],
                         });
                       }}
                     />

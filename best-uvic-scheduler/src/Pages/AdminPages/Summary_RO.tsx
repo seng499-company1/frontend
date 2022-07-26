@@ -166,7 +166,7 @@ export function Summary_RO() {
   let springRelief = "";
   let fallRelief = "";
   if (str.includes("/$fall/")) {
-    let array = tempPreferences["why_relief"].split("/$fall/");
+    let array = str.split("/$fall/");
     let array2 = array[1].split("/$spring/");
     fallRelief = array2[0];
     let array3 = array2[1].split("/$summer/");
@@ -188,6 +188,7 @@ export function Summary_RO() {
     ABLE: "Able",
     WITH_EFFORT: "With Effort",
     UNWILLING: "Unwilling",
+    NOT_WILLING: "Unwilling",
     WILLING: "Willing",
     NO: "N/A",
     VERY_WILLING: "Very Willing",
@@ -230,10 +231,10 @@ export function Summary_RO() {
 
                     <SelectableTableLabelsView>
                       {" "}
-                      {qualified}
+                      {willing}
                     </SelectableTableLabelsView>
                     <SelectableTableLabelsView>
-                      {willing}
+                      {qualified}
                     </SelectableTableLabelsView>
                   </SelectableTableLabelDivView>
                 </SelectableTableElementClosedDivView>

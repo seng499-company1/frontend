@@ -142,7 +142,7 @@ export async function postPreferences(props: SubmitInfoProps) {
   console.log(props);
   try {
     const response = await axios.post(
-      `http://uvic.immortalmind.ca:5000/professors/4a3569e0-0bd1-11ed-a735-0242ac120002/preferences/`,
+      `http://uvic.immortalmind.ca:5000/professors/450c1b78-0c8d-11ed-b058-0242ac130002/preferences/`,
       props,
       {
         "Content-Type": "application/json",
