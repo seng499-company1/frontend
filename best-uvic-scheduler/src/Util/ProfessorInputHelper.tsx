@@ -38,3 +38,18 @@ export async function GetProfessorInputList() {
     return [];
   }
 }
+
+export async function RemindProfessor(props) {
+  console.log(props);
+  try {
+    const response = await axios.post(
+      `http://uvic.immortalmind.ca:5000/professors/${props}/remind/`,
+      {
+        "Content-Type": "application/json",
+      }
+    );
+    console.log("response  ", response);
+  } catch (error) {
+    console.log("POST Reminder FAILED! " + error);
+  }
+}
