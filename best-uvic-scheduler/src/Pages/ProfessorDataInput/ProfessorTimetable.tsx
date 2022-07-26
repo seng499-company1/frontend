@@ -609,11 +609,7 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
           <CustomButtonView
             {...{ Theme: "Primary" }}
             customClickEvent={() => {
-              if (Object.keys(qualifications).length !== AmountOfCourses) {
-              } else {
-                // setSelectedTimes(TimeIntervalHelper());
-                navigate(`/SelectProfessor/Summary`);
-              }
+              navigate(`/SelectProfessor/Summary`);
             }}
           >
             {" "}

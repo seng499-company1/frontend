@@ -87,7 +87,6 @@ export function LoginPage() {
           Welcome the the UVic Course Scheduler
         </h2>
         <InnerBox>
-          <h3 style={{ fontWeight: "500" }}>Admin Login</h3>
           <StyledForm>
             <LineDiv>
               <p style={{ margin: 0 }}>Username</p>
