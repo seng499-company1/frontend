@@ -40,3 +40,34 @@ export async function GetProfessorList() {
     return [];
   }
 }
+
+export async function deleteProfessorBackend(props) {
+  console.log("Test")
+  try {
+    const response = await axios.delete(
+      `http://uvic.immortalmind.ca:5000/professors/${props}`,
+      {
+        "Content-Type": "application/json",
+      }
+    );
+    console.log("response  ", response);
+  } catch (error) {
+    console.log("DELETE COURSE FAILED! " + error);
+  }
+}
+
+export async function addProfessor(props) {
+  console.log(props);
+  try {
+    const response = await axios.post(
+      `http://uvic.immortalmind.ca:5000/professors/`,
+      props,
+      {
+        "Content-Type": "application/json",
+      }
+    );
+    console.log("response  ", response);
+  } catch (error) {
+    console.log("POST COURSE FAILED! " + error);
+  }
+}
