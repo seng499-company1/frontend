@@ -4,7 +4,8 @@ import { DefaultShadowLarge } from "../../GlobalStyles.tsx";
 import "../../index.css";
 
 const InsideDivStyle = styled.div<{ centered: boolean }>`
-  width: 70%;
+  width: 100%;
+  max-width: 1200px;
   padding: var(--space-4x-large);
   border-radius: 4px;
   background-color: var(--surface);
