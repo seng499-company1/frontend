@@ -144,6 +144,14 @@ const TableDiv = styled.div`
   padding-top: 4px;
 `;
 
+const CalendarContianerDiv = styled.div`
+  height: 800px;
+
+  & .rbc-day-slot .rbc-event-content {
+    font-size: var(--font-size-normal);
+  }
+`;
+
 function CreateListelement(scheduleElement) {
   const couseID = scheduleElement.course.code;
 
@@ -382,12 +390,12 @@ export function GenerateScheduleView(props: GenerateScheduleViewProps) {
           );
         })}
       </TabGroup>
-      <div>
+      <CalendarContianerDiv>
         <Timetable
           events={calendarEventList}
           eventUpdateCallback={eventUpdateCallback}
         />
-      </div>
+      </CalendarContianerDiv>
       <TableDiv>
         <SelectableTableDivView columns={6}>
           <SelectableTableHeaderDivView>

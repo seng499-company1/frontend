@@ -5,6 +5,7 @@ import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
 import { TimetableItemType } from "./AdminPages/GenerateSchedule.tsx";
+import styled from "styled-components";
 
 type event = {
   title: string;
@@ -258,11 +259,19 @@ function useTimetable(props: TimetableProps): TimetableViewProps {
   };
 }
 
+const CalendarContianerDiv = styled.div`
+  height: 800px;
+
+  & .rbc-day-slot .rbc-event-content {
+    font-size: var(--font-size-normal);
+  }
+`;
+
 function TimetableView(props: TimetableViewProps) {
   const { myEvents, moveEvent, resizeEvent, defaultDate, localizer, formats } =
     props;
   return (
-    <div style={{ height: "600px" }}>
+    <CalendarContianerDiv>
       <DragAndDropCalendar
         localizer={localizer}
         defaultDate={defaultDate}
@@ -278,7 +287,7 @@ function TimetableView(props: TimetableViewProps) {
         popup
         resizable
       />
-    </div>
+    </CalendarContianerDiv>
   );
 }
 
