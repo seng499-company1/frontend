@@ -96,7 +96,9 @@ export function AdminCoursePage() {
       notes: "",
     };
     CourseListHelper.editCourse({ id: ID, json: New_value });
+
     console.log(New_value);
+    setOpenCourse(0);
   }
 
   function DeleteCourse(index) {
