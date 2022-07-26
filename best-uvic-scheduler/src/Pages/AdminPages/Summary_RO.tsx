@@ -230,11 +230,10 @@ export function Summary_RO() {
 
                     <SelectableTableLabelsView>
                       {" "}
-                      {willing}
+                      {qualified}
                     </SelectableTableLabelsView>
                     <SelectableTableLabelsView>
-                      {" "}
-                      {qualified}
+                      {willing}
                     </SelectableTableLabelsView>
                   </SelectableTableLabelDivView>
                 </SelectableTableElementClosedDivView>
@@ -250,108 +249,6 @@ export function Summary_RO() {
 
       <h2>Availibility</h2>
 
-      <TableDiv>
-        <SelectableTableDivView columns={5}>
-          {semesterHeader("Summer")}
-          {leaveReasonView_RO("Summer 2023", summerRelief)}
-
-          {maxCoursesMessage(tempPreferences.num_summer_courses)}
-
-          <SelectableTableElementClosedDivView>
-            <SelectableTableLabelDivView>
-              <SelectableTableLabelsView>
-                Prefered Days:
-              </SelectableTableLabelsView>
-              <SelectableTableLabelsView>
-                {/* yes I know this is dumb, but also demo soon :(  */}
-                <ToggleView
-                  readOnly
-                  active={timeSummer["mon"]["preferredDay"]}
-                  id={0}
-                >
-                  Monday
-                </ToggleView>
-                <ToggleView
-                  readOnly
-                  active={timeSummer["tues"]["preferredDay"]}
-                  id={1}
-                >
-                  Tuesday{" "}
-                </ToggleView>
-                <ToggleView
-                  readOnly
-                  active={timeSummer["wed"]["preferredDay"]}
-                  id={2}
-                >
-                  Wednesday
-                </ToggleView>
-                <ToggleView
-                  readOnly
-                  active={timeSummer["thurs"]["preferredDay"]}
-                  id={3}
-                >
-                  Thursday{" "}
-                </ToggleView>
-                <ToggleView
-                  readOnly
-                  active={timeSummer["fri"]["preferredDay"]}
-                  id={4}
-                >
-                  Friday
-                </ToggleView>
-              </SelectableTableLabelsView>
-              <SelectableTableLabelsView></SelectableTableLabelsView>
-              <SelectableTableLabelsView></SelectableTableLabelsView>
-              <SelectableTableLabelsView></SelectableTableLabelsView>
-            </SelectableTableLabelDivView>
-          </SelectableTableElementClosedDivView>
-
-          {(() => {
-            if (
-              timeSummer.mon.times.length === 0 &&
-              timeSummer.tues.times.length === 0 &&
-              timeSummer.wed.times.length === 0 &&
-              timeSummer.thurs.times.length === 0 &&
-              timeSummer.fri.times.length === 0
-            ) {
-              return noTimesMessage;
-            } else {
-              return timesEnteredMessage;
-            }
-          })()}
-
-          {Object.keys(timeSummer).map(function (Day, index) {
-            const day = weekdays[Day];
-            let times = stringToTime(timeSummer[Day].times);
-            if (times.length != 0) {
-              return (
-                <SelectableTableElementClosedDivView>
-                  {times.map(function (time, timeIndex) {
-                    const timeSplit = time.split(" ");
-
-                    return (
-                      <SelectableTableLabelDivView>
-                        <SelectableTableLabelsView></SelectableTableLabelsView>
-                        <SelectableTableLabelsView>
-                          {" "}
-                          {day}
-                        </SelectableTableLabelsView>
-                        <SelectableTableLabelsView>
-                          {" "}
-                          {timeSplit[0].slice(1, -1)} -{" "}
-                          {timeSplit[1].slice(1, -1)}
-                        </SelectableTableLabelsView>
-                        <SelectableTableLabelsView></SelectableTableLabelsView>
-                        <SelectableTableLabelsView></SelectableTableLabelsView>
-                      </SelectableTableLabelDivView>
-                    );
-                  })}
-                </SelectableTableElementClosedDivView>
-              );
-            }
-          })}
-        </SelectableTableDivView>
-      </TableDiv>
       <TableDiv>
         <SelectableTableDivView columns={5}>
           {semesterHeader("Fall")}
@@ -545,6 +442,109 @@ export function Summary_RO() {
                           {" "}
                           {timeSpring[0].slice(1, -1)} -{" "}
                           {timeSpring[1].slice(1, -1)}
+                        </SelectableTableLabelsView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                      </SelectableTableLabelDivView>
+                    );
+                  })}
+                </SelectableTableElementClosedDivView>
+              );
+            }
+          })}
+        </SelectableTableDivView>
+      </TableDiv>
+
+      <TableDiv>
+        <SelectableTableDivView columns={5}>
+          {semesterHeader("Summer")}
+          {leaveReasonView_RO("Summer 2023", summerRelief)}
+
+          {maxCoursesMessage(tempPreferences.num_summer_courses)}
+
+          <SelectableTableElementClosedDivView>
+            <SelectableTableLabelDivView>
+              <SelectableTableLabelsView>
+                Prefered Days:
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView>
+                {/* yes I know this is dumb, but also demo soon :(  */}
+                <ToggleView
+                  readOnly
+                  active={timeSummer["mon"]["preferredDay"]}
+                  id={0}
+                >
+                  Monday
+                </ToggleView>
+                <ToggleView
+                  readOnly
+                  active={timeSummer["tues"]["preferredDay"]}
+                  id={1}
+                >
+                  Tuesday{" "}
+                </ToggleView>
+                <ToggleView
+                  readOnly
+                  active={timeSummer["wed"]["preferredDay"]}
+                  id={2}
+                >
+                  Wednesday
+                </ToggleView>
+                <ToggleView
+                  readOnly
+                  active={timeSummer["thurs"]["preferredDay"]}
+                  id={3}
+                >
+                  Thursday{" "}
+                </ToggleView>
+                <ToggleView
+                  readOnly
+                  active={timeSummer["fri"]["preferredDay"]}
+                  id={4}
+                >
+                  Friday
+                </ToggleView>
+              </SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+              <SelectableTableLabelsView></SelectableTableLabelsView>
+            </SelectableTableLabelDivView>
+          </SelectableTableElementClosedDivView>
+
+          {(() => {
+            if (
+              timeSummer.mon.times.length === 0 &&
+              timeSummer.tues.times.length === 0 &&
+              timeSummer.wed.times.length === 0 &&
+              timeSummer.thurs.times.length === 0 &&
+              timeSummer.fri.times.length === 0
+            ) {
+              return noTimesMessage;
+            } else {
+              return timesEnteredMessage;
+            }
+          })()}
+
+          {Object.keys(timeSummer).map(function (Day, index) {
+            const day = weekdays[Day];
+            let times = stringToTime(timeSummer[Day].times);
+            if (times.length != 0) {
+              return (
+                <SelectableTableElementClosedDivView>
+                  {times.map(function (time, timeIndex) {
+                    const timeSplit = time.split(" ");
+
+                    return (
+                      <SelectableTableLabelDivView>
+                        <SelectableTableLabelsView></SelectableTableLabelsView>
+                        <SelectableTableLabelsView>
+                          {" "}
+                          {day}
+                        </SelectableTableLabelsView>
+                        <SelectableTableLabelsView>
+                          {" "}
+                          {timeSplit[0].slice(1, -1)} -{" "}
+                          {timeSplit[1].slice(1, -1)}
                         </SelectableTableLabelsView>
                         <SelectableTableLabelsView></SelectableTableLabelsView>
                         <SelectableTableLabelsView></SelectableTableLabelsView>
