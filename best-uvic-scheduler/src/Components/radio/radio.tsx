@@ -28,7 +28,7 @@ export interface RadioProps {
 
 export const preferenceLabel = {
   WILLING: "Willing",
-  UNWILLING: "Not Willing",
+  NOT_WILLING: "Not Willing",
   VERY_WILLING: "Very Willing",
   WITH_EFFORT: "With Effort",
   ABLE: "Able",
