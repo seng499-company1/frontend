@@ -148,7 +148,6 @@ export function Summary_RO() {
   }
   console.log("EHRE");
   console.log(tempPreferences.course_preferences);
-  // JSON.parse(tempPreferences.course_preferences);
   if (tempPreferences.course_preferences === undefined) {
     return <p>Preferences are undefined, try to update the post request</p>;
   }
@@ -156,6 +155,9 @@ export function Summary_RO() {
   let CoursesPref = JSON.parse(tempPreferences.course_preferences);
   console.log(CoursesPref);
   const Times = tempPreferences.preferred_times;
+
+  let timeTest = JSON.parse(Times);
+  console.log(timeTest);
   console.log("TIMES");
   console.log(Times);
 
@@ -182,9 +184,9 @@ export function Summary_RO() {
   // const obj = JSON.parse(Times);
   // console.log("JSON");
   // console.log(obj);
-  // const timeSummer = Times.summer;
-  // const timeSpring = Times.spring;
-  // const timeFall = Times.fall;
+  const timeSummer = timeTest.summer;
+  const timeSpring = timeTest.spring;
+  const timeFall = timeTest.fall;
 
   return (
     <Background>
@@ -238,7 +240,7 @@ export function Summary_RO() {
       ></CustomButtonGroupView>
 
       <h2>Availibility</h2>
-      {/* 
+
       <TableDiv>
         <SelectableTableDivView columns={5}>
           {semesterHeader("Summer")}
@@ -394,7 +396,7 @@ export function Summary_RO() {
           })}
         </SelectableTableDivView>
       </TableDiv>
-      <Space></Space> */}
+      <Space></Space>
 
       <CustomButtonGroupView {...{ Amount: "Double" }}>
         <CustomButtonView
