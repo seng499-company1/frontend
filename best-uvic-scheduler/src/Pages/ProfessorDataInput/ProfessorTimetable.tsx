@@ -81,8 +81,8 @@ export const weekdays = [
 ];
 
 export const QualificationItems = [
-  { value: "WITH_EFFORT", label: "WITH_EFFORT" },
-  { value: "ABLE", label: "ABLE" },
+  { value: "WITH_EFFORT", label: "With Effort" },
+  { value: "ABLE", label: "Able" },
 ];
 
 export const PreferenceItems = [
@@ -308,6 +308,24 @@ const CourseDividerHR = styled.hr`
   margin: 0;
 `;
 
+const CourseContainerDiv = styled.div`
+  display: flex;
+  gap: 96px;
+  align-items: flex-start;
+  margin-top: 12px;
+`;
+
+const RadioContainerDiv = styled.div`
+  display: flex;
+  gap: 20px;
+`;
+
+const CourseListContainerDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
 export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
   const {
     semesters,
@@ -356,135 +374,143 @@ export function ProfessorTimetableView(props: ProfessorTimetableViewProps) {
             </a>
           </h5>
         </Header>
-        {Courses.map(function (Course, index) {
-          let name = Course.course_code;
-
-          return (
-            <>
-              <div>
-                <h3 style={{ fontWeight: "500", margin: "0" }}>
-                  {Course.course_code}
-                </h3>
-                <CourseInfoDiv key={index}>
-                  <p>
-                    {Course.course_qualifications && (
-                      <>
-                        <br />
-                        <b>Qualifications needed:</b>{" "}
-                        {Course.course_qualifications}
-                        {Course.peng_req ? (
-                          <>
-                            , <b>PENG is Reqiured</b>
-                          </>
-                        ) : (
-                          ""
-                        )}
-                      </>
-                    )}
-                  </p>
+        <CourseListContainerDiv>
+          {Courses.map(function (Course, index) {
+            let name = Course.course_code;
+            return (
+              <>
+                <CourseContainerDiv key={index}>
+                  <CourseInfoDiv>
+                    <h3
+                      style={{
+                        fontWeight: "500",
+                        margin: "0",
+                        minWidth: "100px",
+                      }}
+                    >
+                      {Course.course_code}
+                    </h3>
+                    <p>
+                      {Course.course_qualifications && (
+                        <>
+                          <br />
+                          <b>Qualifications needed:</b>{" "}
+                          {Course.course_qualifications}
+                          {Course.peng_req ? (
+                            <>
+                              , <b>PENG is Reqiured</b>
+                            </>
+                          ) : (
+                            ""
+                          )}
+                        </>
+                      )}
+                    </p>
+                  </CourseInfoDiv>
                   <FieldContainerDiv>
                     <FieldLabelP>Desire to teach</FieldLabelP>
-                    <Radio
-                      label={PreferenceItems[0]["label"]}
-                      value={PreferenceItems[0]["value"]}
-                      isChecked={
-                        preferences[Course.course_code] ===
-                        PreferenceItems[0]["label"]
-                          ? true
-                          : false
-                      }
-                      handleChange={() => {
-                        setPreferences({
-                          ...preferences,
-                          [Course.course_code]:
-                            preferenceLabel[PreferenceItems[0]["value"]],
-                        });
-                      }}
-                    />
-                    <Radio
-                      label={PreferenceItems[1]["label"]}
-                      value={PreferenceItems[1]["value"]}
-                      isChecked={
-                        preferences[Course.course_code] ===
-                        PreferenceItems[1]["value"]
-                          ? true
-                          : false
-                      }
-                      handleChange={() => {
-                        setPreferences({
-                          ...preferences,
-                          [Course.course_code]:
-                            preferenceLabel[PreferenceItems[1]["value"]],
-                        });
-                      }}
-                    />
-                    <Radio
-                      label={PreferenceItems[2]["label"]}
-                      value={PreferenceItems[2]["value"]}
-                      isChecked={
-                        preferences[Course.course_code] ===
-                        PreferenceItems[2]["value"]
-                          ? true
-                          : false
-                      }
-                      handleChange={() => {
-                        setPreferences({
-                          ...preferences,
-                          [Course.course_code]:
-                            preferenceLabel[PreferenceItems[2]["value"]],
-                        });
-                      }}
-                    />
+                    <RadioContainerDiv>
+                      <Radio
+                        label={PreferenceItems[0]["value"]}
+                        value={PreferenceItems[0]["value"]}
+                        isChecked={
+                          preferences[Course.course_code] ===
+                          PreferenceItems[0]["value"]
+                            ? true
+                            : false
+                        }
+                        handleChange={() => {
+                          setPreferences({
+                            ...preferences,
+                            [Course.course_code]: PreferenceItems[0]["value"],
+                          });
+                        }}
+                      />
+                      <Radio
+                        label={PreferenceItems[1]["value"]}
+                        value={PreferenceItems[1]["value"]}
+                        isChecked={
+                          preferences[Course.course_code] ===
+                          PreferenceItems[1]["value"]
+                            ? true
+                            : false
+                        }
+                        handleChange={() => {
+                          setPreferences({
+                            ...preferences,
+                            [Course.course_code]: PreferenceItems[1]["value"],
+                          });
+                        }}
+                      />
+                      <Radio
+                        label={PreferenceItems[2]["value"]}
+                        value={PreferenceItems[2]["value"]}
+                        isChecked={
+                          preferences[Course.course_code] ===
+                          PreferenceItems[2]["value"]
+                            ? true
+                            : false
+                        }
+                        handleChange={() => {
+                          setPreferences({
+                            ...preferences,
+                            [Course.course_code]: PreferenceItems[2]["value"],
+                          });
+                        }}
+                      />
+                    </RadioContainerDiv>
                   </FieldContainerDiv>
                   <FieldContainerDiv>
                     <FieldLabelP>Qualification level</FieldLabelP>
-                    <Radio
-                      label={QualificationItems[0]["value"]}
-                      value={QualificationItems[0]["value"]}
-                      isChecked={
-                        qualifications[Course.course_code] ===
-                        QualificationItems[0]["value"]
-                          ? true
-                          : false
-                      }
-                      handleChange={() => {
-                        setQualifications({
-                          ...qualifications,
-                          [Course.course_code]:
-                            qualLabel[QualificationItems[0]["value"]],
-                        });
-                      }}
-                    />
-                    <Radio
-                      label={QualificationItems[1]["value"]}
-                      value={QualificationItems[1]["value"]}
-                      isChecked={
-                        qualifications[Course.course_code] ===
-                        QualificationItems[1]["value"]
-                          ? true
-                          : false
-                      }
-                      handleChange={() => {
-                        setQualifications({
-                          ...qualifications,
-                          [Course.course_code]:
-                            qualLabel[QualificationItems[1]["value"]],
-                        });
-                      }}
-                    />
+                    <RadioContainerDiv>
+                      <Radio
+                        label={QualificationItems[0]["value"]}
+                        value={QualificationItems[0]["value"]}
+                        isChecked={
+                          qualifications[Course.course_code] ===
+                          QualificationItems[0]["value"]
+                            ? true
+                            : false
+                        }
+                        handleChange={() => {
+                          setQualifications({
+                            ...qualifications,
+                            [Course.course_code]:
+                              QualificationItems[0]["value"],
+                          });
+                        }}
+                      />
+                      <Radio
+                        label={QualificationItems[1]["value"]}
+                        value={QualificationItems[1]["value"]}
+                        isChecked={
+                          qualifications[Course.course_code] ===
+                          QualificationItems[1]["value"]
+                            ? true
+                            : false
+                        }
+                        handleChange={() => {
+                          setQualifications({
+                            ...qualifications,
+                            [Course.course_code]:
+                              QualificationItems[1]["value"],
+                          });
+                        }}
+                      />
+                    </RadioContainerDiv>
                   </FieldContainerDiv>
-                </CourseInfoDiv>
-              </div>
-              <CourseDividerHR
-                style={{
-                  visibility: `${
-                    index === Courses.length - 1 ? "hidden" : "visible"
-                  }`,
-                }}
-              />
-            </>
-          );
-        })}
+                </CourseContainerDiv>
+                <CourseDividerHR
+                  style={{
+                    visibility: `${
+                      index === Courses.length - 1 ? "hidden" : "visible"
+                    }`,
+                  }}
+                />
+              </>
+            );
+          })}
+        </CourseListContainerDiv>
         <Header>Teaching time preferences</Header>
         <TabsContainerDiv>
           <TabGroup initialTabId="0">
